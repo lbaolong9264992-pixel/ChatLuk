@@ -1,222 +1,2973 @@
-const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS, GET",
-    "Access-Control-Allow-Headers": "Content-Type",
+/*
+==========================================================
+                    CHATLUK AI
+             ALL-IN-ONE CLOUDFLARE WORKER
+
+    1 file duy nhất:
+    - Giao diện ChatLuk
+    - Chat history
+    - Mobile menu
+    - Dark/Light theme
+    - OpenAI API
+    - CORS
+    - Error handling
+
+    SECRET BẮT BUỘC:
+    OPENAI_API_KEY
+
+    KHÔNG đặt API key trực tiếp vào code.
+==========================================================
+*/
+
+
+/* ======================================================
+   HTML
+====================================================== */
+
+const HTML = `
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ChatLuk — AI Việt Nam</title>
+
+
+<style>
+
+/* ======================================================
+   RESET
+====================================================== */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+
+:root{
+
+    --blue:#08a9ee;
+    --blue2:#0875c9;
+    --darkblue:#07518e;
+
+    --text:#183044;
+    --muted:#718495;
+
+    --line:rgba(30,100,140,.15);
+
+    --glass:rgba(255,255,255,.72);
+
+}
+
+
+/* ======================================================
+   BODY
+====================================================== */
+
+html,
+body{
+
+    width:100%;
+    height:100%;
+
+}
+
+
+body{
+
+    font-family:
+        Arial,
+        "Segoe UI",
+        sans-serif;
+
+    color:var(--text);
+
+    overflow:hidden;
+
+    background:
+
+        radial-gradient(
+            circle at 85% 8%,
+            rgba(0,190,255,.25),
+            transparent 27%
+        ),
+
+        radial-gradient(
+            circle at 25% 90%,
+            rgba(0,130,220,.12),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            135deg,
+            #e8f9ff 0%,
+            #eef4f6 48%,
+            #d5dee3 100%
+        );
+
+}
+
+
+/* ======================================================
+   APP
+====================================================== */
+
+.app{
+
+    width:100vw;
+    height:100vh;
+
+    display:flex;
+
+}
+
+
+/* ======================================================
+   SIDEBAR
+====================================================== */
+
+.sidebar{
+
+    width:275px;
+    height:100vh;
+
+    padding:22px 17px;
+
+    display:flex;
+    flex-direction:column;
+
+    flex-shrink:0;
+
+    background:
+        rgba(248,252,254,.88);
+
+    border-right:
+        1px solid var(--line);
+
+    backdrop-filter:
+        blur(20px);
+
+    z-index:20;
+
+}
+
+
+.logo{
+
+    display:flex;
+    align-items:center;
+
+    gap:10px;
+
+    padding:
+        4px 8px 25px;
+
+}
+
+
+.logo-dragon{
+
+    font-family:
+        "Times New Roman",
+        serif;
+
+    font-size:42px;
+
+    color:#078bd8;
+
+    transform:
+        rotate(-8deg);
+
+    text-shadow:
+        0 5px 15px
+        rgba(0,120,220,.25);
+
+}
+
+
+.logo-text{
+
+    font-size:26px;
+
+    font-weight:800;
+
+    letter-spacing:-1.5px;
+
+}
+
+
+.logo-text span{
+
+    color:var(--blue2);
+
+}
+
+
+.new-chat{
+
+    width:100%;
+
+    border:0;
+
+    border-radius:14px;
+
+    padding:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:white;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            120deg,
+            #07518e,
+            #08c7ff
+        );
+
+    box-shadow:
+        0 10px 25px
+        rgba(0,130,220,.22);
+
+    transition:.2s;
+
+}
+
+
+.new-chat:hover{
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 14px 30px
+        rgba(0,130,220,.3);
+
+}
+
+
+.plus{
+
+    font-size:22px;
+
+}
+
+
+.history-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin:
+        28px 7px 10px;
+
+    color:#7b8b98;
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    letter-spacing:1.4px;
+
+}
+
+
+.clear-btn{
+
+    border:0;
+
+    background:none;
+
+    color:#7b8b98;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+}
+
+
+.history{
+
+    flex:1;
+
+    overflow-y:auto;
+
+}
+
+
+.history-item{
+
+    width:100%;
+
+    display:block;
+
+    border:
+        1px solid transparent;
+
+    border-radius:11px;
+
+    background:transparent;
+
+    padding:11px 12px;
+
+    margin-bottom:5px;
+
+    text-align:left;
+
+    color:#40576b;
+
+    cursor:pointer;
+
+    font-size:12px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+
+.history-item:hover,
+.history-item.active{
+
+    background:
+        rgba(0,160,230,.09);
+
+    border-color:
+        rgba(0,160,230,.15);
+
+    color:#0767a9;
+
+}
+
+
+.sidebar-bottom{
+
+    padding:15px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.8),
+            rgba(213,225,232,.6)
+        );
+
+}
+
+
+.sidebar-dragon{
+
+    color:#078bd8;
+
+    font-family:serif;
+
+    font-size:25px;
+
+}
+
+
+.sidebar-bottom p{
+
+    margin-top:7px;
+
+    color:#82919d;
+
+    font-size:9px;
+
+    line-height:1.6;
+
+}
+
+
+/* ======================================================
+   MAIN
+====================================================== */
+
+.main{
+
+    flex:1;
+
+    min-width:0;
+
+    height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+/* ======================================================
+   TOPBAR
+====================================================== */
+
+.topbar{
+
+    min-height:76px;
+
+    padding:
+        11px 27px;
+
+    display:flex;
+
+    align-items:center;
+
+    border-bottom:
+        1px solid var(--line);
+
+    background:
+        rgba(255,255,255,.45);
+
+    backdrop-filter:
+        blur(18px);
+
+}
+
+
+.mobile-menu{
+
+    display:none;
+
+    width:38px;
+    height:38px;
+
+    margin-right:10px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:11px;
+
+    background:white;
+
+    cursor:pointer;
+
+}
+
+
+.title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+.title-dragon{
+
+    font-family:serif;
+
+    color:#078bd8;
+
+    font-size:30px;
+
+}
+
+
+.title h1{
+
+    font-size:17px;
+
+}
+
+
+.title small{
+
+    display:block;
+
+    margin-top:3px;
+
+    color:#83929f;
+
+    font-size:8px;
+
+    font-weight:bold;
+
+    letter-spacing:1.5px;
+
+}
+
+
+.creator{
+
+    margin-left:auto;
+
+    margin-right:15px;
+
+    max-width:48%;
+
+    overflow:hidden;
+
+    white-space:nowrap;
+
+    text-overflow:ellipsis;
+
+    color:#516a7d;
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    text-align:right;
+
+}
+
+
+.theme{
+
+    width:38px;
+
+    height:38px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:11px;
+
+    background:
+        rgba(255,255,255,.7);
+
+    color:#075c9c;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+}
+
+
+/* ======================================================
+   CHAT AREA
+====================================================== */
+
+.chat-area{
+
+    flex:1;
+
+    min-height:0;
+
+    overflow-y:auto;
+
+    scroll-behavior:smooth;
+
+}
+
+
+.welcome{
+
+    max-width:760px;
+
+    margin:auto;
+
+    padding:
+        65px 25px 30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    text-align:center;
+
+}
+
+
+.dragon{
+
+    width:108px;
+    height:108px;
+
+    margin-bottom:21px;
+
+    display:grid;
+
+    place-items:center;
+
+    position:relative;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.92),
+            rgba(201,229,241,.65)
+        );
+
+    border:
+        1px solid
+        rgba(0,120,210,.16);
+
+    box-shadow:
+        0 16px 45px
+        rgba(0,120,210,.15);
+
+}
+
+
+.dragon:before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:10px;
+
+    border:
+        1px dashed
+        rgba(0,130,215,.3);
+
+    border-radius:50%;
+
+    animation:
+        spin 18s linear infinite;
+
+}
+
+
+.dragon span{
+
+    position:relative;
+
+    font-family:
+        "Times New Roman",
+        serif;
+
+    font-size:64px;
+
+    color:#078bd8;
+
+    text-shadow:
+        0 7px 18px
+        rgba(0,110,210,.2);
+
+}
+
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+.welcome-label{
+
+    color:#078bd8;
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    letter-spacing:3px;
+
+}
+
+
+.welcome h2{
+
+    margin-top:7px;
+
+    font-size:
+        clamp(45px,7vw,68px);
+
+    letter-spacing:-4px;
+
+}
+
+
+.welcome h2 span{
+
+    color:#078bd8;
+
+}
+
+
+.welcome p{
+
+    max-width:590px;
+
+    margin:
+        18px 0 27px;
+
+    color:#718495;
+
+    font-size:13px;
+
+    line-height:1.75;
+
+}
+
+
+.suggestions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:9px;
+
+}
+
+
+.suggestion{
+
+    padding:10px 13px;
+
+    border:
+        1px solid
+        rgba(0,130,215,.15);
+
+    border-radius:12px;
+
+    background:
+        rgba(255,255,255,.6);
+
+    color:#466278;
+
+    font-size:11px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.suggestion:hover{
+
+    color:#07518e;
+
+    background:white;
+
+    border-color:
+        rgba(0,130,215,.35);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* ======================================================
+   MESSAGES
+====================================================== */
+
+.messages{
+
+    width:min(900px,100%);
+
+    margin:auto;
+
+    padding:
+        18px 22px 30px;
+
+}
+
+
+.message{
+
+    display:flex;
+
+    gap:11px;
+
+    margin:17px 0;
+
+    animation:
+        appear .22s ease;
+
+}
+
+
+@keyframes appear{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(6px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+.message.user{
+
+    justify-content:flex-end;
+
+}
+
+
+.message.user .avatar{
+
+    order:2;
+
+}
+
+
+.avatar{
+
+    width:35px;
+    height:35px;
+
+    flex:
+        0 0 35px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:11px;
+
+    border:
+        1px solid
+        var(--line);
+
+    background:
+        rgba(255,255,255,.8);
+
+    color:#0877bd;
+
+    font-family:serif;
+
+    font-size:20px;
+
+}
+
+
+.message.user .avatar{
+
+    color:white;
+
+    font-family:Arial,sans-serif;
+
+    font-size:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0874c4,
+            #1bcaff
+        );
+
+}
+
+
+.bubble{
+
+    max-width:
+        min(700px,82%);
+
+    padding:
+        13px 16px;
+
+    border:
+        1px solid
+        var(--line);
+
+    border-radius:
+        7px 17px 17px 17px;
+
+    background:
+        rgba(255,255,255,.78);
+
+    color:#273e52;
+
+    font-size:13px;
+
+    line-height:1.75;
+
+    white-space:pre-wrap;
+
+    word-break:break-word;
+
+    box-shadow:
+        0 6px 25px
+        rgba(20,70,100,.05);
+
+}
+
+
+.message.user .bubble{
+
+    border:0;
+
+    border-radius:
+        17px 7px 17px 17px;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0877ca,
+            #23c5ff
+        );
+
+    box-shadow:
+        0 9px 24px
+        rgba(0,130,220,.18);
+
+}
+
+
+/* ======================================================
+   TYPING
+====================================================== */
+
+.typing{
+
+    display:flex;
+
+    gap:4px;
+
+    align-items:center;
+
+}
+
+
+.typing i{
+
+    width:5px;
+
+    height:5px;
+
+    border-radius:50%;
+
+    background:#078bd8;
+
+    animation:
+        typing 1s infinite;
+
+}
+
+
+.typing i:nth-child(2){
+
+    animation-delay:.15s;
+
+}
+
+
+.typing i:nth-child(3){
+
+    animation-delay:.3s;
+
+}
+
+
+@keyframes typing{
+
+    0%,60%,100%{
+
+        opacity:.35;
+
+        transform:
+            translateY(0);
+
+    }
+
+    30%{
+
+        opacity:1;
+
+        transform:
+            translateY(-4px);
+
+    }
+
+}
+
+
+/* ======================================================
+   COMPOSER
+====================================================== */
+
+.composer-area{
+
+    width:min(900px,100%);
+
+    margin:auto;
+
+    padding:
+        7px 22px 19px;
+
+}
+
+
+.composer{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    gap:8px;
+
+    padding:
+        7px 7px 7px 16px;
+
+    border:
+        1px solid
+        rgba(0,120,215,.2);
+
+    border-radius:19px;
+
+    background:
+        rgba(255,255,255,.82);
+
+    box-shadow:
+
+        0 12px 45px
+        rgba(20,70,95,.1),
+
+        0 0 0 5px
+        rgba(20,190,255,.035);
+
+    backdrop-filter:
+        blur(16px);
+
+}
+
+
+.composer:focus-within{
+
+    border-color:
+        rgba(0,120,215,.4);
+
+}
+
+
+textarea{
+
+    flex:1;
+
+    min-height:40px;
+
+    max-height:170px;
+
+    resize:none;
+
+    padding:
+        10px 0;
+
+    border:0;
+
+    outline:0;
+
+    background:transparent;
+
+    color:#183044;
+
+    font-size:13px;
+
+    line-height:20px;
+
+}
+
+
+textarea::placeholder{
+
+    color:#8a99a5;
+
+}
+
+
+.send{
+
+    width:42px;
+
+    height:42px;
+
+    flex:
+        0 0 42px;
+
+    border:0;
+
+    border-radius:14px;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #07518e,
+            #09c6ff
+        );
+
+    box-shadow:
+        0 7px 18px
+        rgba(0,120,220,.25);
+
+    cursor:pointer;
+
+    font-size:17px;
+
+    transition:.2s;
+
+}
+
+
+.send:hover{
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.send:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+}
+
+
+.info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:
+        7px 7px 0;
+
+    color:#82919d;
+
+    font-size:9px;
+
+}
+
+
+/* ======================================================
+   OVERLAY
+====================================================== */
+
+.overlay{
+
+    display:none;
+
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media(max-width:760px){
+
+    .sidebar{
+
+        position:fixed;
+
+        left:0;
+
+        top:0;
+
+        transform:
+            translateX(-105%);
+
+        transition:.25s;
+
+        box-shadow:
+            15px 0 50px
+            rgba(0,40,70,.2);
+
+    }
+
+
+    .sidebar.open{
+
+        transform:
+            translateX(0);
+
+    }
+
+
+    .mobile-menu{
+
+        display:block;
+
+    }
+
+
+    .overlay.show{
+
+        display:block;
+
+        position:fixed;
+
+        inset:0;
+
+        z-index:10;
+
+        background:
+            rgba(0,30,50,.25);
+
+    }
+
+
+    .topbar{
+
+        padding:
+            10px 14px;
+
+    }
+
+
+    .creator{
+
+        max-width:42%;
+
+        font-size:8px;
+
+    }
+
+
+    .welcome{
+
+        padding-top:40px;
+
+    }
+
+
+    .suggestions{
+
+        display:grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        width:100%;
+
+    }
+
+
+    .suggestion{
+
+        min-height:52px;
+
+    }
+
+
+    .messages{
+
+        padding:
+            10px 12px 25px;
+
+    }
+
+
+    .bubble{
+
+        max-width:86%;
+
+        font-size:12px;
+
+    }
+
+
+    .composer-area{
+
+        padding:
+            5px 10px 13px;
+
+    }
+
+
+    .info span:last-child{
+
+        display:none;
+
+    }
+
+}
+
+
+@media(max-width:430px){
+
+    .welcome h2{
+
+        font-size:48px;
+
+    }
+
+
+    .dragon{
+
+        width:90px;
+
+        height:90px;
+
+    }
+
+
+    .dragon span{
+
+        font-size:54px;
+
+    }
+
+
+    .suggestions{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .creator{
+
+        max-width:37%;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<!-- ==================================================
+     SIDEBAR
+================================================== -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+
+    <div class="logo">
+
+        <div class="logo-dragon">
+            龍
+        </div>
+
+        <div class="logo-text">
+            Chat<span>Luk</span>
+        </div>
+
+    </div>
+
+
+    <button
+        class="new-chat"
+        id="newChat"
+    >
+
+        <span class="plus">
+            ＋
+        </span>
+
+        Cuộc trò chuyện mới
+
+    </button>
+
+
+    <div class="history-title">
+
+        <span>
+            LỊCH SỬ TRONG TAB
+        </span>
+
+        <button
+            class="clear-btn"
+            id="clearHistory"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div
+        class="history"
+        id="history"
+    ></div>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="sidebar-dragon">
+            ☁　龍　☁
+        </div>
+
+        <p>
+            Cuộc trò chuyện chỉ được lưu
+            trong bộ nhớ của tab hiện tại.
+        </p>
+
+    </div>
+
+
+</aside>
+
+
+<!-- ==================================================
+     MAIN
+================================================== -->
+
+<main class="main">
+
+
+<header class="topbar">
+
+
+    <button
+        class="mobile-menu"
+        id="menuButton"
+    >
+        ☰
+    </button>
+
+
+    <div class="title">
+
+        <div class="title-dragon">
+            龍
+        </div>
+
+        <div>
+
+            <h1>
+                ChatLuk
+            </h1>
+
+            <small>
+                VIETNAMESE DRAGON AI
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="creator">
+        AnhLongDepZaiVaiDai-cre:Longlee
+    </div>
+
+
+    <button
+        class="theme"
+        id="themeButton"
+    >
+        ◐
+    </button>
+
+
+</header>
+
+
+<!-- ==================================================
+     CHAT AREA
+================================================== -->
+
+<section
+    class="chat-area"
+    id="chatArea"
+>
+
+
+<div
+    class="welcome"
+    id="welcome"
+>
+
+
+    <div class="dragon">
+
+        <span>
+            龍
+        </span>
+
+    </div>
+
+
+    <div class="welcome-label">
+        CHÀO MỪNG ĐẾN VỚI
+    </div>
+
+
+    <h2>
+        Chat<span>Luk</span>
+    </h2>
+
+
+    <p>
+        Không gian trò chuyện AI lấy cảm hứng
+        từ rồng phương Đông và vẻ đẹp văn hóa Việt Nam.
+    </p>
+
+
+    <div class="suggestions">
+
+
+        <button class="suggestion">
+            Giải thích một bài học cho tôi
+        </button>
+
+
+        <button class="suggestion">
+            Giúp tôi lên một kế hoạch
+        </button>
+
+
+        <button class="suggestion">
+            Viết một đoạn văn sáng tạo
+        </button>
+
+
+        <button class="suggestion">
+            Cho tôi một ý tưởng mới
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+<div
+    class="messages"
+    id="messages"
+></div>
+
+
+</section>
+
+
+<!-- ==================================================
+     INPUT
+================================================== -->
+
+<footer class="composer-area">
+
+
+<form
+    class="composer"
+    id="chatForm"
+>
+
+
+<textarea
+    id="input"
+    maxlength="8000"
+    rows="1"
+    placeholder="Nhập tin nhắn cho ChatLuk..."
+></textarea>
+
+
+<button
+    class="send"
+    id="send"
+    type="submit"
+>
+    ➤
+</button>
+
+
+</form>
+
+
+<div class="info">
+
+    <span>
+        AI ChatLuk
+    </span>
+
+    <span>
+        Enter để gửi · Shift + Enter để xuống dòng
+    </span>
+
+</div>
+
+
+</footer>
+
+
+</main>
+
+
+</div>
+
+
+<div
+    class="overlay"
+    id="overlay"
+></div>
+
+
+<script>
+
+/* =====================================================
+   CHATLUK FRONTEND
+===================================================== */
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let chats = [];
+
+let activeChat = null;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const historyBox =
+    document.getElementById("history");
+
+const messagesBox =
+    document.getElementById("messages");
+
+const welcome =
+    document.getElementById("welcome");
+
+const input =
+    document.getElementById("input");
+
+const form =
+    document.getElementById("chatForm");
+
+const send =
+    document.getElementById("send");
+
+const chatArea =
+    document.getElementById("chatArea");
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const overlay =
+    document.getElementById("overlay");
+
+
+/* =====================================================
+   CREATE ID
+===================================================== */
+
+function createID(){
+
+    return Date.now().toString(36)
+        +
+        Math.random()
+            .toString(36)
+            .substring(2,8);
+
+}
+
+
+/* =====================================================
+   NEW CHAT
+===================================================== */
+
+function newChat(){
+
+    const chat = {
+
+        id:createID(),
+
+        title:"Cuộc trò chuyện mới",
+
+        messages:[]
+
+    };
+
+
+    chats.unshift(chat);
+
+    activeChat = chat.id;
+
+
+    renderHistory();
+
+    renderMessages();
+
+    closeMenu();
+
+    input.focus();
+
+}
+
+
+/* =====================================================
+   GET ACTIVE CHAT
+===================================================== */
+
+function getChat(){
+
+    return chats.find(
+        chat =>
+            chat.id === activeChat
+    );
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+function renderHistory(){
+
+    historyBox.innerHTML = "";
+
+
+    if(chats.length === 0){
+
+        const empty =
+            document.createElement("div");
+
+
+        empty.style.cssText =
+            "padding:12px 8px;" +
+            "color:#8795a2;" +
+            "font-size:11px;";
+
+
+        empty.textContent =
+            "Chưa có cuộc trò chuyện nào.";
+
+
+        historyBox.appendChild(empty);
+
+        return;
+
+    }
+
+
+    chats.forEach(chat => {
+
+        const button =
+            document.createElement("button");
+
+
+        button.className =
+            "history-item"
+            +
+            (
+                chat.id === activeChat
+                ? " active"
+                : ""
+            );
+
+
+        button.textContent =
+            chat.title;
+
+
+        button.onclick =
+            function(){
+
+                activeChat =
+                    chat.id;
+
+                renderHistory();
+
+                renderMessages();
+
+                closeMenu();
+
+            };
+
+
+        historyBox.appendChild(button);
+
+    });
+
+}
+
+
+/* =====================================================
+   RENDER MESSAGES
+===================================================== */
+
+function renderMessages(){
+
+    messagesBox.innerHTML = "";
+
+
+    const chat =
+        getChat();
+
+
+    if(
+        !chat ||
+        chat.messages.length === 0
+    ){
+
+        welcome.style.display =
+            "flex";
+
+        return;
+
+    }
+
+
+    welcome.style.display =
+        "none";
+
+
+    chat.messages.forEach(
+        message => {
+
+            addMessage(
+                message.role,
+                message.text,
+                false
+            );
+
+        }
+    );
+
+
+    scrollBottom();
+
+}
+
+
+/* =====================================================
+   ADD MESSAGE
+===================================================== */
+
+function addMessage(
+    role,
+    text,
+    scroll = true
+){
+
+    const row =
+        document.createElement("div");
+
+
+    row.className =
+        "message " + role;
+
+
+    const avatar =
+        document.createElement("div");
+
+
+    avatar.className =
+        "avatar";
+
+
+    avatar.textContent =
+        role === "ai"
+        ? "龍"
+        : "U";
+
+
+    const bubble =
+        document.createElement("div");
+
+
+    bubble.className =
+        "bubble";
+
+
+    /*
+      textContent prevents HTML/JS injection.
+    */
+
+    bubble.textContent =
+        text;
+
+
+    row.appendChild(avatar);
+
+    row.appendChild(bubble);
+
+    messagesBox.appendChild(row);
+
+
+    if(scroll){
+
+        scrollBottom();
+
+    }
+
+}
+
+
+/* =====================================================
+   SCROLL
+===================================================== */
+
+function scrollBottom(){
+
+    requestAnimationFrame(
+        function(){
+
+            chatArea.scrollTop =
+                chatArea.scrollHeight;
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   TYPING
+===================================================== */
+
+function showTyping(){
+
+    const row =
+        document.createElement("div");
+
+
+    row.className =
+        "message ai";
+
+
+    row.id =
+        "typing";
+
+
+    const avatar =
+        document.createElement("div");
+
+
+    avatar.className =
+        "avatar";
+
+
+    avatar.textContent =
+        "龍";
+
+
+    const bubble =
+        document.createElement("div");
+
+
+    bubble.className =
+        "bubble";
+
+
+    const dots =
+        document.createElement("span");
+
+
+    dots.className =
+        "typing";
+
+
+    dots.innerHTML =
+        "<i></i><i></i><i></i>";
+
+
+    bubble.appendChild(dots);
+
+
+    row.appendChild(avatar);
+
+    row.appendChild(bubble);
+
+
+    messagesBox.appendChild(row);
+
+
+    scrollBottom();
+
+}
+
+
+function hideTyping(){
+
+    const typing =
+        document.getElementById(
+            "typing"
+        );
+
+
+    if(typing){
+
+        typing.remove();
+
+    }
+
+}
+
+
+/* =====================================================
+   AI CONNECTION
+=====================================================
+
+   IMPORTANT:
+
+   Website và Worker dùng cùng một domain.
+
+   Không cần:
+   - API key trong HTML
+   - URL Worker
+   - CORS giữa website và Worker
+
+   Browser gửi:
+       POST /api/chat
+
+   Worker xử lý OpenAI ở server.
+===================================================== */
+
+async function AI(text){
+
+    const response =
+        await fetch(
+            "/api/chat",
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    message:text
+
+                })
+
+            }
+        );
+
+
+    let data;
+
+
+    try{
+
+        data =
+            await response.json();
+
+    }
+    catch(error){
+
+        throw new Error(
+            "Worker không trả về JSON hợp lệ."
+        );
+
+    }
+
+
+    if(!response.ok){
+
+        throw new Error(
+
+            data &&
+            data.error
+
+                ? data.error
+
+                : "Worker trả về lỗi HTTP "
+                    +
+                    response.status
+
+        );
+
+    }
+
+
+    if(
+        !data ||
+        !data.reply
+    ){
+
+        throw new Error(
+            "Worker không trả về câu trả lời."
+        );
+
+    }
+
+
+    return data.reply;
+
+}
+
+
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
+
+async function sendMessage(text){
+
+    text =
+        text.trim();
+
+
+    if(
+        !text ||
+        send.disabled
+    ){
+
+        return;
+
+    }
+
+
+    if(!activeChat){
+
+        newChat();
+
+    }
+
+
+    const chat =
+        getChat();
+
+
+    chat.messages.push({
+
+        role:"user",
+
+        text:text
+
+    });
+
+
+    if(
+        chat.messages.length === 1
+    ){
+
+        chat.title =
+            text.length > 35
+
+                ? text.substring(
+                    0,
+                    35
+                  ) + "..."
+
+                : text;
+
+    }
+
+
+    input.value = "";
+
+    resizeInput();
+
+
+    renderHistory();
+
+    renderMessages();
+
+
+    send.disabled = true;
+
+
+    showTyping();
+
+
+    try{
+
+        const reply =
+            await AI(text);
+
+
+        hideTyping();
+
+
+        chat.messages.push({
+
+            role:"ai",
+
+            text:reply
+
+        });
+
+
+        addMessage(
+            "ai",
+            reply
+        );
+
+    }
+    catch(error){
+
+        hideTyping();
+
+
+        const errorText =
+
+            "🐉 ChatLuk gặp sự cố khi kết nối AI.\n\n" +
+
+            "Chi tiết: " +
+
+            (
+                error &&
+                error.message
+
+                    ? error.message
+
+                    : "Lỗi không xác định."
+            );
+
+
+        chat.messages.push({
+
+            role:"ai",
+
+            text:errorText
+
+        });
+
+
+        addMessage(
+            "ai",
+            errorText
+        );
+
+
+        console.error(
+            "ChatLuk AI Error:",
+            error
+        );
+
+    }
+
+
+    send.disabled = false;
+
+
+    renderHistory();
+
+
+    input.focus();
+
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+form.addEventListener(
+    "submit",
+    function(event){
+
+        event.preventDefault();
+
+        sendMessage(
+            input.value
+        );
+
+    }
+);
+
+
+/* =====================================================
+   ENTER
+===================================================== */
+
+input.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
+            form.requestSubmit();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   RESIZE INPUT
+===================================================== */
+
+function resizeInput(){
+
+    input.style.height =
+        "auto";
+
+
+    input.style.height =
+        Math.min(
+            input.scrollHeight,
+            170
+        )
+        + "px";
+
+}
+
+
+input.addEventListener(
+    "input",
+    resizeInput
+);
+
+
+/* =====================================================
+   SUGGESTIONS
+===================================================== */
+
+document
+    .querySelectorAll(
+        ".suggestion"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    input.value =
+                        button
+                            .textContent
+                            .trim();
+
+
+                    resizeInput();
+
+                    input.focus();
+
+                }
+            );
+
+        }
+    );
+
+
+/* =====================================================
+   NEW CHAT
+===================================================== */
+
+document
+    .getElementById("newChat")
+    .addEventListener(
+        "click",
+        newChat
+    );
+
+
+/* =====================================================
+   CLEAR HISTORY
+===================================================== */
+
+document
+    .getElementById(
+        "clearHistory"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            chats = [];
+
+            activeChat = null;
+
+            renderHistory();
+
+            renderMessages();
+
+        }
+    );
+
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+document
+    .getElementById(
+        "menuButton"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            sidebar.classList.add(
+                "open"
+            );
+
+            overlay.classList.add(
+                "show"
+            );
+
+        }
+    );
+
+
+function closeMenu(){
+
+    sidebar.classList.remove(
+        "open"
+    );
+
+    overlay.classList.remove(
+        "show"
+    );
+
+}
+
+
+overlay.addEventListener(
+    "click",
+    closeMenu
+);
+
+
+/* =====================================================
+   THEME
+===================================================== */
+
+document
+    .getElementById(
+        "themeButton"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            if(
+                document.body.style.filter ===
+                "brightness(0.85)"
+            ){
+
+                document.body.style.filter =
+                    "";
+
+            }
+            else{
+
+                document.body.style.filter =
+                    "brightness(0.85)";
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   START
+===================================================== */
+
+renderHistory();
+
+renderMessages();
+
+input.focus();
+
+</script>
+
+</body>
+
+</html>
+`;
+
+
+/* ======================================================
+   CORS
+====================================================== */
+
+const CORS = {
+
+    "Access-Control-Allow-Origin":"*",
+
+    "Access-Control-Allow-Methods":
+        "GET, POST, OPTIONS",
+
+    "Access-Control-Allow-Headers":
+        "Content-Type"
+
 };
 
+
+/* ======================================================
+   JSON RESPONSE
+====================================================== */
+
+function json(
+    data,
+    status = 200
+){
+
+    return new Response(
+
+        JSON.stringify(data),
+
+        {
+
+            status:status,
+
+            headers:{
+                ...CORS,
+                "Content-Type":
+                    "application/json; charset=utf-8"
+            }
+
+        }
+
+    );
+
+}
+
+
+/* ======================================================
+   WORKER
+====================================================== */
+
 export default {
-    async fetch(request, env) {
 
-        // =========================
-        // CORS
-        // =========================
+    async fetch(
+        request,
+        env
+    ){
 
-        if (request.method === "OPTIONS") {
-            return new Response(null, {
-                status: 204,
-                headers: corsHeaders
+        const url =
+            new URL(request.url);
+
+
+        /* =================================================
+           CORS PREFLIGHT
+        ================================================= */
+
+        if(
+            request.method ===
+            "OPTIONS"
+        ){
+
+            return new Response(
+                null,
+                {
+                    status:204,
+                    headers:CORS
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           MAIN WEBSITE
+        ================================================= */
+
+        if(
+            request.method === "GET" &&
+            url.pathname === "/"
+        ){
+
+            return new Response(
+                HTML,
+                {
+                    status:200,
+
+                    headers:{
+                        "Content-Type":
+                            "text/html; charset=utf-8",
+
+                        "Cache-Control":
+                            "no-store"
+                    }
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           HEALTH CHECK
+        ================================================= */
+
+        if(
+            request.method === "GET" &&
+            url.pathname === "/health"
+        ){
+
+            return json({
+
+                ok:true,
+
+                worker:
+                    "ChatLuk AI Worker",
+
+                secretConfigured:
+                    Boolean(
+                        env.OPENAI_API_KEY
+                    )
+
             });
+
         }
 
-        // =========================
-        // TEST WORKER
-        // =========================
 
-        if (request.method === "GET") {
-            return new Response(
-                JSON.stringify({
-                    ok: true,
-                    message: "ChatLuk AI Worker đang hoạt động 🐉"
-                }),
-                {
-                    status: 200,
-                    headers: {
-                        ...corsHeaders,
-                        "Content-Type": "application/json"
-                    }
+        /* =================================================
+           CHAT API
+        ================================================= */
+
+        if(
+            request.method === "POST" &&
+            url.pathname === "/api/chat"
+        ){
+
+            try{
+
+                /* =========================================
+                   CHECK SECRET
+                ========================================= */
+
+                if(
+                    !env.OPENAI_API_KEY
+                ){
+
+                    return json(
+                        {
+
+                            ok:false,
+
+                            error:
+                                "Không tìm thấy Secret OPENAI_API_KEY. " +
+                                "Hãy vào Settings → Variables and Secrets " +
+                                "và kiểm tra tên Secret."
+
+                        },
+                        500
+                    );
+
                 }
-            );
-        }
 
-        // =========================
-        // CHỈ NHẬN POST
-        // =========================
 
-        if (request.method !== "POST") {
-            return new Response(
-                JSON.stringify({
-                    error: "Method not allowed"
-                }),
-                {
-                    status: 405,
-                    headers: {
-                        ...corsHeaders,
-                        "Content-Type": "application/json"
-                    }
+                /* =========================================
+                   READ BODY
+                ========================================= */
+
+                let body;
+
+
+                try{
+
+                    body =
+                        await request.json();
+
                 }
-            );
-        }
+                catch{
 
-        try {
+                    return json(
+                        {
 
-            // =========================
-            // KIỂM TRA API KEY
-            // =========================
+                            ok:false,
 
-            if (!env.OPENAI_API_KEY) {
-                return new Response(
-                    JSON.stringify({
-                        error: "OPENAI_API_KEY chưa được cấu hình trong Worker."
-                    }),
-                    {
-                        status: 500,
-                        headers: {
-                            ...corsHeaders,
-                            "Content-Type": "application/json"
-                        }
-                    }
-                );
-            }
+                            error:
+                                "Request JSON không hợp lệ."
 
-            // =========================
-            // ĐỌC REQUEST
-            // =========================
+                        },
+                        400
+                    );
 
-            const body = await request.json();
-
-            const message = body.message;
-
-            if (
-                typeof message !== "string" ||
-                !message.trim()
-            ) {
-                return new Response(
-                    JSON.stringify({
-                        error: "Tin nhắn không hợp lệ."
-                    }),
-                    {
-                        status: 400,
-                        headers: {
-                            ...corsHeaders,
-                            "Content-Type": "application/json"
-                        }
-                    }
-                );
-            }
-
-            // =========================
-            // GỌI OPENAI
-            // =========================
-
-            const openaiResponse = await fetch(
-                "https://api.openai.com/v1/responses",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization":
-                            `Bearer ${env.OPENAI_API_KEY}`
-                    },
-
-                    body: JSON.stringify({
-
-                        model: "gpt-5-mini",
-
-                        instructions:
-                            "Bạn là ChatLuk, một trợ lý AI nói tiếng Việt. " +
-                            "Hãy trả lời tự nhiên, hữu ích, rõ ràng và thân thiện. " +
-                            "Có thể sử dụng emoji vừa phải. " +
-                            "Không tự nhận mình là ChatGPT.",
-
-                        input: message
-
-                    })
                 }
-            );
 
-            // =========================
-            // ĐỌC RESPONSE OPENAI
-            // =========================
 
-            const responseText =
-                await openaiResponse.text();
+                const message =
+                    body &&
+                    body.message;
 
-            let data;
 
-            try {
-                data = JSON.parse(responseText);
-            }
-            catch {
-                return new Response(
-                    JSON.stringify({
-                        error:
-                            "OpenAI trả về dữ liệu không hợp lệ.",
-                        details:
-                            responseText.substring(0, 500)
-                    }),
-                    {
-                        status: 502,
-                        headers: {
-                            ...corsHeaders,
-                            "Content-Type": "application/json"
+                /* =========================================
+                   VALIDATE MESSAGE
+                ========================================= */
+
+                if(
+                    typeof message !==
+                        "string" ||
+
+                    !message.trim()
+                ){
+
+                    return json(
+                        {
+
+                            ok:false,
+
+                            error:
+                                "Tin nhắn không hợp lệ."
+
+                        },
+                        400
+                    );
+
+                }
+
+
+                /* =========================================
+                   LIMIT MESSAGE
+                ========================================= */
+
+                if(
+                    message.length > 8000
+                ){
+
+                    return json(
+                        {
+
+                            ok:false,
+
+                            error:
+                                "Tin nhắn quá dài. " +
+                                "Vui lòng rút ngắn tin nhắn."
+
+                        },
+                        400
+                    );
+
+                }
+
+
+                /* =========================================
+                   OPENAI REQUEST
+                ========================================= */
+
+                const openaiResponse =
+                    await fetch(
+                        "https://api.openai.com/v1/responses",
+                        {
+
+                            method:"POST",
+
+                            headers:{
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    "Bearer " +
+                                    env.OPENAI_API_KEY
+
+                            },
+
+                            body:JSON.stringify({
+
+                                model:
+                                    "gpt-5-mini",
+
+                                instructions:
+                                    "Bạn là ChatLuk, " +
+                                    "một trợ lý AI nói tiếng Việt. " +
+                                    "Hãy trả lời tự nhiên, rõ ràng, " +
+                                    "thân thiện và hữu ích. " +
+                                    "Ưu tiên tiếng Việt. " +
+                                    "Có thể sử dụng emoji vừa phải. " +
+                                    "Khi giải thích kiến thức, " +
+                                    "hãy trình bày dễ hiểu. " +
+                                    "Khi viết code, hãy đưa code " +
+                                    "hoàn chỉnh và giải thích phần quan trọng.",
+
+                                input:
+                                    message
+
+                            })
+
                         }
-                    }
-                );
-            }
+                    );
 
-            // =========================
-            // OPENAI ERROR
-            // =========================
 
-            if (!openaiResponse.ok) {
+                /* =========================================
+                   READ OPENAI RESPONSE
+                ========================================= */
 
-                return new Response(
-                    JSON.stringify({
-                        error:
-                            data?.error?.message ||
-                            "OpenAI API request failed.",
-                        code:
-                            data?.error?.code || null
-                    }),
-                    {
-                        status: openaiResponse.status,
-                        headers: {
-                            ...corsHeaders,
-                            "Content-Type": "application/json"
-                        }
-                    }
-                );
-            }
+                const raw =
+                    await openaiResponse.text();
 
-            // =========================
-            // LẤY TEXT
-            // =========================
 
-            let answer = "";
+                let data;
 
-            if (typeof data.output_text === "string") {
-                answer = data.output_text;
-            }
 
-            // fallback nếu output_text không có
-            if (!answer && Array.isArray(data.output)) {
+                try{
 
-                for (const item of data.output) {
+                    data =
+                        JSON.parse(raw);
 
-                    if (
-                        item.type === "message" &&
-                        Array.isArray(item.content)
-                    ) {
+                }
+                catch{
 
-                        for (const content of item.content) {
+                    return json(
+                        {
 
-                            if (
-                                content.type === "output_text" &&
-                                typeof content.text === "string"
-                            ) {
+                            ok:false,
 
-                                answer += content.text;
+                            error:
+                                "OpenAI trả về dữ liệu không hợp lệ."
+
+                        },
+                        502
+                    );
+
+                }
+
+
+                /* =========================================
+                   OPENAI ERROR
+                ========================================= */
+
+                if(
+                    !openaiResponse.ok
+                ){
+
+                    const openaiError =
+                        data &&
+                        data.error;
+
+
+                    return json(
+                        {
+
+                            ok:false,
+
+                            error:
+                                openaiError &&
+                                openaiError.message
+
+                                    ? openaiError.message
+
+                                    : "OpenAI API trả về lỗi HTTP " +
+                                      openaiResponse.status,
+
+                            code:
+                                openaiError &&
+                                openaiError.code
+                                    ? openaiError.code
+                                    : null
+
+                        },
+                        openaiResponse.status
+                    );
+
+                }
+
+
+                /* =========================================
+                   EXTRACT OUTPUT TEXT
+                ========================================= */
+
+                let answer = "";
+
+
+                if(
+                    typeof data.output_text ===
+                    "string"
+                ){
+
+                    answer =
+                        data.output_text;
+
+                }
+
+
+                /* =========================================
+                   FALLBACK OUTPUT PARSER
+                ========================================= */
+
+                if(
+                    !answer &&
+                    Array.isArray(data.output)
+                ){
+
+                    for(
+                        const item
+                        of data.output
+                    ){
+
+                        if(
+                            item &&
+                            item.type === "message" &&
+                            Array.isArray(
+                                item.content
+                            )
+                        ){
+
+                            for(
+                                const content
+                                of item.content
+                            ){
+
+                                if(
+                                    content &&
+                                    content.type ===
+                                        "output_text" &&
+                                    typeof content.text ===
+                                        "string"
+                                ){
+
+                                    answer +=
+                                        content.text;
+
+                                }
 
                             }
 
@@ -226,52 +2977,82 @@ export default {
 
                 }
 
+
+                /* =========================================
+                   EMPTY RESPONSE
+                ========================================= */
+
+                if(
+                    !answer.trim()
+                ){
+
+                    answer =
+                        "ChatLuk chưa nhận được nội dung trả lời từ AI.";
+
+                }
+
+
+                /* =========================================
+                   SUCCESS
+                ========================================= */
+
+                return json({
+
+                    ok:true,
+
+                    reply:
+                        answer.trim()
+
+                });
+
+
+            }
+            catch(error){
+
+                console.error(
+                    "ChatLuk Worker Error:",
+                    error
+                );
+
+
+                return json(
+                    {
+
+                        ok:false,
+
+                        error:
+                            error &&
+                            error.message
+
+                                ? error.message
+
+                                : "Worker gặp lỗi không xác định."
+
+                    },
+                    500
+                );
+
             }
 
-            if (!answer) {
-                answer =
-                    "ChatLuk chưa nhận được nội dung trả lời từ AI.";
-            }
-
-            // =========================
-            // TRẢ KẾT QUẢ VỀ WEBSITE
-            // =========================
-
-            return new Response(
-                JSON.stringify({
-                    ok: true,
-                    reply: answer
-                }),
-                {
-                    status: 200,
-                    headers: {
-                        ...corsHeaders,
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
-
         }
-        catch (error) {
 
-            console.error(error);
 
-            return new Response(
-                JSON.stringify({
-                    error:
-                        error?.message ||
-                        "Worker gặp lỗi không xác định."
-                }),
-                {
-                    status: 500,
-                    headers: {
-                        ...corsHeaders,
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
+        /* =================================================
+           404
+        ================================================= */
 
-        }
+        return json(
+            {
+
+                ok:false,
+
+                error:
+                    "Không tìm thấy đường dẫn."
+
+            },
+            404
+        );
 
     }
+
 };
