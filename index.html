@@ -1,56 +1,1270 @@
-/*
-========================================================
- CHATLUK AI - CLOUDFLARE WORKER
- Gemini 3.6 Flash Edition
-========================================================
+const HTML = `
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatLuk — AI Việt Nam</title>
 
- Cloudflare Secret cần có:
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
- GEMINI_API_KEY
+:root{
+    --blue:#08a9ee;
+    --blue2:#0875c9;
+    --darkblue:#07518e;
+    --text:#183044;
+    --muted:#718495;
+    --line:rgba(30,100,140,.15);
+}
 
- KHÔNG đặt API key trực tiếp trong code.
+html,body{
+    width:100%;
+    height:100%;
+}
 
- API:
- POST /api/chat
+body{
+    font-family:Arial,"Segoe UI",sans-serif;
+    color:var(--text);
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 85% 8%,rgba(0,190,255,.25),transparent 27%),
+        radial-gradient(circle at 25% 90%,rgba(0,130,220,.12),transparent 30%),
+        linear-gradient(135deg,#e8f9ff 0%,#eef4f6 48%,#d5dee3 100%);
+}
 
- Body:
- {
-   "message": "Xin chào"
- }
+.app{
+    width:100vw;
+    height:100vh;
+    display:flex;
+}
 
- Response:
- {
-   "ok": true,
-   "reply": "..."
- }
+.sidebar{
+    width:275px;
+    height:100vh;
+    padding:22px 17px;
+    display:flex;
+    flex-direction:column;
+    flex-shrink:0;
+    background:rgba(248,252,254,.88);
+    border-right:1px solid var(--line);
+    backdrop-filter:blur(20px);
+    z-index:20;
+}
 
-========================================================
-*/
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:4px 8px 25px;
+}
+
+.logo-dragon{
+    font-family:"Times New Roman",serif;
+    font-size:42px;
+    color:#078bd8;
+    transform:rotate(-8deg);
+    text-shadow:0 5px 15px rgba(0,120,220,.25);
+}
+
+.logo-text{
+    font-size:26px;
+    font-weight:800;
+    letter-spacing:-1.5px;
+}
+
+.logo-text span{
+    color:var(--blue2);
+}
+
+.new-chat{
+    width:100%;
+    border:0;
+    border-radius:14px;
+    padding:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:white;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(120deg,#07518e,#08c7ff);
+    box-shadow:0 10px 25px rgba(0,130,220,.22);
+    transition:.2s;
+}
+
+.new-chat:hover{
+    transform:translateY(-2px);
+}
+
+.plus{
+    font-size:22px;
+}
+
+.history-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:28px 7px 10px;
+    color:#7b8b98;
+    font-size:10px;
+    font-weight:bold;
+    letter-spacing:1.4px;
+}
+
+.clear-btn{
+    border:0;
+    background:none;
+    color:#7b8b98;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.history{
+    flex:1;
+    overflow-y:auto;
+}
+
+.history-item{
+    width:100%;
+    display:block;
+    border:1px solid transparent;
+    border-radius:11px;
+    background:transparent;
+    padding:11px 12px;
+    margin-bottom:5px;
+    text-align:left;
+    color:#40576b;
+    cursor:pointer;
+    font-size:12px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.history-item:hover,
+.history-item.active{
+    background:rgba(0,160,230,.09);
+    border-color:rgba(0,160,230,.15);
+    color:#0767a9;
+}
+
+.sidebar-bottom{
+    padding:15px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.8),
+        rgba(213,225,232,.6)
+    );
+}
+
+.sidebar-dragon{
+    color:#078bd8;
+    font-family:serif;
+    font-size:25px;
+}
+
+.sidebar-bottom p{
+    margin-top:7px;
+    color:#82919d;
+    font-size:9px;
+    line-height:1.6;
+}
+
+.main{
+    flex:1;
+    min-width:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.topbar{
+    min-height:76px;
+    padding:11px 27px;
+    display:flex;
+    align-items:center;
+    border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,.45);
+    backdrop-filter:blur(18px);
+}
+
+.mobile-menu{
+    display:none;
+    width:38px;
+    height:38px;
+    margin-right:10px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    background:white;
+    cursor:pointer;
+}
+
+.title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.title-dragon{
+    font-family:serif;
+    color:#078bd8;
+    font-size:30px;
+}
+
+.title h1{
+    font-size:17px;
+}
+
+.title small{
+    display:block;
+    margin-top:3px;
+    color:#83929f;
+    font-size:8px;
+    font-weight:bold;
+    letter-spacing:1.5px;
+}
+
+.creator{
+    margin-left:auto;
+    margin-right:15px;
+    max-width:48%;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    color:#516a7d;
+    font-size:10px;
+    font-weight:bold;
+    text-align:right;
+}
+
+.theme{
+    width:38px;
+    height:38px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    background:rgba(255,255,255,.7);
+    color:#075c9c;
+    font-size:17px;
+    cursor:pointer;
+}
+
+.chat-area{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    scroll-behavior:smooth;
+}
+
+.welcome{
+    max-width:760px;
+    margin:auto;
+    padding:65px 25px 30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
+.dragon{
+    width:108px;
+    height:108px;
+    margin-bottom:21px;
+    display:grid;
+    place-items:center;
+    position:relative;
+    border-radius:50%;
+    background:linear-gradient(
+        145deg,
+        rgba(255,255,255,.92),
+        rgba(201,229,241,.65)
+    );
+    border:1px solid rgba(0,120,210,.16);
+    box-shadow:0 16px 45px rgba(0,120,210,.15);
+}
+
+.dragon:before{
+    content:"";
+    position:absolute;
+    inset:10px;
+    border:1px dashed rgba(0,130,215,.3);
+    border-radius:50%;
+    animation:spin 18s linear infinite;
+}
+
+.dragon span{
+    position:relative;
+    font-family:"Times New Roman",serif;
+    font-size:64px;
+    color:#078bd8;
+    text-shadow:0 7px 18px rgba(0,110,210,.2);
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.welcome-label{
+    color:#078bd8;
+    font-size:10px;
+    font-weight:bold;
+    letter-spacing:3px;
+}
+
+.welcome h2{
+    margin-top:7px;
+    font-size:clamp(45px,7vw,68px);
+    letter-spacing:-4px;
+}
+
+.welcome h2 span{
+    color:#078bd8;
+}
+
+.welcome p{
+    max-width:590px;
+    margin:18px 0 27px;
+    color:#718495;
+    font-size:13px;
+    line-height:1.75;
+}
+
+.suggestions{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:9px;
+}
+
+.suggestion{
+    padding:10px 13px;
+    border:1px solid rgba(0,130,215,.15);
+    border-radius:12px;
+    background:rgba(255,255,255,.6);
+    color:#466278;
+    font-size:11px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.suggestion:hover{
+    color:#07518e;
+    background:white;
+    border-color:rgba(0,130,215,.35);
+    transform:translateY(-1px);
+}
+
+.messages{
+    width:min(900px,100%);
+    margin:auto;
+    padding:18px 22px 30px;
+}
+
+.message{
+    display:flex;
+    gap:11px;
+    margin:17px 0;
+    animation:appear .22s ease;
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(6px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.message.user{
+    justify-content:flex-end;
+}
+
+.message.user .avatar{
+    order:2;
+}
+
+.avatar{
+    width:35px;
+    height:35px;
+    flex:0 0 35px;
+    display:grid;
+    place-items:center;
+    border-radius:11px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.8);
+    color:#0877bd;
+    font-family:serif;
+    font-size:20px;
+}
+
+.message.user .avatar{
+    color:white;
+    font-family:Arial,sans-serif;
+    font-size:12px;
+    background:linear-gradient(135deg,#0874c4,#1bcaff);
+}
+
+.bubble{
+    max-width:min(700px,82%);
+    padding:13px 16px;
+    border:1px solid var(--line);
+    border-radius:7px 17px 17px 17px;
+    background:rgba(255,255,255,.78);
+    color:#273e52;
+    font-size:13px;
+    line-height:1.75;
+    white-space:pre-wrap;
+    word-break:break-word;
+    box-shadow:0 6px 25px rgba(20,70,100,.05);
+}
+
+.message.user .bubble{
+    border:0;
+    border-radius:17px 7px 17px 17px;
+    color:white;
+    background:linear-gradient(135deg,#0877ca,#23c5ff);
+    box-shadow:0 9px 24px rgba(0,130,220,.18);
+}
+
+.typing{
+    display:flex;
+    gap:4px;
+    align-items:center;
+}
+
+.typing i{
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:#078bd8;
+    animation:typing 1s infinite;
+}
+
+.typing i:nth-child(2){
+    animation-delay:.15s;
+}
+
+.typing i:nth-child(3){
+    animation-delay:.3s;
+}
+
+@keyframes typing{
+    0%,60%,100%{
+        opacity:.35;
+        transform:translateY(0);
+    }
+    30%{
+        opacity:1;
+        transform:translateY(-4px);
+    }
+}
+
+.composer-area{
+    width:min(900px,100%);
+    margin:auto;
+    padding:7px 22px 19px;
+}
+
+.composer{
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
+    padding:7px 7px 7px 16px;
+    border:1px solid rgba(0,120,215,.2);
+    border-radius:19px;
+    background:rgba(255,255,255,.82);
+    box-shadow:
+        0 12px 45px rgba(20,70,95,.1),
+        0 0 0 5px rgba(20,190,255,.035);
+    backdrop-filter:blur(16px);
+}
+
+.composer:focus-within{
+    border-color:rgba(0,120,215,.4);
+}
+
+textarea{
+    flex:1;
+    min-height:40px;
+    max-height:170px;
+    resize:none;
+    padding:10px 0;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#183044;
+    font-size:13px;
+    line-height:20px;
+}
+
+textarea::placeholder{
+    color:#8a99a5;
+}
+
+.send{
+    width:42px;
+    height:42px;
+    flex:0 0 42px;
+    border:0;
+    border-radius:14px;
+    color:white;
+    background:linear-gradient(135deg,#07518e,#09c6ff);
+    box-shadow:0 7px 18px rgba(0,120,220,.25);
+    cursor:pointer;
+    font-size:17px;
+    transition:.2s;
+}
+
+.send:hover{
+    transform:translateY(-2px);
+}
+
+.send:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.info{
+    display:flex;
+    justify-content:space-between;
+    padding:7px 7px 0;
+    color:#82919d;
+    font-size:9px;
+}
+
+.overlay{
+    display:none;
+}
+
+@media(max-width:760px){
+
+    .sidebar{
+        position:fixed;
+        left:0;
+        top:0;
+        transform:translateX(-105%);
+        transition:.25s;
+        box-shadow:15px 0 50px rgba(0,40,70,.2);
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .overlay.show{
+        display:block;
+        position:fixed;
+        inset:0;
+        z-index:10;
+        background:rgba(0,30,50,.25);
+    }
+
+    .topbar{
+        padding:10px 14px;
+    }
+
+    .creator{
+        max-width:42%;
+        font-size:8px;
+    }
+
+    .welcome{
+        padding-top:40px;
+    }
+
+    .suggestions{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        width:100%;
+    }
+
+    .suggestion{
+        min-height:52px;
+    }
+
+    .messages{
+        padding:10px 12px 25px;
+    }
+
+    .bubble{
+        max-width:86%;
+        font-size:12px;
+    }
+
+    .composer-area{
+        padding:5px 10px 13px;
+    }
+
+    .info span:last-child{
+        display:none;
+    }
+}
+
+@media(max-width:430px){
+
+    .welcome h2{
+        font-size:48px;
+    }
+
+    .dragon{
+        width:90px;
+        height:90px;
+    }
+
+    .dragon span{
+        font-size:54px;
+    }
+
+    .suggestions{
+        grid-template-columns:1fr;
+    }
+
+    .creator{
+        max-width:37%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        <div class="logo-dragon">龍</div>
+        <div class="logo-text">Chat<span>Luk</span></div>
+    </div>
+
+    <button class="new-chat" id="newChat">
+        <span class="plus">＋</span>
+        Cuộc trò chuyện mới
+    </button>
+
+    <div class="history-title">
+        <span>LỊCH SỬ TRONG TAB</span>
+        <button class="clear-btn" id="clearHistory">×</button>
+    </div>
+
+    <div class="history" id="history"></div>
+
+    <div class="sidebar-bottom">
+        <div class="sidebar-dragon">☁　龍　☁</div>
+        <p>
+            Cuộc trò chuyện chỉ được lưu
+            trong bộ nhớ của tab hiện tại.
+        </p>
+    </div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+
+    <button class="mobile-menu" id="menuButton">
+        ☰
+    </button>
+
+    <div class="title">
+        <div class="title-dragon">龍</div>
+
+        <div>
+            <h1>ChatLuk</h1>
+            <small>VIETNAMESE DRAGON AI</small>
+        </div>
+    </div>
+
+    <div class="creator">
+        AnhLongDepZaiVaiDai-cre:Longlee
+    </div>
+
+    <button class="theme" id="themeButton">
+        ◐
+    </button>
+
+</header>
+
+<section class="chat-area" id="chatArea">
+
+    <div class="welcome" id="welcome">
+
+        <div class="dragon">
+            <span>龍</span>
+        </div>
+
+        <div class="welcome-label">
+            CHÀO MỪNG ĐẾN VỚI
+        </div>
+
+        <h2>
+            Chat<span>Luk</span>
+        </h2>
+
+        <p>
+            Không gian trò chuyện AI lấy cảm hứng
+            từ rồng phương Đông và vẻ đẹp văn hóa Việt Nam.
+        </p>
+
+        <div class="suggestions">
+
+            <button class="suggestion">
+                Giải thích một bài học cho tôi
+            </button>
+
+            <button class="suggestion">
+                Giúp tôi lên một kế hoạch
+            </button>
+
+            <button class="suggestion">
+                Viết một đoạn văn sáng tạo
+            </button>
+
+            <button class="suggestion">
+                Cho tôi một ý tưởng mới
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+</section>
+
+<footer class="composer-area">
+
+<form class="composer" id="chatForm">
+
+    <textarea
+        id="input"
+        maxlength="8000"
+        rows="1"
+        placeholder="Nhập tin nhắn cho ChatLuk..."
+    ></textarea>
+
+    <button
+        class="send"
+        id="send"
+        type="submit"
+    >
+        ➤
+    </button>
+
+</form>
+
+<div class="info">
+    <span>AI ChatLuk</span>
+    <span>Enter để gửi · Shift + Enter để xuống dòng</span>
+</div>
+
+</footer>
+
+</main>
+
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<script>
+
+let chats = [];
+let activeChat = null;
+
+const historyBox = document.getElementById("history");
+const messagesBox = document.getElementById("messages");
+const welcome = document.getElementById("welcome");
+const input = document.getElementById("input");
+const form = document.getElementById("chatForm");
+const send = document.getElementById("send");
+const chatArea = document.getElementById("chatArea");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+function createID(){
+
+    return Date.now().toString(36) +
+        Math.random().toString(36).substring(2,8);
+
+}
+
+function newChat(){
+
+    const chat = {
+        id:createID(),
+        title:"Cuộc trò chuyện mới",
+        messages:[]
+    };
+
+    chats.unshift(chat);
+    activeChat = chat.id;
+
+    renderHistory();
+    renderMessages();
+
+    closeMenu();
+    input.focus();
+}
+
+function getChat(){
+
+    return chats.find(
+        chat => chat.id === activeChat
+    );
+
+}
+
+function renderHistory(){
+
+    historyBox.innerHTML = "";
+
+    if(chats.length === 0){
+
+        const empty = document.createElement("div");
+
+        empty.style.cssText =
+            "padding:12px 8px;color:#8795a2;font-size:11px;";
+
+        empty.textContent =
+            "Chưa có cuộc trò chuyện nào.";
+
+        historyBox.appendChild(empty);
+
+        return;
+    }
+
+    chats.forEach(chat => {
+
+        const button = document.createElement("button");
+
+        button.className =
+            "history-item" +
+            (chat.id === activeChat ? " active" : "");
+
+        button.textContent = chat.title;
+
+        button.onclick = function(){
+
+            activeChat = chat.id;
+
+            renderHistory();
+            renderMessages();
+
+            closeMenu();
+        };
+
+        historyBox.appendChild(button);
+
+    });
+
+}
+
+function renderMessages(){
+
+    messagesBox.innerHTML = "";
+
+    const chat = getChat();
+
+    if(!chat || chat.messages.length === 0){
+
+        welcome.style.display = "flex";
+
+        return;
+    }
+
+    welcome.style.display = "none";
+
+    chat.messages.forEach(message => {
+
+        addMessage(
+            message.role,
+            message.text,
+            false
+        );
+
+    });
+
+    scrollBottom();
+}
+
+function addMessage(role,text,scroll=true){
+
+    const row = document.createElement("div");
+
+    row.className = "message " + role;
+
+    const avatar = document.createElement("div");
+
+    avatar.className = "avatar";
+
+    avatar.textContent =
+        role === "ai" ? "龍" : "U";
+
+    const bubble = document.createElement("div");
+
+    bubble.className = "bubble";
+
+    bubble.textContent = text;
+
+    row.appendChild(avatar);
+    row.appendChild(bubble);
+
+    messagesBox.appendChild(row);
+
+    if(scroll){
+        scrollBottom();
+    }
+}
+
+function scrollBottom(){
+
+    requestAnimationFrame(() => {
+
+        chatArea.scrollTop =
+            chatArea.scrollHeight;
+
+    });
+
+}
+
+function showTyping(){
+
+    const row = document.createElement("div");
+
+    row.className = "message ai";
+    row.id = "typing";
+
+    const avatar = document.createElement("div");
+
+    avatar.className = "avatar";
+    avatar.textContent = "龍";
+
+    const bubble = document.createElement("div");
+
+    bubble.className = "bubble";
+
+    const dots = document.createElement("span");
+
+    dots.className = "typing";
+    dots.innerHTML = "<i></i><i></i><i></i>";
+
+    bubble.appendChild(dots);
+
+    row.appendChild(avatar);
+    row.appendChild(bubble);
+
+    messagesBox.appendChild(row);
+
+    scrollBottom();
+}
+
+function hideTyping(){
+
+    const typing =
+        document.getElementById("typing");
+
+    if(typing){
+        typing.remove();
+    }
+}
 
 
-/* ======================================================
-   GEMINI MODEL
-====================================================== */
+/* =====================================================
+   KẾT NỐI AI
+===================================================== */
 
-const GEMINI_MODEL = "gemini-3.6-flash";
+async function AI(text){
+
+    const response = await fetch(
+        "/api/chat",
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                message:text
+            })
+        }
+    );
+
+    let data;
+
+    try{
+
+        data = await response.json();
+
+    }
+    catch{
+
+        throw new Error(
+            "Server không trả về JSON hợp lệ."
+        );
+
+    }
+
+    if(!response.ok){
+
+        throw new Error(
+            data && data.error
+                ? data.error
+                : "Server trả về lỗi HTTP " +
+                  response.status
+        );
+
+    }
+
+    if(!data || !data.reply){
+
+        throw new Error(
+            "Server không trả về câu trả lời."
+        );
+
+    }
+
+    return data.reply;
+}
 
 
-/* ======================================================
-   SYSTEM PROMPT
-====================================================== */
+async function sendMessage(text){
 
-const SYSTEM_PROMPT = `
-Bạn là ChatLuk, một trợ lý AI Việt Nam thân thiện.
+    text = text.trim();
 
-Quy tắc:
-- Luôn trả lời bằng tiếng Việt nếu người dùng nói tiếng Việt.
-- Trả lời rõ ràng, tự nhiên và hữu ích.
-- Không nói rằng bạn là ChatGPT.
-- Tên của bạn là ChatLuk.
-- Khi người dùng chào hỏi, hãy chào lại thân thiện.
-- Khi được hỏi về lập trình, hãy đưa ví dụ code rõ ràng.
-- Không tự bịa thông tin khi không chắc chắn.
-- Không nói về API, Cloudflare hoặc hệ thống nội bộ nếu người dùng không hỏi.
+    if(!text || send.disabled){
+        return;
+    }
+
+    if(!activeChat){
+        newChat();
+    }
+
+    const chat = getChat();
+
+    chat.messages.push({
+        role:"user",
+        text:text
+    });
+
+    if(chat.messages.length === 1){
+
+        chat.title =
+            text.length > 35
+                ? text.substring(0,35) + "..."
+                : text;
+
+    }
+
+    input.value = "";
+    resizeInput();
+
+    renderHistory();
+    renderMessages();
+
+    send.disabled = true;
+
+    showTyping();
+
+    try{
+
+        const reply = await AI(text);
+
+        hideTyping();
+
+        chat.messages.push({
+            role:"ai",
+            text:reply
+        });
+
+        addMessage("ai",reply);
+
+    }
+    catch(error){
+
+        hideTyping();
+
+        const detail =
+            error && error.message
+                ? error.message
+                : "Lỗi không xác định.";
+
+        const errorText =
+            "🐉 ChatLuk gặp sự cố khi kết nối AI.\\n\\n" +
+            "Chi tiết: " +
+            detail;
+
+        chat.messages.push({
+            role:"ai",
+            text:errorText
+        });
+
+        addMessage("ai",errorText);
+
+        console.error(
+            "ChatLuk AI Error:",
+            error
+        );
+    }
+
+    send.disabled = false;
+
+    renderHistory();
+
+    input.focus();
+}
+
+form.addEventListener(
+    "submit",
+    event => {
+
+        event.preventDefault();
+
+        sendMessage(input.value);
+
+    }
+);
+
+input.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
+            form.requestSubmit();
+        }
+
+    }
+);
+
+function resizeInput(){
+
+    input.style.height = "auto";
+
+    input.style.height =
+        Math.min(
+            input.scrollHeight,
+            170
+        ) + "px";
+}
+
+input.addEventListener(
+    "input",
+    resizeInput
+);
+
+document
+.querySelectorAll(".suggestion")
+.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            input.value =
+                button.textContent.trim();
+
+            resizeInput();
+
+            input.focus();
+
+        }
+    );
+
+});
+
+document
+.getElementById("newChat")
+.addEventListener(
+    "click",
+    newChat
+);
+
+document
+.getElementById("clearHistory")
+.addEventListener(
+    "click",
+    () => {
+
+        chats = [];
+        activeChat = null;
+
+        renderHistory();
+        renderMessages();
+
+    }
+);
+
+document
+.getElementById("menuButton")
+.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.add("open");
+        overlay.classList.add("show");
+
+    }
+);
+
+function closeMenu(){
+
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+
+}
+
+overlay.addEventListener(
+    "click",
+    closeMenu
+);
+
+document
+.getElementById("themeButton")
+.addEventListener(
+    "click",
+    () => {
+
+        document.body.style.filter =
+            document.body.style.filter ===
+            "brightness(0.85)"
+                ? ""
+                : "brightness(0.85)";
+
+    }
+);
+
+renderHistory();
+renderMessages();
+
+input.focus();
+
+</script>
+
+</body>
+</html>
 `;
 
 
@@ -58,2946 +1272,34 @@ Quy tắc:
    CORS
 ====================================================== */
 
-function corsHeaders() {
+const CORS = {
 
-    return {
+    "Access-Control-Allow-Origin":"*",
 
-        "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods":
+        "GET, POST, OPTIONS",
 
-        "Access-Control-Allow-Methods":
-            "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers":
+        "Content-Type"
 
-        "Access-Control-Allow-Headers":
-            "Content-Type, Accept",
-
-        "Content-Type":
-            "application/json; charset=UTF-8"
-
-    };
-
-}
+};
 
 
 /* ======================================================
-   JSON RESPONSE
+   JSON
 ====================================================== */
 
-function json(data, status = 200) {
+function json(data,status=200){
 
     return new Response(
-
         JSON.stringify(data),
-
         {
-            status,
-
-            headers:
-                corsHeaders()
-        }
-
-    );
-
-}
-
-
-/* ======================================================
-   GEMINI API
-====================================================== */
-
-async function callGemini(
-    env,
-    message,
-    history = []
-) {
-
-    /* --------------------------------------------------
-       Kiểm tra API KEY
-    -------------------------------------------------- */
-
-    if (!env.GEMINI_API_KEY) {
-
-        throw new Error(
-            "Cloudflare Worker chưa có Secret GEMINI_API_KEY."
-        );
-
-    }
-
-
-    /* --------------------------------------------------
-       Tạo contents
-    -------------------------------------------------- */
-
-    const contents = [];
-
-
-    /*
-      Thêm lịch sử hội thoại.
-
-      Gemini dùng:
-      user
-      model
-    */
-
-    if (Array.isArray(history)) {
-
-        for (const item of history) {
-
-            if (!item) {
-                continue;
-            }
-
-
-            const role =
-                item.role === "model"
-                    ? "model"
-                    : "user";
-
-
-            const text =
-                typeof item.text === "string"
-                    ? item.text.trim()
-                    : "";
-
-
-            if (!text) {
-                continue;
-            }
-
-
-            contents.push({
-
-                role,
-
-                parts: [
-                    {
-                        text
-                    }
-                ]
-
-            });
-
-        }
-
-    }
-
-
-    /* --------------------------------------------------
-       Tin nhắn hiện tại
-    -------------------------------------------------- */
-
-    contents.push({
-
-        role: "user",
-
-        parts: [
-            {
-                text: message
-            }
-        ]
-
-    });
-
-
-    /* --------------------------------------------------
-       GEMINI ENDPOINT
-    -------------------------------------------------- */
-
-    const url =
-        "https://generativelanguage.googleapis.com/" +
-        "v1beta/models/" +
-        GEMINI_MODEL +
-        ":generateContent";
-
-
-    /* --------------------------------------------------
-       GỌI GEMINI
-    -------------------------------------------------- */
-
-    const response = await fetch(
-
-        url,
-
-        {
-
-            method: "POST",
-
-            headers: {
-
+            status:status,
+            headers:{
+                ...CORS,
                 "Content-Type":
-                    "application/json",
-
-                "x-goog-api-key":
-                    env.GEMINI_API_KEY
-
-            },
-
-            body: JSON.stringify({
-
-                /*
-                  System instruction
-                */
-
-                systemInstruction: {
-
-                    parts: [
-                        {
-                            text:
-                                SYSTEM_PROMPT
-                        }
-                    ]
-
-                },
-
-
-                /*
-                  Conversation
-                */
-
-                contents,
-
-
-                /*
-                  Gemini 3.6 Flash
-
-                  KHÔNG dùng:
-                  temperature
-                  topP
-                  topK
-
-                  vì Google đã thay đổi
-                  API cho dòng Gemini 3.x.
-                */
-
-                generationConfig: {
-
-                    maxOutputTokens:
-                        4096
-
-                }
-
-            })
-
-        }
-
-    );
-
-
-    /* --------------------------------------------------
-       Đọc response
-    -------------------------------------------------- */
-
-    const raw =
-        await response.text();
-
-
-    let data;
-
-
-    try {
-
-        data =
-            JSON.parse(raw);
-
-    }
-
-    catch {
-
-        console.error(
-            "Gemini RAW RESPONSE:",
-            raw
-        );
-
-
-        throw new Error(
-            "Gemini không trả về JSON hợp lệ."
-        );
-
-    }
-
-
-    /* --------------------------------------------------
-       Gemini trả lỗi
-    -------------------------------------------------- */
-
-    if (!response.ok) {
-
-        console.error(
-            "GEMINI API ERROR:",
-            data
-        );
-
-
-        let detail =
-            "Gemini API HTTP " +
-            response.status;
-
-
-        if (
-            data &&
-            data.error &&
-            data.error.message
-        ) {
-
-            detail =
-                data.error.message;
-
-        }
-
-
-        throw new Error(
-            detail
-        );
-
-    }
-
-
-    /* --------------------------------------------------
-       Lấy câu trả lời
-    -------------------------------------------------- */
-
-    let answer = "";
-
-
-    if (
-        data &&
-        Array.isArray(
-            data.candidates
-        )
-    ) {
-
-        for (
-            const candidate
-            of data.candidates
-        ) {
-
-            if (
-                !candidate ||
-                !candidate.content ||
-                !Array.isArray(
-                    candidate.content.parts
-                )
-            ) {
-
-                continue;
-
+                    "application/json; charset=utf-8"
             }
-
-
-            for (
-                const part
-                of candidate.content.parts
-            ) {
-
-                if (
-                    part &&
-                    typeof part.text ===
-                        "string"
-                ) {
-
-                    answer +=
-                        part.text;
-
-                }
-
-            }
-
-        }
-
-    }
-
-
-    answer =
-        answer.trim();
-
-
-    /* --------------------------------------------------
-       Không có câu trả lời
-    -------------------------------------------------- */
-
-    if (!answer) {
-
-        console.error(
-            "GEMINI EMPTY RESPONSE:",
-            data
-        );
-
-
-        if (
-            data &&
-            data.promptFeedback
-        ) {
-
-            throw new Error(
-                "Gemini đã từ chối yêu cầu."
-            );
-
-        }
-
-
-        if (
-            data &&
-            data.candidates &&
-            data.candidates[0] &&
-            data.candidates[0].finishReason
-        ) {
-
-            throw new Error(
-                "Gemini không tạo được câu trả lời. " +
-                "Finish reason: " +
-                data.candidates[0].finishReason
-            );
-
-        }
-
-
-        throw new Error(
-            "Gemini không trả về nội dung."
-        );
-
-    }
-
-
-    return answer;
-
-}
-
-
-/* ======================================================
-   API CHAT
-====================================================== */
-
-async function handleChat(
-    request,
-    env
-) {
-
-    /* --------------------------------------------------
-       Chỉ nhận POST
-    -------------------------------------------------- */
-
-    if (
-        request.method !==
-        "POST"
-    ) {
-
-        return json(
-
-            {
-                ok: false,
-
-                error:
-                    "API /api/chat chỉ nhận POST."
-            },
-
-            405
-
-        );
-
-    }
-
-
-    /* --------------------------------------------------
-       Đọc JSON
-    -------------------------------------------------- */
-
-    let body;
-
-
-    try {
-
-        body =
-            await request.json();
-
-    }
-
-    catch {
-
-        return json(
-
-            {
-                ok: false,
-
-                error:
-                    "Request body không phải JSON."
-            },
-
-            400
-
-        );
-
-    }
-
-
-    /* --------------------------------------------------
-       Lấy message
-    -------------------------------------------------- */
-
-    const message =
-        typeof body.message === "string"
-            ? body.message.trim()
-            : "";
-
-
-    if (!message) {
-
-        return json(
-
-            {
-                ok: false,
-
-                error:
-                    "Bạn chưa nhập tin nhắn."
-            },
-
-            400
-
-        );
-
-    }
-
-
-    /* --------------------------------------------------
-       Giới hạn độ dài
-    -------------------------------------------------- */
-
-    if (
-        message.length >
-        20000
-    ) {
-
-        return json(
-
-            {
-                ok: false,
-
-                error:
-                    "Tin nhắn quá dài."
-            },
-
-            413
-
-        );
-
-    }
-
-
-    /* --------------------------------------------------
-       Lịch sử
-    -------------------------------------------------- */
-
-    const history =
-        Array.isArray(
-            body.history
-        )
-
-            ? body.history.slice(-20)
-
-            : [];
-
-
-    /* --------------------------------------------------
-       Gọi Gemini
-    -------------------------------------------------- */
-
-    try {
-
-        const reply =
-            await callGemini(
-
-                env,
-
-                message,
-
-                history
-
-            );
-
-
-        return json({
-
-            ok: true,
-
-            reply
-
-        });
-
-    }
-
-
-    catch (error) {
-
-        console.error(
-            "CHATLUK GEMINI ERROR:",
-            error
-        );
-
-
-        return json(
-
-            {
-
-                ok: false,
-
-                error:
-                    error &&
-                    error.message
-
-                        ? error.message
-
-                        : "Không thể kết nối Gemini."
-
-            },
-
-            500
-
-        );
-
-    }
-
-}
-
-
-/* ======================================================
-   HTML
-====================================================== */
-
-function getHTML() {
-
-    return `<!DOCTYPE html>
-
-<html lang="vi">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>ChatLuk AI</title>
-
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-
-:root {
-
-    --blue:
-        #159bd3;
-
-    --blue-dark:
-        #087bb5;
-
-    --blue-light:
-        #dff5ff;
-
-    --yellow:
-        #f4df78;
-
-    --bg:
-        #eef9fd;
-
-    --panel:
-        #ffffff;
-
-    --text:
-        #173042;
-
-    --muted:
-        #6d8490;
-
-    --border:
-        rgba(20, 130, 175, .18);
-
-    --user:
-        #159bd3;
-
-    --bot:
-        #e7edf0;
-
-    --shadow:
-        0 10px 35px rgba(0, 100, 140, .12);
-
-}
-
-
-body.dark {
-
-    --bg:
-        #101820;
-
-    --panel:
-        #18242d;
-
-    --text:
-        #edf8ff;
-
-    --muted:
-        #a6bac5;
-
-    --border:
-        rgba(255,255,255,.12);
-
-    --bot:
-        #26343e;
-
-    --shadow:
-        0 10px 35px rgba(0,0,0,.35);
-
-}
-
-
-html,
-body {
-
-    width: 100%;
-
-    height: 100%;
-
-    margin: 0;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background:
-        var(--bg);
-
-    color:
-        var(--text);
-
-    overflow: hidden;
-
-}
-
-
-button,
-textarea {
-
-    font-family:
-        inherit;
-
-}
-
-
-/* ======================================================
-   APP
-====================================================== */
-
-.app {
-
-    display: flex;
-
-    width: 100%;
-
-    height: 100vh;
-
-}
-
-
-/* ======================================================
-   SIDEBAR
-====================================================== */
-
-.sidebar {
-
-    width: 270px;
-
-    flex-shrink: 0;
-
-    background:
-        var(--panel);
-
-    border-right:
-        1px solid var(--border);
-
-    padding:
-        22px 18px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 20px;
-
-}
-
-
-.logo {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    font-size: 22px;
-
-    font-weight: 800;
-
-    color:
-        var(--text);
-
-}
-
-
-.logo-dragon {
-
-    width: 48px;
-
-    height: 48px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 32px;
-
-    color:
-        var(--blue);
-
-    background:
-        linear-gradient(
-            145deg,
-            #e9f9ff,
-            #fff9ce
-        );
-
-    border-radius:
-        15px;
-
-}
-
-
-.logo small {
-
-    display: block;
-
-    margin-top: 2px;
-
-    font-size: 8px;
-
-    letter-spacing: 2px;
-
-    color:
-        var(--muted);
-
-}
-
-
-.new-chat {
-
-    border: none;
-
-    cursor: pointer;
-
-    padding: 15px;
-
-    border-radius: 15px;
-
-    color: white;
-
-    font-weight: 700;
-
-    font-size: 15px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--blue-dark),
-            var(--blue)
-        );
-
-    box-shadow:
-        0 8px 20px
-        rgba(21,155,211,.22);
-
-    transition:
-        transform .15s,
-        filter .15s;
-
-}
-
-
-.new-chat:hover {
-
-    transform:
-        translateY(-1px);
-
-    filter:
-        brightness(1.05);
-
-}
-
-
-.history-title {
-
-    font-size: 11px;
-
-    font-weight: 700;
-
-    letter-spacing: 1px;
-
-    color:
-        var(--muted);
-
-}
-
-
-.history {
-
-    flex: 1;
-
-    overflow-y: auto;
-
-}
-
-
-.history-item {
-
-    padding:
-        11px 12px;
-
-    border-radius:
-        11px;
-
-    cursor: pointer;
-
-    color:
-        var(--text);
-
-    margin-bottom: 6px;
-
-    white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-}
-
-
-.history-item:hover {
-
-    background:
-        var(--blue-light);
-
-}
-
-
-/* ======================================================
-   MAIN
-====================================================== */
-
-.main {
-
-    flex: 1;
-
-    min-width: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-}
-
-
-/* ======================================================
-   HEADER
-====================================================== */
-
-.header {
-
-    height: 76px;
-
-    flex-shrink: 0;
-
-    padding:
-        0 26px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    background:
-        var(--panel);
-
-    border-bottom:
-        1px solid var(--border);
-
-}
-
-
-.brand {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-}
-
-
-.brand-icon {
-
-    font-size: 31px;
-
-    color:
-        var(--blue);
-
-}
-
-
-.brand-name {
-
-    font-size: 18px;
-
-    font-weight: 800;
-
-}
-
-
-.brand-sub {
-
-    font-size: 8px;
-
-    letter-spacing: 2px;
-
-    color:
-        var(--muted);
-
-}
-
-
-.dark-button {
-
-    width: 44px;
-
-    height: 44px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid var(--border);
-
-    background:
-        var(--panel);
-
-    color:
-        var(--text);
-
-    cursor: pointer;
-
-    font-size: 19px;
-
-}
-
-
-/* ======================================================
-   CHAT
-====================================================== */
-
-.chat {
-
-    flex: 1;
-
-    overflow-y: auto;
-
-    padding:
-        28px
-        max(18px, 6vw)
-        20px;
-
-    scroll-behavior:
-        smooth;
-
-}
-
-
-.message {
-
-    display: flex;
-
-    margin-bottom: 18px;
-
-    gap: 10px;
-
-}
-
-
-.message.user {
-
-    justify-content:
-        flex-end;
-
-}
-
-
-.message.bot {
-
-    justify-content:
-        flex-start;
-
-}
-
-
-/* ======================================================
-   AVATAR
-====================================================== */
-
-.avatar {
-
-    width: 40px;
-
-    height: 40px;
-
-    flex-shrink: 0;
-
-    border-radius: 13px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #e8f9ff,
-            #fff9cf
-        );
-
-    border:
-        1px solid
-        rgba(20,130,175,.16);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    overflow: hidden;
-
-}
-
-
-.bubble {
-
-    max-width:
-        min(760px, 78%);
-
-    padding:
-        13px 17px;
-
-    border-radius:
-        17px;
-
-    line-height:
-        1.55;
-
-    white-space:
-        pre-wrap;
-
-    word-break:
-        break-word;
-
-    box-shadow:
-        0 4px 12px
-        rgba(0,0,0,.04);
-
-}
-
-
-.user .bubble {
-
-    background:
-        var(--user);
-
-    color:
-        white;
-
-    border-bottom-right-radius:
-        5px;
-
-}
-
-
-.bot .bubble {
-
-    background:
-        var(--bot);
-
-    color:
-        var(--text);
-
-    border-bottom-left-radius:
-        5px;
-
-}
-
-
-.typing {
-
-    opacity: .7;
-
-    font-style:
-        italic;
-
-}
-
-
-/* ======================================================
-   WELCOME
-====================================================== */
-
-.welcome {
-
-    text-align:
-        center;
-
-    max-width:
-        680px;
-
-    margin:
-        30px auto 30px;
-
-}
-
-
-.welcome-dragon {
-
-    width: 100px;
-
-    height: 100px;
-
-    margin:
-        0 auto 18px;
-
-    border-radius:
-        32px;
-
-    display: flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    background:
-        linear-gradient(
-            145deg,
-            #e7faff,
-            #fff8c7
-        );
-
-    font-size:
-        65px;
-
-    box-shadow:
-        var(--shadow);
-
-}
-
-
-.welcome h1 {
-
-    margin:
-        0 0 8px;
-
-    font-size:
-        29px;
-
-}
-
-
-.welcome p {
-
-    margin:
-        0 0 24px;
-
-    color:
-        var(--muted);
-
-}
-
-
-/* ======================================================
-   SUGGESTIONS
-====================================================== */
-
-.suggestions {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0,1fr));
-
-    gap: 10px;
-
-    max-width:
-        650px;
-
-    margin:
-        0 auto;
-
-}
-
-
-.suggestion {
-
-    border:
-        1px solid var(--border);
-
-    background:
-        var(--panel);
-
-    color:
-        var(--text);
-
-    border-radius:
-        14px;
-
-    padding:
-        13px;
-
-    text-align:
-        left;
-
-    cursor:
-        pointer;
-
-    transition:
-        transform .15s,
-        border-color .15s,
-        background .15s;
-
-}
-
-
-.suggestion:hover {
-
-    transform:
-        translateY(-2px);
-
-    border-color:
-        var(--blue);
-
-    background:
-        var(--blue-light);
-
-}
-
-
-/* ======================================================
-   INPUT
-====================================================== */
-
-.input-area {
-
-    padding:
-        12px
-        max(18px, 6vw)
-        18px;
-
-    background:
-        linear-gradient(
-            transparent,
-            var(--bg) 25%
-        );
-
-}
-
-
-.input-box {
-
-    max-width:
-        900px;
-
-    margin:
-        0 auto;
-
-    display:
-        flex;
-
-    align-items:
-        flex-end;
-
-    gap: 10px;
-
-    background:
-        var(--panel);
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        18px;
-
-    padding:
-        9px;
-
-    box-shadow:
-        var(--shadow);
-
-}
-
-
-textarea {
-
-    flex: 1;
-
-    min-height:
-        44px;
-
-    max-height:
-        150px;
-
-    resize:
-        none;
-
-    border:
-        none;
-
-    outline:
-        none;
-
-    background:
-        transparent;
-
-    color:
-        var(--text);
-
-    padding:
-        11px 10px;
-
-    font-size:
-        15px;
-
-}
-
-
-.send {
-
-    width:
-        46px;
-
-    height:
-        46px;
-
-    flex-shrink:
-        0;
-
-    border:
-        none;
-
-    border-radius:
-        14px;
-
-    background:
-        var(--blue);
-
-    color:
-        white;
-
-    cursor:
-        pointer;
-
-    font-size:
-        19px;
-
-    transition:
-        transform .15s;
-
-}
-
-
-.send:hover {
-
-    transform:
-        scale(1.05);
-
-}
-
-
-.send:disabled {
-
-    opacity:
-        .5;
-
-    cursor:
-        not-allowed;
-
-    transform:
-        none;
-
-}
-
-
-.footer {
-
-    text-align:
-        center;
-
-    font-size:
-        10px;
-
-    color:
-        var(--muted);
-
-    margin-top:
-        7px;
-
-}
-
-
-/* ======================================================
-   MOBILE
-====================================================== */
-
-@media(max-width: 700px) {
-
-    .sidebar {
-
-        display:
-            none;
-
-    }
-
-
-    .header {
-
-        height:
-            65px;
-
-        padding:
-            0 14px;
-
-    }
-
-
-    .chat {
-
-        padding:
-            18px 12px;
-
-    }
-
-
-    .bubble {
-
-        max-width:
-            86%;
-
-    }
-
-
-    .suggestions {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-
-    .welcome h1 {
-
-        font-size:
-            24px;
-
-    }
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<div class="app">
-
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-
-        <div class="logo">
-
-
-            <div class="logo-dragon">
-
-                🐉
-
-            </div>
-
-
-            <div>
-
-                ChatLuk
-
-                <small>
-
-                    VIETNAMESE DRAGON AI
-
-                </small>
-
-            </div>
-
-
-        </div>
-
-
-        <button
-            class="new-chat"
-            id="newChat"
-        >
-
-            ＋ &nbsp;
-            Cuộc trò chuyện mới
-
-        </button>
-
-
-        <div class="history-title">
-
-            LỊCH SỬ TRONG TAB
-
-        </div>
-
-
-        <div
-            class="history"
-            id="history"
-        ></div>
-
-
-    </aside>
-
-
-    <!-- MAIN -->
-
-    <main class="main">
-
-
-        <header class="header">
-
-
-            <div class="brand">
-
-
-                <div class="brand-icon">
-
-                    龍
-
-                </div>
-
-
-                <div>
-
-
-                    <div class="brand-name">
-
-                        ChatLuk
-
-                    </div>
-
-
-                    <div class="brand-sub">
-
-                        VIETNAMESE DRAGON AI
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-            <button
-                class="dark-button"
-                id="darkButton"
-                title="Đổi chế độ sáng/tối"
-            >
-
-                ☾
-
-            </button>
-
-
-        </header>
-
-
-        <!-- CHAT -->
-
-        <section
-            class="chat"
-            id="chat"
-        >
-
-
-            <div
-                class="welcome"
-                id="welcome"
-            >
-
-
-                <div class="welcome-dragon">
-
-                    🐉
-
-                </div>
-
-
-                <h1>
-
-                    Xin chào, mình là ChatLuk!
-
-                </h1>
-
-
-                <p>
-
-                    Trợ lý AI Việt Nam của bạn.
-                    Hãy hỏi mình bất cứ điều gì.
-
-                </p>
-
-
-                <div class="suggestions">
-
-
-                    <button
-                        class="suggestion"
-                        data-message="Xin chào ChatLuk! Hãy giới thiệu về bạn."
-                    >
-
-                        👋 Xin chào ChatLuk
-
-                    </button>
-
-
-                    <button
-                        class="suggestion"
-                        data-message="Hãy giúp tôi học lập trình JavaScript."
-                    >
-
-                        💻 Học lập trình
-
-                    </button>
-
-
-                    <button
-                        class="suggestion"
-                        data-message="Hãy giải thích trí tuệ nhân tạo thật dễ hiểu."
-                    >
-
-                        🤖 AI là gì?
-
-                    </button>
-
-
-                    <button
-                        class="suggestion"
-                        data-message="Hãy kể cho tôi một câu chuyện ngắn thú vị."
-                    >
-
-                        📖 Kể một câu chuyện
-
-                    </button>
-
-
-                </div>
-
-
-            </div>
-
-
-        </section>
-
-
-        <!-- INPUT -->
-
-        <div class="input-area">
-
-
-            <div class="input-box">
-
-
-                <textarea
-                    id="messageInput"
-                    placeholder="Nhập tin nhắn cho ChatLuk..."
-                    rows="1"
-                ></textarea>
-
-
-                <button
-                    class="send"
-                    id="sendButton"
-                    title="Gửi"
-                >
-
-                    ➤
-
-                </button>
-
-
-            </div>
-
-
-            <div class="footer">
-
-                ChatLuk có thể mắc lỗi.
-                Hãy kiểm tra thông tin quan trọng.
-
-            </div>
-
-
-        </div>
-
-
-    </main>
-
-
-</div>
-
-
-<script>
-
-
-/* ======================================================
-   STATE
-====================================================== */
-
-const chat =
-    document.getElementById(
-        "chat"
-    );
-
-
-const input =
-    document.getElementById(
-        "messageInput"
-    );
-
-
-const sendButton =
-    document.getElementById(
-        "sendButton"
-    );
-
-
-const welcome =
-    document.getElementById(
-        "welcome"
-    );
-
-
-const historyElement =
-    document.getElementById(
-        "history"
-    );
-
-
-const darkButton =
-    document.getElementById(
-        "darkButton"
-    );
-
-
-const newChatButton =
-    document.getElementById(
-        "newChat"
-    );
-
-
-let chatHistory = [];
-
-let busy = false;
-
-
-/* ======================================================
-   AVATAR
-====================================================== */
-
-function dragonAvatar(size = 40) {
-    return `
-        <svg
-            class="chatluk-avatar-svg"
-            width="${size}"
-            height="${size}"
-            viewBox="0 0 100 100"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-label="ChatLuk AI"
-        >
-
-            <!-- nền tròn -->
-            <circle
-                cx="50"
-                cy="50"
-                r="47"
-                fill="#eafaff"
-                stroke="#159bd3"
-                stroke-width="2"
-            />
-
-            <!-- sừng trái -->
-            <path
-                d="M28 31
-                   C18 25 13 17 16 9
-                   C24 11 31 17 34 28"
-                fill="#f4df78"
-            />
-
-            <!-- sừng phải -->
-            <path
-                d="M72 31
-                   C82 25 87 17 84 9
-                   C76 11 69 17 66 28"
-                fill="#f4df78"
-            />
-
-            <!-- đầu rồng -->
-            <path
-                d="M50 19
-                   C32 19 23 32 25 51
-                   C27 70 38 82 50 88
-                   C62 82 73 70 75 51
-                   C77 32 68 19 50 19Z"
-                fill="#159bd3"
-            />
-
-            <!-- má trái -->
-            <circle
-                cx="34"
-                cy="57"
-                r="7"
-                fill="#0b83bd"
-            />
-
-            <!-- má phải -->
-            <circle
-                cx="66"
-                cy="57"
-                r="7"
-                fill="#0b83bd"
-            />
-
-            <!-- mắt trái -->
-            <ellipse
-                cx="39"
-                cy="43"
-                rx="8"
-                ry="10"
-                fill="white"
-            />
-
-            <!-- mắt phải -->
-            <ellipse
-                cx="61"
-                cy="43"
-                rx="8"
-                ry="10"
-                fill="white"
-            />
-
-            <!-- đồng tử -->
-            <circle
-                cx="40"
-                cy="44"
-                r="3.5"
-                fill="#173042"
-            />
-
-            <circle
-                cx="60"
-                cy="44"
-                r="3.5"
-                fill="#173042"
-            />
-
-            <!-- ánh mắt -->
-            <circle
-                cx="41"
-                cy="42.5"
-                r="1.2"
-                fill="white"
-            />
-
-            <circle
-                cx="61"
-                cy="42.5"
-                r="1.2"
-                fill="white"
-            />
-
-            <!-- mõm -->
-            <ellipse
-                cx="50"
-                cy="61"
-                rx="18"
-                ry="13"
-                fill="#f4df78"
-            />
-
-            <!-- mũi -->
-            <circle
-                cx="44"
-                cy="59"
-                r="2"
-                fill="#159bd3"
-            />
-
-            <circle
-                cx="56"
-                cy="59"
-                r="2"
-                fill="#159bd3"
-            />
-
-            <!-- miệng -->
-            <path
-                d="M41 67
-                   Q50 74 59 67"
-                fill="none"
-                stroke="#173042"
-                stroke-width="3"
-                stroke-linecap="round"
-            />
-
-            <!-- răng nhỏ -->
-            <path
-                d="M45 69 L47 73 L49 70
-                   M51 70 L53 73 L55 69"
-                fill="white"
-                stroke="#173042"
-                stroke-width="1"
-            />
-
-            <!-- vảy trán -->
-            <path
-                d="M50 20 L55 29 L50 27 L45 29 Z"
-                fill="#f4df78"
-            />
-
-        </svg>
-    `;
-}
-
-    return `
-
-        <svg
-            viewBox="0 0 100 100"
-            width="34"
-            height="34"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-
-
-            <path
-                d="M50 10
-                   C35 10 24 21 24 38
-                   C24 56 35 74 50 88
-                   C65 74 76 56 76 38
-                   C76 21 65 10 50 10Z"
-                fill="#28a9dc"
-            />
-
-
-            <path
-                d="M28 31
-                   C17 22 13 13 18 7
-                   C26 9 31 17 32 27Z"
-                fill="#f4df78"
-            />
-
-
-            <path
-                d="M72 31
-                   C83 22 87 13 82 7
-                   C74 9 69 17 68 27Z"
-                fill="#f4df78"
-            />
-
-
-            <circle
-                cx="39"
-                cy="42"
-                r="6"
-                fill="#ffffff"
-            />
-
-
-            <circle
-                cx="61"
-                cy="42"
-                r="6"
-                fill="#ffffff"
-            />
-
-
-            <circle
-                cx="39"
-                cy="42"
-                r="2.5"
-                fill="#173042"
-            />
-
-
-            <circle
-                cx="61"
-                cy="42"
-                r="2.5"
-                fill="#173042"
-            />
-
-
-            <ellipse
-                cx="50"
-                cy="61"
-                rx="15"
-                ry="10"
-                fill="#f4df78"
-            />
-
-
-            <circle
-                cx="44"
-                cy="59"
-                r="2"
-                fill="#28a9dc"
-            />
-
-
-            <circle
-                cx="56"
-                cy="59"
-                r="2"
-                fill="#28a9dc"
-            />
-
-
-            <path
-                d="M42 68
-                   Q50 76 58 68"
-                fill="none"
-                stroke="#173042"
-                stroke-width="3"
-                stroke-linecap="round"
-            />
-
-
-        </svg>
-
-    `;
-
-}
-
-
-/* ======================================================
-   ESCAPE HTML
-====================================================== */
-
-function escapeHTML(text) {
-
-    return String(text)
-
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-
-}
-
-
-/* ======================================================
-   ADD MESSAGE
-====================================================== */
-
-function addMessage(
-    role,
-    text
-) {
-
-
-    if (welcome) {
-
-        welcome.remove();
-
-    }
-
-
-    const wrapper =
-        document.createElement(
-            "div"
-        );
-
-
-    wrapper.className =
-        "message " +
-        role;
-
-
-    if (role === "bot") {
-
-
-        wrapper.innerHTML = `
-
-            <div class="avatar">
-
-                ${dragonAvatar()}
-
-            </div>
-
-
-            <div class="bubble">
-
-                ${escapeHTML(text)}
-
-            </div>
-
-        `;
-
-
-    }
-
-    else {
-
-
-        wrapper.innerHTML = `
-
-            <div class="bubble">
-
-                ${escapeHTML(text)}
-
-            </div>
-
-        `;
-
-    }
-
-
-    chat.appendChild(
-        wrapper
-    );
-
-
-    chat.scrollTop =
-        chat.scrollHeight;
-
-
-    return wrapper;
-
-}
-
-
-/* ======================================================
-   TYPING
-====================================================== */
-
-function addTyping() {
-
-
-    if (welcome) {
-
-        welcome.remove();
-
-    }
-
-
-    const wrapper =
-        document.createElement(
-            "div"
-        );
-
-
-    wrapper.className =
-        "message bot";
-
-
-    wrapper.innerHTML = `
-
-        <div class="avatar">
-
-            ${dragonAvatar()}
-
-        </div>
-
-
-        <div class="bubble typing">
-
-            ChatLuk đang suy nghĩ...
-
-        </div>
-
-    `;
-
-
-    chat.appendChild(
-        wrapper
-    );
-
-
-    chat.scrollTop =
-        chat.scrollHeight;
-
-
-    return wrapper;
-
-}
-
-
-/* ======================================================
-   CALL WORKER
-====================================================== */
-
-async function callAI(
-    message
-) {
-
-
-    /*
-      Nếu giao diện được mở trực tiếp
-      từ Cloudflare Worker:
-
-          /api/chat
-
-      sẽ hoạt động đúng.
-    */
-
-
-    const response =
-        await fetch(
-
-            "/api/chat",
-
-            {
-
-                method:
-                    "POST",
-
-                headers: {
-
-                    "Content-Type":
-                        "application/json",
-
-                    "Accept":
-                        "application/json"
-
-                },
-
-                body:
-                    JSON.stringify({
-
-                        message,
-
-                        history:
-                            chatHistory
-                                .slice(-20)
-                                .map(
-                                    item => ({
-
-                                        role:
-                                            item.role,
-
-                                        text:
-                                            item.text
-
-                                    })
-                                )
-
-                    })
-
-            }
-
-        );
-
-
-    const raw =
-        await response.text();
-
-
-    let data;
-
-
-    try {
-
-        data =
-            JSON.parse(raw);
-
-    }
-
-    catch {
-
-        console.error(
-            "WORKER RAW RESPONSE:",
-            raw
-        );
-
-
-        throw new Error(
-            "Worker không trả về JSON."
-        );
-
-    }
-
-
-    if (!response.ok) {
-
-        throw new Error(
-
-            data &&
-            data.error
-
-                ? data.error
-
-                : "Worker lỗi HTTP " +
-                  response.status
-
-        );
-
-    }
-
-
-    if (
-        !data ||
-        data.ok !== true ||
-        typeof data.reply !==
-            "string"
-    ) {
-
-        throw new Error(
-
-            data &&
-            data.error
-
-                ? data.error
-
-                : "Worker không trả về câu trả lời."
-
-        );
-
-    }
-
-
-    return data.reply;
-
-}
-
-
-/* ======================================================
-   SEND
-====================================================== */
-
-async function sendMessage(
-    forcedMessage = null
-) {
-
-
-    if (busy) {
-        return;
-    }
-
-
-    const message =
-        forcedMessage !== null
-
-            ? forcedMessage.trim()
-
-            : input.value.trim();
-
-
-    if (!message) {
-        return;
-    }
-
-
-    busy = true;
-
-
-    sendButton.disabled =
-        true;
-
-
-    input.value = "";
-
-    resizeInput();
-
-
-    addMessage(
-        "user",
-        message
-    );
-
-
-    chatHistory.push({
-
-        role:
-            "user",
-
-        text:
-            message
-
-    });
-
-
-    const typing =
-        addTyping();
-
-
-    try {
-
-
-        const reply =
-            await callAI(
-                message
-            );
-
-
-        typing.remove();
-
-
-        addMessage(
-            "bot",
-            reply
-        );
-
-
-        chatHistory.push({
-
-            role:
-                "model",
-
-            text:
-                reply
-
-        });
-
-
-        saveCurrentChat();
-
-
-    }
-
-    catch (error) {
-
-
-        typing.remove();
-
-
-        console.error(
-            "CHATLUK ERROR:",
-            error
-        );
-
-
-        const errorMessage =
-
-            "ChatLuk gặp sự cố khi kết nối AI.\n\n" +
-
-            "Chi tiết: " +
-
-            (
-
-                error &&
-                error.message
-
-                    ? error.message
-
-                    : "Lỗi không xác định."
-
-            );
-
-
-        addMessage(
-            "bot",
-            errorMessage
-        );
-
-
-    }
-
-    finally {
-
-
-        busy = false;
-
-
-        sendButton.disabled =
-            false;
-
-
-        input.focus();
-
-    }
-
-}
-
-
-/* ======================================================
-   INPUT RESIZE
-====================================================== */
-
-function resizeInput() {
-
-    input.style.height =
-        "auto";
-
-
-    input.style.height =
-        Math.min(
-            input.scrollHeight,
-            150
-        ) + "px";
-
-}
-
-
-input.addEventListener(
-    "input",
-    resizeInput
-);
-
-
-/* ======================================================
-   ENTER
-====================================================== */
-
-input.addEventListener(
-    "keydown",
-    event => {
-
-
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
-
-
-            event.preventDefault();
-
-
-            sendMessage();
-
-        }
-
-    }
-);
-
-
-/* ======================================================
-   SEND BUTTON
-====================================================== */
-
-sendButton.addEventListener(
-    "click",
-    () => {
-
-        sendMessage();
-
-    }
-);
-
-
-/* ======================================================
-   SUGGESTIONS
-====================================================== */
-
-function attachSuggestions() {
-
-
-    document
-        .querySelectorAll(
-            ".suggestion"
-        )
-        .forEach(
-            button => {
-
-
-                button.addEventListener(
-                    "click",
-                    () => {
-
-
-                        sendMessage(
-                            button.dataset.message
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-}
-
-
-attachSuggestions();
-
-
-/* ======================================================
-   DARK MODE
-====================================================== */
-
-function setDarkMode(
-    enabled
-) {
-
-
-    document.body.classList.toggle(
-        "dark",
-        enabled
-    );
-
-
-    darkButton.textContent =
-        enabled
-            ? "☀"
-            : "☾";
-
-
-    localStorage.setItem(
-        "chatluk-dark",
-        enabled
-            ? "1"
-            : "0"
-    );
-
-}
-
-
-const savedDark =
-    localStorage.getItem(
-        "chatluk-dark"
-    );
-
-
-setDarkMode(
-    savedDark === "1"
-);
-
-
-darkButton.addEventListener(
-    "click",
-    () => {
-
-
-        setDarkMode(
-
-            !document.body.classList.contains(
-                "dark"
-            )
-
-        );
-
-    }
-);
-
-
-/* ======================================================
-   SAVE HISTORY
-====================================================== */
-
-function saveCurrentChat() {
-
-
-    if (
-        chatHistory.length === 0
-    ) {
-
-        return;
-
-    }
-
-
-    let chats =
-        JSON.parse(
-
-            localStorage.getItem(
-                "chatluk-history"
-            ) || "[]"
-
-        );
-
-
-    const firstUser =
-        chatHistory.find(
-            item =>
-                item.role ===
-                "user"
-        );
-
-
-    if (!firstUser) {
-        return;
-    }
-
-
-    const title =
-        firstUser.text
-            .replace(
-                /\s+/g,
-                " "
-            )
-            .slice(
-                0,
-                45
-            );
-
-
-    const current = {
-
-        id:
-            Date.now(),
-
-        title,
-
-        messages:
-            chatHistory.slice()
-
-    };
-
-
-    if (
-        chats.length === 0 ||
-        JSON.stringify(
-            chats[0].messages
-        ) !==
-        JSON.stringify(
-            current.messages
-        )
-    ) {
-
-
-        chats.unshift(
-            current
-        );
-
-
-    }
-
-    else {
-
-
-        chats[0] =
-            current;
-
-    }
-
-
-    chats =
-        chats.slice(
-            0,
-            30
-        );
-
-
-    localStorage.setItem(
-        "chatluk-history",
-        JSON.stringify(chats)
-    );
-
-
-    renderHistory();
-
-}
-
-
-/* ======================================================
-   RENDER HISTORY
-====================================================== */
-
-function renderHistory() {
-
-
-    historyElement.innerHTML =
-        "";
-
-
-    let chats =
-        JSON.parse(
-
-            localStorage.getItem(
-                "chatluk-history"
-            ) || "[]"
-
-        );
-
-
-    chats.forEach(
-        (item, index) => {
-
-
-            const div =
-                document.createElement(
-                    "div"
-                );
-
-
-            div.className =
-                "history-item";
-
-
-            div.textContent =
-                item.title ||
-                "Cuộc trò chuyện";
-
-
-            div.title =
-                item.title ||
-                "";
-
-
-            div.addEventListener(
-                "click",
-                () => {
-
-                    loadChat(
-                        index
-                    );
-
-                }
-            );
-
-
-            historyElement.appendChild(
-                div
-            );
-
         }
     );
 
@@ -3005,351 +1307,384 @@ function renderHistory() {
 
 
 /* ======================================================
-   LOAD HISTORY
-====================================================== */
-
-function loadChat(
-    index
-) {
-
-
-    let chats =
-        JSON.parse(
-
-            localStorage.getItem(
-                "chatluk-history"
-            ) || "[]"
-
-        );
-
-
-    const selected =
-        chats[index];
-
-
-    if (
-        !selected ||
-        !Array.isArray(
-            selected.messages
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    chat.innerHTML =
-        "";
-
-
-    chatHistory =
-        selected.messages
-            .map(
-                item => ({
-
-                    role:
-                        item.role,
-
-                    text:
-                        item.text
-
-                })
-            );
-
-
-    chatHistory.forEach(
-        item => {
-
-
-            addMessage(
-
-                item.role === "model"
-                    ? "bot"
-                    : "user",
-
-                item.text
-
-            );
-
-        }
-    );
-
-}
-
-
-/* ======================================================
-   NEW CHAT
-====================================================== */
-
-newChatButton.addEventListener(
-    "click",
-    () => {
-
-
-        chatHistory =
-            [];
-
-
-        chat.innerHTML = `
-
-            <div
-                class="welcome"
-                id="welcome"
-            >
-
-
-                <div class="welcome-dragon">
-
-                    🐉
-
-                </div>
-
-
-                <h1>
-
-                    Xin chào, mình là ChatLuk!
-
-                </h1>
-
-
-                <p>
-
-                    Trợ lý AI Việt Nam của bạn.
-                    Hãy hỏi mình bất cứ điều gì.
-
-                </p>
-
-
-                <div class="suggestions">
-
-
-                    <button
-                        class="suggestion"
-                        data-message="Xin chào ChatLuk! Hãy giới thiệu về bạn."
-                    >
-
-                        👋 Xin chào ChatLuk
-
-                    </button>
-
-
-                    <button
-                        class="suggestion"
-                        data-message="Hãy giúp tôi học lập trình JavaScript."
-                    >
-
-                        💻 Học lập trình
-
-                    </button>
-
-
-                    <button
-                        class="suggestion"
-                        data-message="Hãy giải thích trí tuệ nhân tạo thật dễ hiểu."
-                    >
-
-                        🤖 AI là gì?
-
-                    </button>
-
-
-                    <button
-                        class="suggestion"
-                        data-message="Hãy kể cho tôi một câu chuyện ngắn thú vị."
-                    >
-
-                        📖 Kể một câu chuyện
-
-                    </button>
-
-
-                </div>
-
-
-            </div>
-
-        `;
-
-
-        attachSuggestions();
-
-
-        input.focus();
-
-    }
-);
-
-
-/* ======================================================
-   START
-====================================================== */
-
-renderHistory();
-
-input.focus();
-
-
-</script>
-
-
-</body>
-
-</html>`;
-
-}
-
-
-/* ======================================================
-   MAIN WORKER
+   CLOUDFLARE WORKER
 ====================================================== */
 
 export default {
 
-
-    async fetch(
-        request,
-        env,
-        ctx
-    ) {
-
-
-        /* ------------------------------------------------
-           CORS OPTIONS
-        ------------------------------------------------ */
-
-        if (
-            request.method ===
-            "OPTIONS"
-        ) {
-
-
-            return new Response(
-
-                null,
-
-                {
-
-                    status:
-                        204,
-
-                    headers:
-                        corsHeaders()
-
-                }
-
-            );
-
-        }
-
+    async fetch(request,env){
 
         const url =
-            new URL(
-                request.url
+            new URL(request.url);
+
+
+        /* OPTIONS */
+
+        if(request.method === "OPTIONS"){
+
+            return new Response(
+                null,
+                {
+                    status:204,
+                    headers:CORS
+                }
             );
 
+        }
 
-        /* ------------------------------------------------
+
+        /* WEBSITE */
+
+        if(
+            request.method === "GET" &&
+            url.pathname === "/"
+        ){
+
+            return new Response(
+                HTML,
+                {
+                    status:200,
+                    headers:{
+                        "Content-Type":
+                            "text/html; charset=UTF-8",
+
+                        "Cache-Control":
+                            "no-store"
+                    }
+                }
+            );
+
+        }
+
+
+        /* HEALTH */
+
+        if(
+            request.method === "GET" &&
+            url.pathname === "/health"
+        ){
+
+            return json({
+
+                ok:true,
+
+                worker:
+                    "ChatLuk AI Worker",
+
+                secretConfigured:
+                    Boolean(
+                        env.OPENAI_API_KEY
+                    )
+
+            });
+
+        }
+
+
+        /* =================================================
            API CHAT
-        ------------------------------------------------ */
+        ================================================= */
 
-        if (
-            url.pathname ===
-            "/api/chat"
-        ) {
+        if(
+            request.method === "POST" &&
+            url.pathname === "/api/chat"
+        ){
 
+            try{
 
-            return handleChat(
-                request,
-                env
-            );
+                /* CHECK SECRET */
 
-        }
+                if(!env.OPENAI_API_KEY){
 
+                    return json(
+                        {
+                            ok:false,
 
-        /* ------------------------------------------------
-           API TEST
-        ------------------------------------------------ */
-
-        if (
-            url.pathname ===
-            "/api/test"
-        ) {
-
-
-            return json({
-
-                ok:
-                    true,
-
-                service:
-                    "ChatLuk AI",
-
-                provider:
-                    "Google Gemini",
-
-                model:
-                    GEMINI_MODEL,
-
-                message:
-                    "ChatLuk Worker đang hoạt động."
-
-            });
-
-        }
-
-
-        /* ------------------------------------------------
-           HEALTH
-        ------------------------------------------------ */
-
-        if (
-            url.pathname ===
-            "/health"
-        ) {
-
-
-            return json({
-
-                ok:
-                    true,
-
-                status:
-                    "online",
-
-                model:
-                    GEMINI_MODEL
-
-            });
-
-        }
-
-
-        /* ------------------------------------------------
-           GIAO DIỆN CHATLUK
-        ------------------------------------------------ */
-
-        return new Response(
-
-            getHTML(),
-
-            {
-
-                status:
-                    200,
-
-                headers: {
-
-                    "Content-Type":
-                        "text/html; charset=UTF-8",
-
-                    "Cache-Control":
-                        "no-cache, no-store, must-revalidate"
+                            error:
+                                "Không tìm thấy Secret OPENAI_API_KEY. " +
+                                "Hãy kiểm tra Settings → Variables and Secrets."
+                        },
+                        500
+                    );
 
                 }
+
+
+                /* READ BODY */
+
+                let body;
+
+                try{
+
+                    body =
+                        await request.json();
+
+                }
+                catch{
+
+                    return json(
+                        {
+                            ok:false,
+                            error:
+                                "Request JSON không hợp lệ."
+                        },
+                        400
+                    );
+
+                }
+
+
+                const message =
+                    body &&
+                    body.message;
+
+
+                /* VALIDATE */
+
+                if(
+                    typeof message !== "string" ||
+                    !message.trim()
+                ){
+
+                    return json(
+                        {
+                            ok:false,
+                            error:
+                                "Tin nhắn không hợp lệ."
+                        },
+                        400
+                    );
+
+                }
+
+
+                /* LIMIT */
+
+                if(message.length > 8000){
+
+                    return json(
+                        {
+                            ok:false,
+                            error:
+                                "Tin nhắn quá dài."
+                        },
+                        400
+                    );
+
+                }
+
+
+                /* =================================================
+                   OPENAI
+                ================================================= */
+
+                const openaiResponse =
+                    await fetch(
+                        "https://api.openai.com/v1/responses",
+                        {
+                            method:"POST",
+
+                            headers:{
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    "Bearer " +
+                                    env.OPENAI_API_KEY
+                            },
+
+                            body:JSON.stringify({
+
+                                model:"gpt-5-mini",
+
+                                instructions:
+                                    "Bạn là ChatLuk, " +
+                                    "một trợ lý AI nói tiếng Việt. " +
+                                    "Hãy trả lời tự nhiên, rõ ràng, " +
+                                    "thân thiện và hữu ích. " +
+                                    "Ưu tiên tiếng Việt. " +
+                                    "Có thể sử dụng emoji vừa phải. " +
+                                    "Khi giải thích kiến thức, " +
+                                    "hãy trình bày dễ hiểu.",
+
+                                input:message
+
+                            })
+                        }
+                    );
+
+
+                const raw =
+                    await openaiResponse.text();
+
+
+                let data;
+
+                try{
+
+                    data =
+                        JSON.parse(raw);
+
+                }
+                catch{
+
+                    return json(
+                        {
+                            ok:false,
+                            error:
+                                "OpenAI trả về dữ liệu không hợp lệ."
+                        },
+                        502
+                    );
+
+                }
+
+
+                /* OPENAI ERROR */
+
+                if(!openaiResponse.ok){
+
+                    const openaiError =
+                        data &&
+                        data.error;
+
+                    return json(
+                        {
+                            ok:false,
+
+                            error:
+                                openaiError &&
+                                openaiError.message
+                                    ? openaiError.message
+                                    : "OpenAI API trả về lỗi HTTP " +
+                                      openaiResponse.status,
+
+                            code:
+                                openaiError &&
+                                openaiError.code
+                                    ? openaiError.code
+                                    : null
+                        },
+                        openaiResponse.status
+                    );
+
+                }
+
+
+                /* OUTPUT */
+
+                let answer = "";
+
+
+                if(
+                    typeof data.output_text === "string"
+                ){
+
+                    answer =
+                        data.output_text;
+
+                }
+
+
+                /* FALLBACK */
+
+                if(
+                    !answer &&
+                    Array.isArray(data.output)
+                ){
+
+                    for(
+                        const item of data.output
+                    ){
+
+                        if(
+                            item &&
+                            item.type === "message" &&
+                            Array.isArray(item.content)
+                        ){
+
+                            for(
+                                const content of item.content
+                            ){
+
+                                if(
+                                    content &&
+                                    content.type === "output_text" &&
+                                    typeof content.text === "string"
+                                ){
+
+                                    answer +=
+                                        content.text;
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+
+                if(!answer.trim()){
+
+                    return json(
+                        {
+                            ok:false,
+                            error:
+                                "ChatLuk chưa nhận được nội dung trả lời từ AI."
+                        },
+                        502
+                    );
+
+                }
+
+
+                return json({
+
+                    ok:true,
+
+                    reply:
+                        answer.trim()
+
+                });
+
+            }
+            catch(error){
+
+                console.error(
+                    "ChatLuk Worker Error:",
+                    error
+                );
+
+                return json(
+                    {
+                        ok:false,
+
+                        error:
+                            error &&
+                            error.message
+                                ? error.message
+                                : "Worker gặp lỗi không xác định."
+                    },
+                    500
+                );
 
             }
 
+        }
+
+
+        /* 404 */
+
+        return json(
+            {
+                ok:false,
+                error:
+                    "Không tìm thấy đường dẫn."
+            },
+            404
         );
 
     }
