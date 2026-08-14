@@ -1934,7 +1934,169 @@ let busy = false;
    AVATAR
 ====================================================== */
 
-function dragonAvatar() {
+function dragonAvatar(size = 40) {
+    return `
+        <svg
+            class="chatluk-avatar-svg"
+            width="${size}"
+            height="${size}"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="ChatLuk AI"
+        >
+
+            <!-- nền tròn -->
+            <circle
+                cx="50"
+                cy="50"
+                r="47"
+                fill="#eafaff"
+                stroke="#159bd3"
+                stroke-width="2"
+            />
+
+            <!-- sừng trái -->
+            <path
+                d="M28 31
+                   C18 25 13 17 16 9
+                   C24 11 31 17 34 28"
+                fill="#f4df78"
+            />
+
+            <!-- sừng phải -->
+            <path
+                d="M72 31
+                   C82 25 87 17 84 9
+                   C76 11 69 17 66 28"
+                fill="#f4df78"
+            />
+
+            <!-- đầu rồng -->
+            <path
+                d="M50 19
+                   C32 19 23 32 25 51
+                   C27 70 38 82 50 88
+                   C62 82 73 70 75 51
+                   C77 32 68 19 50 19Z"
+                fill="#159bd3"
+            />
+
+            <!-- má trái -->
+            <circle
+                cx="34"
+                cy="57"
+                r="7"
+                fill="#0b83bd"
+            />
+
+            <!-- má phải -->
+            <circle
+                cx="66"
+                cy="57"
+                r="7"
+                fill="#0b83bd"
+            />
+
+            <!-- mắt trái -->
+            <ellipse
+                cx="39"
+                cy="43"
+                rx="8"
+                ry="10"
+                fill="white"
+            />
+
+            <!-- mắt phải -->
+            <ellipse
+                cx="61"
+                cy="43"
+                rx="8"
+                ry="10"
+                fill="white"
+            />
+
+            <!-- đồng tử -->
+            <circle
+                cx="40"
+                cy="44"
+                r="3.5"
+                fill="#173042"
+            />
+
+            <circle
+                cx="60"
+                cy="44"
+                r="3.5"
+                fill="#173042"
+            />
+
+            <!-- ánh mắt -->
+            <circle
+                cx="41"
+                cy="42.5"
+                r="1.2"
+                fill="white"
+            />
+
+            <circle
+                cx="61"
+                cy="42.5"
+                r="1.2"
+                fill="white"
+            />
+
+            <!-- mõm -->
+            <ellipse
+                cx="50"
+                cy="61"
+                rx="18"
+                ry="13"
+                fill="#f4df78"
+            />
+
+            <!-- mũi -->
+            <circle
+                cx="44"
+                cy="59"
+                r="2"
+                fill="#159bd3"
+            />
+
+            <circle
+                cx="56"
+                cy="59"
+                r="2"
+                fill="#159bd3"
+            />
+
+            <!-- miệng -->
+            <path
+                d="M41 67
+                   Q50 74 59 67"
+                fill="none"
+                stroke="#173042"
+                stroke-width="3"
+                stroke-linecap="round"
+            />
+
+            <!-- răng nhỏ -->
+            <path
+                d="M45 69 L47 73 L49 70
+                   M51 70 L53 73 L55 69"
+                fill="white"
+                stroke="#173042"
+                stroke-width="1"
+            />
+
+            <!-- vảy trán -->
+            <path
+                d="M50 20 L55 29 L50 27 L45 29 Z"
+                fill="#f4df78"
+            />
+
+        </svg>
+    `;
+}
 
     return `
 
