@@ -8,18 +8,22 @@ const CORS_HEADERS = {
 };
 
 function responseJSON(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: CORS_HEADERS
-  });
+  return new Response(
+    JSON.stringify(data),
+    {
+      status,
+      headers: CORS_HEADERS
+    }
+  );
 }
 
 export default {
+
   async fetch(request, env) {
 
-    // ==============================
+    // ==========================================
     // CORS
-    // ==============================
+    // ==========================================
 
     if (request.method === "OPTIONS") {
       return new Response(null, {
@@ -30,25 +34,27 @@ export default {
 
     const url = new URL(request.url);
 
-    // ==============================
+    // ==========================================
     // KIỂM TRA WORKER
-    // ==============================
+    // ==========================================
 
     if (
       request.method === "GET" &&
       url.pathname === "/"
     ) {
+
       return responseJSON({
         ok: true,
         service: "ChatLuk AI",
         message: "ChatLuk Worker đang hoạt động.",
         model: MODEL
       });
+
     }
 
-    // ==============================
+    // ==========================================
     // API CHAT
-    // ==============================
+    // ==========================================
 
     if (
       request.method === "POST" &&
@@ -57,38 +63,62 @@ export default {
 
       try {
 
-        // Kiểm tra API key
+        // ------------------------------------------
+        // KIỂM TRA API KEY
+        // ------------------------------------------
+
         if (!env.GEMINI_API_KEY) {
+
           return responseJSON({
             ok: false,
-            error: "Không tìm thấy GEMINI_API_KEY trong Cloudflare Worker."
+            error: "Không tìm thấy GEMINI_API_KEY."
           }, 500);
+
         }
 
-        // Đọc request
-        const requestData = await request.json();
+        // ------------------------------------------
+        // ĐỌC REQUEST
+        // ------------------------------------------
+
+        let requestData;
+
+        try {
+
+          requestData = await request.json();
+
+        } catch {
+
+          return responseJSON({
+            ok: false,
+            error: "Request gửi lên không phải JSON hợp lệ."
+          }, 400);
+
+        }
 
         const message =
-          typeof requestData.message === "string"
+          typeof requestData?.message === "string"
             ? requestData.message.trim()
             : "";
 
+        // ------------------------------------------
+        // KIỂM TRA TIN NHẮN
+        // ------------------------------------------
+
         if (!message) {
+
           return responseJSON({
             ok: false,
             error: "Tin nhắn trống."
           }, 400);
+
         }
 
-        // ==============================
+        // ==========================================
         // GỌI GEMINI
-        // ==============================
+        // ==========================================
 
         const endpoint =
-          "https://generativelanguage.googleapis.com/" +
-          "v1beta/models/" +
-          MODEL +
-          ":generateContent";
+          `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
         const geminiResponse = await fetch(
           endpoint,
@@ -103,110 +133,159 @@ export default {
             body: JSON.stringify({
 
               contents: [
+
                 {
                   role: "user",
 
                   parts: [
+
                     {
                       text:
-                        `Bạn là ChatLuk, một trợ lý AI Việt Nam.
+`Bạn là ChatLuk, một trợ lý AI Việt Nam.
 
 Hãy trả lời người dùng bằng tiếng Việt tự nhiên,
 thân thiện, dễ hiểu và hữu ích.
 
-Không tự nhận mình là ChatGPT.
-Không nói về API hoặc Cloudflare nếu người dùng không hỏi.
+Phong cách:
+- Thân thiện
+- Dễ hiểu
+- Không quá dài nếu người dùng không yêu cầu
+- Có thể dùng emoji vừa phải
+- Ưu tiên trả lời trực tiếp câu hỏi
 
-Tin nhắn người dùng:
+Không tự nhận mình là ChatGPT.
+
+Không nói về API, Cloudflare, Worker,
+API key hoặc hệ thống phía sau nếu người dùng
+không hỏi trực tiếp.
+
+Tin nhắn của người dùng:
 
 ${message}`
                     }
+
                   ]
+
                 }
+
               ]
 
             })
+
           }
         );
 
-        // ==============================
-        // ĐỌC GEMINI RESPONSE
-        // ==============================
+        // ==========================================
+        // ĐỌC RESPONSE GEMINI
+        // ==========================================
 
         const raw = await geminiResponse.text();
 
         let data;
 
         try {
+
           data = JSON.parse(raw);
+
         } catch {
 
           console.error(
-            "Gemini trả về dữ liệu không hợp lệ:",
+            "Gemini trả về dữ liệu không phải JSON:",
             raw
           );
 
           return responseJSON({
             ok: false,
-            error: "Gemini không trả về JSON hợp lệ.",
+            error: "Gemini trả về dữ liệu không hợp lệ.",
             details: raw.substring(0, 1000)
           }, 502);
+
         }
 
-        // ==============================
-        // GEMINI ERROR
-        // ==============================
+        // ==========================================
+        // GEMINI TRẢ VỀ LỖI
+        // ==========================================
 
         if (!geminiResponse.ok) {
 
           console.error(
-            "Gemini API ERROR:",
-            data
+            "GEMINI API ERROR:",
+            JSON.stringify(data)
           );
 
           return responseJSON({
+
             ok: false,
+
             error:
               data?.error?.message ||
               "Gemini API trả về lỗi.",
-            status: geminiResponse.status
+
+            status:
+              geminiResponse.status,
+
+            details:
+              data?.error || null
+
           }, geminiResponse.status);
+
         }
 
-        // ==============================
+        // ==========================================
         // LẤY CÂU TRẢ LỜI
-        // ==============================
+        // ==========================================
 
         const answer =
           data?.candidates?.[0]?.content?.parts
-            ?.map(part => part.text || "")
+            ?.map(part => part?.text || "")
             .join("")
             .trim();
+
+        // ==========================================
+        // KHÔNG CÓ CÂU TRẢ LỜI
+        // ==========================================
 
         if (!answer) {
 
           console.error(
-            "Không tìm thấy câu trả lời:",
-            data
+            "Gemini không trả về nội dung:",
+            JSON.stringify(data)
           );
 
           return responseJSON({
+
             ok: false,
-            error: "Gemini không trả về nội dung.",
+
+            error:
+              "Gemini không trả về nội dung.",
+
             details: data
+
           }, 502);
+
         }
 
-        // ==============================
+        // ==========================================
         // TRẢ KẾT QUẢ CHO CHATLUK
-        // ==============================
+        // ==========================================
 
         return responseJSON({
-          ok: true,
-          answer: answer
-        });
 
-      } catch (error) {
+          ok: true,
+
+          answer: answer,
+
+          model: MODEL
+
+        }, 200);
+
+      }
+
+      // ==========================================
+      // WORKER ERROR
+      // ==========================================
+
+      catch (error) {
 
         console.error(
           "CHATLUK WORKER ERROR:",
@@ -214,21 +293,33 @@ ${message}`
         );
 
         return responseJSON({
+
           ok: false,
+
           error:
             error?.message ||
             "Worker xảy ra lỗi không xác định."
+
         }, 500);
+
       }
+
     }
 
-    // ==============================
+    // ==========================================
     // URL KHÔNG TỒN TẠI
-    // ==============================
+    // ==========================================
 
     return responseJSON({
+
       ok: false,
-      error: "ChatLuk API không tồn tại."
+
+      error: "ChatLuk API không tồn tại.",
+
+      path: url.pathname
+
     }, 404);
+
   }
+
 };
