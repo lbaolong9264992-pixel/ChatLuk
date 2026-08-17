@@ -4,11 +4,9 @@ const HTML = `
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#081b2d">
 <title>ChatLuk — Vietnamese Dragon AI</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -16,22 +14,26 @@ const HTML = `
 }
 
 :root{
-    --blue:#08b7ee;
-    --blue2:#0877c9;
-    --blue3:#07518e;
-    --gold:#d9a928;
-    --gold2:#ffe08a;
+    --gold:#d6a735;
+    --gold2:#f4d77a;
+    --gold3:#9b6c16;
 
-    --text:#183044;
-    --muted:#718495;
+    --blue:#087bc1;
+    --blue2:#0bb9ef;
 
-    --bg:#eaf7fb;
+    --text:#243443;
+    --muted:#71808c;
+
     --panel:rgba(255,255,255,.78);
-    --panel2:rgba(247,252,254,.88);
+    --panel2:rgba(255,255,255,.58);
 
-    --line:rgba(30,100,140,.15);
+    --line:rgba(75,82,67,.16);
 
-    --shadow:rgba(20,70,100,.12);
+    --bg1:#edf8f5;
+    --bg2:#dce8e2;
+    --bg3:#cbd8d2;
+
+    --shadow:rgba(25,55,48,.13);
 }
 
 html,
@@ -47,278 +49,207 @@ body{
         sans-serif;
 
     color:var(--text);
-
     overflow:hidden;
 
     background:
         radial-gradient(
-            circle at 85% 5%,
-            rgba(0,190,255,.22),
-            transparent 28%
+            circle at 80% 10%,
+            rgba(255,215,90,.17),
+            transparent 24%
         ),
         radial-gradient(
-            circle at 10% 90%,
-            rgba(0,130,220,.10),
-            transparent 30%
+            circle at 15% 90%,
+            rgba(0,150,190,.13),
+            transparent 28%
         ),
         linear-gradient(
             135deg,
-            #e8f9ff 0%,
-            #f3f7f8 48%,
-            #d9e5ea 100%
+            var(--bg1),
+            var(--bg2) 55%,
+            var(--bg3)
         );
 
     transition:
-        background .35s ease,
-        color .35s ease;
+        background .4s,
+        color .4s;
 }
 
 
-/* ======================================================
-   DARK MODE
-====================================================== */
+/* =====================================================
+   ANCIENT VIETNAM BACKGROUND
+===================================================== */
 
-body.dark{
-    --text:#e9f4fa;
-    --muted:#9aabb7;
-
-    --bg:#07131f;
-    --panel:rgba(11,28,43,.84);
-    --panel2:rgba(8,23,36,.92);
-
-    --line:rgba(120,190,220,.16);
-
-    --shadow:rgba(0,0,0,.35);
-
-    background:
-        radial-gradient(
-            circle at 80% 5%,
-            rgba(0,150,220,.20),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 10% 90%,
-            rgba(0,90,150,.18),
-            transparent 32%
-        ),
-        linear-gradient(
-            135deg,
-            #06121d,
-            #0a1b29 50%,
-            #07131f
-        );
-}
-
-
-/* ======================================================
-   APP
-====================================================== */
-
-.app{
-    width:100vw;
-    height:100vh;
-    display:flex;
-}
-
-
-/* ======================================================
-   VIETNAMESE BACKGROUND ART
-====================================================== */
-
-.scene{
+.vietnam-bg{
     position:fixed;
     inset:0;
     pointer-events:none;
     overflow:hidden;
     z-index:0;
-    opacity:.30;
-    filter:blur(.35px);
 }
-
-.scene-sky{
-    position:absolute;
-    inset:0;
-
-    background:
-        radial-gradient(
-            ellipse at 50% 20%,
-            rgba(255,255,255,.8),
-            transparent 45%
-        );
-}
-
-body.dark .scene{
-    opacity:.17;
-}
-
-
-/* mountains */
 
 .mountain{
     position:absolute;
-    bottom:0;
-    width:0;
-    height:0;
+    left:-5%;
+    bottom:-5%;
+    width:110%;
+    height:45%;
 
-    border-left:180px solid transparent;
-    border-right:180px solid transparent;
-    border-bottom:260px solid rgba(40,100,120,.10);
-}
-
-.m1{
-    left:5%;
-    bottom:-80px;
-}
-
-.m2{
-    left:28%;
-    bottom:-120px;
-    transform:scale(1.3);
-}
-
-.m3{
-    right:20%;
-    bottom:-100px;
-    transform:scale(1.1);
-}
-
-.m4{
-    right:-40px;
-    bottom:-90px;
-    transform:scale(1.25);
-}
-
-
-/* temple */
-
-.temple{
-    position:absolute;
-    bottom:38px;
-    left:50%;
-    transform:translateX(-50%);
-    width:250px;
-    height:115px;
-    opacity:.18;
-}
-
-.temple-roof{
-    position:absolute;
-    left:15px;
-    top:5px;
-    width:220px;
-    height:45px;
+    opacity:.075;
 
     background:
         linear-gradient(
             135deg,
-            transparent 48%,
-            rgba(80,70,55,.55) 49%,
-            rgba(80,70,55,.55) 52%,
-            transparent 53%
+            transparent 34%,
+            #405d55 35%,
+            #405d55 37%,
+            transparent 38%
+        ),
+        linear-gradient(
+            40deg,
+            transparent 45%,
+            #405d55 46%,
+            #405d55 49%,
+            transparent 50%
         );
 
-    border-top:8px solid rgba(75,65,50,.48);
-    border-radius:50% 50% 0 0;
+    clip-path:
+        polygon(
+            0 100%,
+            9% 62%,
+            17% 76%,
+            29% 42%,
+            39% 70%,
+            52% 35%,
+            64% 72%,
+            76% 45%,
+            88% 68%,
+            100% 48%,
+            100% 100%
+        );
 }
 
-.temple-body{
+.temple{
     position:absolute;
-    left:40px;
-    top:48px;
-    width:170px;
-    height:60px;
+    bottom:8%;
+    left:12%;
+    width:150px;
+    height:120px;
+    opacity:.055;
+}
 
-    border:
-        4px solid rgba(75,65,50,.40);
-
-    border-top:0;
+.temple:before{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:0;
+    width:82px;
+    height:85px;
+    transform:translateX(-50%);
 
     background:
-        repeating-linear-gradient(
+        linear-gradient(
             90deg,
-            rgba(80,70,50,.10) 0 17px,
-            transparent 17px 34px
+            transparent 0 12%,
+            #40554e 12% 88%,
+            transparent 88%
+        );
+
+    clip-path:
+        polygon(
+            25% 0,
+            75% 0,
+            100% 18%,
+            86% 18%,
+            82% 100%,
+            18% 100%,
+            14% 18%,
+            0 18%
         );
 }
 
-.temple-tower{
+.temple:after{
+    content:"";
     position:absolute;
-    left:105px;
-    top:-30px;
-    width:40px;
-    height:40px;
+    left:50%;
+    top:0;
+    width:130px;
+    height:28px;
+    transform:translateX(-50%);
 
-    border-radius:50% 50% 0 0;
+    border-radius:50% 50% 5px 5px;
 
-    border:
-        4px solid rgba(75,65,50,.35);
+    background:#40554e;
+    clip-path:
+        polygon(
+            0 65%,
+            20% 40%,
+            36% 45%,
+            50% 0,
+            64% 45%,
+            80% 40%,
+            100% 65%,
+            50% 100%
+        );
 }
-
-
-/* birds */
 
 .birds{
     position:absolute;
-    top:19%;
-    left:20%;
-    color:rgba(50,75,85,.30);
-    font-size:18px;
-    letter-spacing:35px;
+    top:20%;
+    right:17%;
+    font-size:40px;
+    letter-spacing:25px;
+    opacity:.045;
     transform:rotate(-5deg);
 }
 
-.birds2{
-    position:absolute;
-    top:29%;
-    right:17%;
-    color:rgba(50,75,85,.23);
-    font-size:14px;
-    letter-spacing:25px;
-    transform:rotate(5deg);
-}
-
-
-/* clouds */
-
 .cloud{
     position:absolute;
-    width:240px;
-    height:45px;
+    width:250px;
+    height:70px;
     border-radius:50%;
-
-    background:
-        rgba(255,255,255,.35);
-
-    filter:blur(8px);
+    background:rgba(255,255,255,.22);
+    filter:blur(13px);
 }
 
-.cloud1{
-    top:18%;
-    left:5%;
+.cloud.c1{
+    top:16%;
+    left:18%;
 }
 
-.cloud2{
-    top:35%;
+.cloud.c2{
+    top:31%;
     right:5%;
-    transform:scale(.75);
+    transform:scale(.8);
 }
 
-.cloud3{
-    top:12%;
-    left:55%;
-    transform:scale(.55);
+.cloud.c3{
+    bottom:25%;
+    left:40%;
+    transform:scale(.7);
 }
 
 
-/* ======================================================
+/* =====================================================
+   APP
+===================================================== */
+
+.app{
+    position:relative;
+    z-index:2;
+
+    width:100vw;
+    height:100vh;
+
+    display:flex;
+}
+
+
+/* =====================================================
    SIDEBAR
-====================================================== */
+===================================================== */
 
 .sidebar{
-    position:relative;
-    z-index:10;
-
-    width:275px;
+    width:280px;
     height:100vh;
 
     padding:22px 17px;
@@ -328,62 +259,75 @@ body.dark .scene{
 
     flex-shrink:0;
 
-    background:var(--panel2);
+    background:
+        rgba(248,252,250,.84);
 
     border-right:
         1px solid var(--line);
 
     backdrop-filter:blur(22px);
+
+    z-index:20;
+
+    transition:
+        background .35s,
+        transform .25s;
 }
 
 .logo{
     display:flex;
     align-items:center;
-    gap:10px;
-
-    padding:
-        4px 8px 25px;
+    gap:11px;
+    padding:4px 8px 24px;
 }
 
 .logo-dragon{
-    font-size:39px;
+    width:46px;
+    height:46px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:15px;
+
+    font-size:27px;
+
+    color:#fff6c7;
 
     background:
-        linear-gradient(
-            135deg,
-            #fff3a6,
-            #d8a522,
-            #fff1a0
+        radial-gradient(
+            circle at 35% 30%,
+            #fff3a3,
+            #d5a52f 45%,
+            #76500b
         );
 
-    -webkit-background-clip:text;
-    background-clip:text;
+    border:
+        1px solid
+        rgba(190,140,30,.5);
 
-    color:transparent;
+    box-shadow:
+        0 8px 25px
+        rgba(150,105,15,.25),
 
-    filter:
-        drop-shadow(
-            0 4px 8px
-            rgba(180,120,0,.28)
-        );
+        inset 0 1px 3px
+        rgba(255,255,255,.7);
 }
 
 .logo-text{
     font-size:26px;
-    font-weight:800;
+    font-weight:850;
     letter-spacing:-1.5px;
 }
 
 .logo-text span{
-    color:var(--blue2);
+    color:var(--blue);
 }
 
 .new-chat{
     width:100%;
-
     border:0;
     border-radius:14px;
-
     padding:14px;
 
     display:flex;
@@ -391,7 +335,6 @@ body.dark .scene{
     gap:10px;
 
     color:white;
-
     font-size:13px;
     font-weight:bold;
 
@@ -401,12 +344,12 @@ body.dark .scene{
         linear-gradient(
             120deg,
             #07518e,
-            #08c7ff
+            #08bfe9
         );
 
     box-shadow:
         0 10px 25px
-        rgba(0,130,220,.22);
+        rgba(0,130,220,.2);
 
     transition:.2s;
 }
@@ -424,25 +367,20 @@ body.dark .scene{
     justify-content:space-between;
     align-items:center;
 
-    margin:
-        28px 7px 10px;
+    margin:28px 7px 10px;
 
     color:#7b8b98;
 
     font-size:10px;
     font-weight:bold;
-
     letter-spacing:1.4px;
 }
 
 .clear-btn{
     border:0;
     background:none;
-
     color:#7b8b98;
-
     font-size:20px;
-
     cursor:pointer;
 }
 
@@ -456,21 +394,17 @@ body.dark .scene{
 
     display:block;
 
-    border:
-        1px solid transparent;
-
+    border:1px solid transparent;
     border-radius:11px;
 
     background:transparent;
 
-    padding:
-        11px 12px;
-
+    padding:11px 12px;
     margin-bottom:5px;
 
     text-align:left;
 
-    color:var(--text);
+    color:#40576b;
 
     cursor:pointer;
 
@@ -479,17 +413,19 @@ body.dark .scene{
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+
+    transition:.2s;
 }
 
 .history-item:hover,
 .history-item.active{
     background:
-        rgba(0,160,230,.09);
+        rgba(0,150,190,.08);
 
     border-color:
-        rgba(0,160,230,.15);
+        rgba(0,150,190,.15);
 
-    color:#0877bd;
+    color:#0767a9;
 }
 
 .sidebar-bottom{
@@ -503,46 +439,31 @@ body.dark .scene{
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,.55),
-            rgba(190,215,225,.28)
+            rgba(255,255,255,.72),
+            rgba(213,225,232,.5)
         );
 }
 
 .sidebar-dragon{
-    font-size:25px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #fff1a0,
-            #d29a18
-        );
-
-    -webkit-background-clip:text;
-    background-clip:text;
-
-    color:transparent;
+    color:var(--gold3);
+    font-size:23px;
 }
 
 .sidebar-bottom p{
     margin-top:7px;
 
-    color:var(--muted);
+    color:#82919d;
 
     font-size:9px;
-
     line-height:1.6;
 }
 
 
-/* ======================================================
+/* =====================================================
    MAIN
-====================================================== */
+===================================================== */
 
 .main{
-    position:relative;
-    z-index:5;
-
     flex:1;
     min-width:0;
 
@@ -553,15 +474,14 @@ body.dark .scene{
 }
 
 
-/* ======================================================
+/* =====================================================
    TOPBAR
-====================================================== */
+===================================================== */
 
 .topbar{
     min-height:76px;
 
-    padding:
-        11px 27px;
+    padding:11px 27px;
 
     display:flex;
     align-items:center;
@@ -570,7 +490,7 @@ body.dark .scene{
         1px solid var(--line);
 
     background:
-        var(--panel);
+        rgba(255,255,255,.42);
 
     backdrop-filter:blur(20px);
 }
@@ -583,15 +503,10 @@ body.dark .scene{
 
     margin-right:10px;
 
-    border:
-        1px solid var(--line);
-
+    border:1px solid var(--line);
     border-radius:11px;
 
-    background:
-        var(--panel);
-
-    color:var(--text);
+    background:var(--panel);
 
     cursor:pointer;
 }
@@ -603,26 +518,27 @@ body.dark .scene{
 }
 
 .title-dragon{
-    font-size:29px;
+    width:40px;
+    height:40px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:13px;
+
+    color:#fff3b2;
 
     background:
-        linear-gradient(
-            135deg,
-            #fff1a0,
-            #d09b1c,
-            #fff0a0
+        radial-gradient(
+            circle at 35% 25%,
+            #fff2a0,
+            #d2a12b 48%,
+            #77520b
         );
 
-    -webkit-background-clip:text;
-    background-clip:text;
-
-    color:transparent;
-
-    filter:
-        drop-shadow(
-            0 3px 5px
-            rgba(180,120,0,.22)
-        );
+    box-shadow:
+        0 5px 18px
+        rgba(150,105,15,.2);
 }
 
 .title h1{
@@ -634,12 +550,10 @@ body.dark .scene{
 
     margin-top:3px;
 
-    color:var(--muted);
+    color:#83929f;
 
     font-size:8px;
-
     font-weight:bold;
-
     letter-spacing:1.5px;
 }
 
@@ -653,11 +567,10 @@ body.dark .scene{
     white-space:nowrap;
     text-overflow:ellipsis;
 
-    color:var(--muted);
+    color:#516a7d;
 
     font-size:10px;
     font-weight:bold;
-
     text-align:right;
 }
 
@@ -665,15 +578,12 @@ body.dark .scene{
     width:38px;
     height:38px;
 
-    border:
-        1px solid var(--line);
-
+    border:1px solid var(--line);
     border-radius:11px;
 
-    background:
-        var(--panel);
+    background:var(--panel);
 
-    color:var(--text);
+    color:#76530e;
 
     font-size:17px;
 
@@ -683,13 +593,13 @@ body.dark .scene{
 }
 
 .theme:hover{
-    transform:rotate(15deg);
+    transform:rotate(20deg);
 }
 
 
-/* ======================================================
+/* =====================================================
    CHAT AREA
-====================================================== */
+===================================================== */
 
 .chat-area{
     flex:1;
@@ -698,8 +608,6 @@ body.dark .scene{
     overflow-y:auto;
 
     scroll-behavior:smooth;
-
-    position:relative;
 }
 
 .welcome{
@@ -708,239 +616,429 @@ body.dark .scene{
     margin:auto;
 
     padding:
-        58px 25px 30px;
+        48px 25px 30px;
 
     display:flex;
     flex-direction:column;
-
     align-items:center;
 
     text-align:center;
 }
 
 
-/* ======================================================
-   GOLD DRAGON AVATAR
-====================================================== */
+/* =====================================================
+   DRAGON AVATAR
+===================================================== */
 
-.dragon{
-    width:120px;
-    height:120px;
+.dragon-avatar{
+    position:relative;
 
-    margin-bottom:22px;
+    width:132px;
+    height:132px;
+
+    margin-bottom:23px;
 
     display:grid;
     place-items:center;
-
-    position:relative;
 
     border-radius:50%;
 
     background:
         radial-gradient(
-            circle at 35% 30%,
-            rgba(255,255,255,.95),
-            rgba(255,226,120,.32) 30%,
-            rgba(201,148,25,.16) 62%,
-            transparent 70%
+            circle at 35% 25%,
+            #fff6b7 0%,
+            #e8bd43 28%,
+            #ae7919 58%,
+            #53350b 100%
         );
 
     border:
-        1px solid
-        rgba(211,163,35,.35);
+        2px solid
+        rgba(255,224,111,.8);
 
     box-shadow:
-        0 18px 55px
-        rgba(170,120,0,.18);
+        0 0 0 7px
+        rgba(215,169,52,.08),
+
+        0 0 35px
+        rgba(225,178,46,.28),
+
+        0 20px 50px
+        rgba(65,55,30,.2);
+
+    overflow:hidden;
 }
 
-.dragon:before{
+.dragon-avatar:before{
     content:"";
 
     position:absolute;
     inset:7px;
 
+    border-radius:50%;
+
     border:
-        1px dashed
-        rgba(209,159,27,.45);
+        1px solid
+        rgba(255,235,142,.55);
+}
+
+.dragon-avatar:after{
+    content:"";
+
+    position:absolute;
+    inset:14px;
 
     border-radius:50%;
+
+    border:
+        1px dashed
+        rgba(255,239,154,.42);
 
     animation:
         spin 22s linear infinite;
 }
 
-.dragon:after{
-    content:"";
-
-    position:absolute;
-    inset:-7px;
-
-    border-radius:50%;
-
-    border:
-        1px solid
-        rgba(255,207,72,.18);
-
-    box-shadow:
-        0 0 30px
-        rgba(255,200,50,.15);
-}
-
-.dragon-face{
+.dragon-art{
     position:relative;
+    z-index:3;
 
-    width:74px;
-    height:72px;
+    width:102px;
+    height:102px;
 
     filter:
         drop-shadow(
-            0 8px 10px
-            rgba(130,90,0,.24)
+            0 6px 7px
+            rgba(60,35,0,.4)
         );
 }
 
-.dragon-head{
+
+/* horns */
+
+.horn{
     position:absolute;
 
-    left:13px;
-    top:15px;
-
-    width:48px;
-    height:45px;
-
-    border-radius:
-        45% 55% 48% 50%;
-
-    background:
-        linear-gradient(
-            145deg,
-            #fff2a1,
-            #d8a72d 45%,
-            #9b6910
-        );
-
-    border:
-        2px solid
-        rgba(142,94,8,.55);
-}
-
-.dragon-eye{
-    position:absolute;
-
-    width:7px;
-    height:9px;
-
-    top:29px;
-
-    border-radius:50%;
-
-    background:#142027;
-
-    box-shadow:
-        0 0 4px #ffe889;
-}
-
-.dragon-eye.left{
-    left:24px;
-}
-
-.dragon-eye.right{
-    right:24px;
-}
-
-.dragon-horn{
-    position:absolute;
-
-    width:13px;
-    height:27px;
-
-    top:0;
-
-    border-radius:
-        80% 20% 60% 30%;
-
-    background:
-        linear-gradient(
-            120deg,
-            #fff4ad,
-            #bc8214
-        );
-
-    transform:rotate(-25deg);
-}
-
-.dragon-horn.left{
-    left:15px;
-}
-
-.dragon-horn.right{
-    right:15px;
-    transform:scaleX(-1) rotate(-25deg);
-}
-
-.dragon-nose{
-    position:absolute;
-
-    left:32px;
-    top:47px;
-
-    width:12px;
-    height:8px;
-
-    border-radius:50%;
-
-    background:#9b6811;
-}
-
-.dragon-whisker{
-    position:absolute;
-
-    height:2px;
-    width:30px;
-
-    top:51px;
+    width:17px;
+    height:34px;
 
     background:
         linear-gradient(
             90deg,
-            #b27b16,
-            transparent
+            #6e4610,
+            #f6d66e,
+            #8b5b12
         );
 
-    transform-origin:left;
+    border-radius:
+        70% 25% 70% 25%;
+
+    top:5px;
 }
 
-.dragon-whisker.left{
-    left:0;
+.horn.left{
+    left:21px;
+    transform:rotate(-25deg);
+}
+
+.horn.right{
+    right:21px;
+    transform:rotate(25deg) scaleX(-1);
+}
+
+
+/* dragon head */
+
+.dragon-head{
+    position:absolute;
+
+    left:21px;
+    top:23px;
+
+    width:60px;
+    height:55px;
+
+    border-radius:
+        48% 52% 45% 45%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffe78a,
+            #d7a62e 46%,
+            #86570c
+        );
+
+    border:
+        2px solid
+        #9a6813;
+
+    transform:
+        rotate(-2deg);
+}
+
+
+/* snout */
+
+.dragon-snout{
+    position:absolute;
+
+    left:11px;
+    bottom:3px;
+
+    width:38px;
+    height:23px;
+
+    border-radius:
+        40% 55% 60% 45%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f3cf59,
+            #b77c17
+        );
+
+    border:
+        1px solid
+        #87570c;
+}
+
+.dragon-snout:after{
+    content:"";
+
+    position:absolute;
+
+    width:5px;
+    height:3px;
+
+    border-radius:50%;
+
+    background:#3e2505;
+
+    top:7px;
+    left:9px;
+
+    box-shadow:
+        16px 1px #3e2505;
+}
+
+
+/* eyes */
+
+.eye{
+    position:absolute;
+
+    top:15px;
+
+    width:12px;
+    height:10px;
+
+    border-radius:
+        80% 20% 70% 30%;
+
+    background:
+        #ffe66e;
+
+    border:
+        1px solid #754b06;
+
+    box-shadow:
+        0 0 7px
+        rgba(255,225,76,.8);
+}
+
+.eye:after{
+    content:"";
+
+    position:absolute;
+
+    left:5px;
+    top:1px;
+
+    width:2px;
+    height:8px;
+
+    background:#362000;
+
+    border-radius:50%;
+}
+
+.eye.left{
+    left:11px;
+}
+
+.eye.right{
+    right:11px;
+}
+
+
+/* whiskers */
+
+.whisker{
+    position:absolute;
+
+    width:38px;
+    height:16px;
+
+    border-top:
+        2px solid
+        #e7c252;
+
+    border-radius:50%;
+}
+
+.whisker.w1{
+    left:-28px;
+    bottom:6px;
+    transform:rotate(-20deg);
+}
+
+.whisker.w2{
+    left:-29px;
+    bottom:-1px;
     transform:rotate(15deg);
 }
 
-.dragon-whisker.right{
-    right:0;
-    transform:
-        scaleX(-1)
-        rotate(15deg);
+.whisker.w3{
+    right:-28px;
+    bottom:6px;
+    transform:scaleX(-1) rotate(-20deg);
 }
 
-.dragon-beard{
+.whisker.w4{
+    right:-29px;
+    bottom:-1px;
+    transform:scaleX(-1) rotate(15deg);
+}
+
+
+/* mane */
+
+.mane{
     position:absolute;
 
-    left:28px;
-    top:56px;
+    left:8px;
+    top:23px;
 
-    width:20px;
-    height:16px;
+    width:82px;
+    height:63px;
 
-    border-left:
-        3px solid #b37c15;
+    z-index:-1;
 
-    border-bottom:
-        3px solid #b37c15;
+    background:
+        linear-gradient(
+            135deg,
+            #f6d86d,
+            #9c6911
+        );
+
+    clip-path:
+        polygon(
+            20% 0,
+            35% 15%,
+            48% 0,
+            55% 17%,
+            70% 3%,
+            67% 27%,
+            88% 18%,
+            72% 42%,
+            100% 48%,
+            72% 58%,
+            88% 79%,
+            62% 70%,
+            64% 100%,
+            48% 76%,
+            30% 95%,
+            32% 69%,
+            7% 78%,
+            22% 55%,
+            0 48%,
+            24% 36%
+        );
+}
+
+
+/* body */
+
+.dragon-body{
+    position:absolute;
+
+    left:32px;
+    bottom:5px;
+
+    width:50px;
+    height:40px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e8bc43,
+            #98620d
+        );
+
+    border:
+        2px solid
+        #79500c;
 
     transform:
-        skew(-15deg);
+        rotate(18deg);
 }
+
+
+/* scales */
+
+.scale{
+    position:absolute;
+
+    width:9px;
+    height:9px;
+
+    border:
+        1px solid
+        rgba(255,231,128,.7);
+
+    border-radius:
+        50% 50% 45% 45%;
+
+    background:
+        rgba(156,103,13,.5);
+}
+
+.s1{left:9px;top:12px}
+.s2{left:22px;top:8px}
+.s3{left:35px;top:13px}
+.s4{left:15px;top:24px}
+.s5{left:29px;top:27px}
+
+
+/* claws */
+
+.claw{
+    position:absolute;
+
+    width:20px;
+    height:8px;
+
+    border-bottom:
+        3px solid #f2d06a;
+
+    border-radius:50%;
+}
+
+.claw.c1{
+    bottom:-4px;
+    left:5px;
+    transform:rotate(-15deg);
+}
+
+.claw.c2{
+    bottom:-4px;
+    right:5px;
+    transform:rotate(15deg);
+}
+
 
 @keyframes spin{
     to{
@@ -949,15 +1047,14 @@ body.dark .scene{
 }
 
 
-/* ======================================================
+/* =====================================================
    WELCOME
-====================================================== */
+===================================================== */
 
 .welcome-label{
-    color:#078bd8;
+    color:var(--gold3);
 
     font-size:10px;
-
     font-weight:bold;
 
     letter-spacing:3px;
@@ -973,11 +1070,11 @@ body.dark .scene{
 }
 
 .welcome h2 span{
-    color:#078bd8;
+    color:var(--blue);
 }
 
 .welcome p{
-    max-width:600px;
+    max-width:610px;
 
     margin:
         18px 0 27px;
@@ -1000,19 +1097,18 @@ body.dark .scene{
 }
 
 .suggestion{
-    padding:
-        10px 13px;
+    padding:10px 13px;
 
     border:
         1px solid
-        rgba(0,130,215,.15);
+        rgba(110,120,90,.16);
 
     border-radius:12px;
 
     background:
-        var(--panel);
+        rgba(255,255,255,.55);
 
-    color:var(--text);
+    color:#466278;
 
     font-size:11px;
 
@@ -1022,19 +1118,21 @@ body.dark .scene{
 }
 
 .suggestion:hover{
-    color:#07518e;
+    color:#76530d;
 
-    background:
-        rgba(255,255,255,.95);
+    background:white;
+
+    border-color:
+        rgba(190,145,35,.35);
 
     transform:
         translateY(-1px);
 }
 
 
-/* ======================================================
+/* =====================================================
    MESSAGES
-====================================================== */
+===================================================== */
 
 .messages{
     width:min(900px,100%);
@@ -1077,129 +1175,63 @@ body.dark .scene{
 }
 
 
-/* ======================================================
-   AVATAR
-====================================================== */
+/* message avatar */
 
 .avatar{
-    width:39px;
-    height:39px;
+    width:40px;
+    height:40px;
 
     flex:
-        0 0 39px;
+        0 0 40px;
 
     display:grid;
+
     place-items:center;
 
-    border-radius:12px;
+    border-radius:13px;
 
     border:
         1px solid
-        rgba(205,158,30,.30);
+        rgba(205,158,42,.35);
 
     background:
         radial-gradient(
-            circle,
-            rgba(255,231,123,.55),
-            rgba(183,128,10,.13)
+            circle at 35% 25%,
+            #fff0a0,
+            #d5a32d 50%,
+            #76500c
         );
 
     box-shadow:
-        0 6px 18px
-        rgba(150,100,0,.12);
+        0 5px 16px
+        rgba(120,85,15,.18);
 
     position:relative;
+
+    overflow:hidden;
 }
 
+.avatar:before{
+    content:"🐉";
 
-/* tiny dragon */
+    font-size:22px;
 
-.mini-dragon{
-    position:relative;
-
-    width:26px;
-    height:25px;
-}
-
-.mini-head{
-    position:absolute;
-
-    left:5px;
-    top:5px;
-
-    width:17px;
-    height:16px;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            145deg,
-            #fff1a0,
-            #c58b17
+    filter:
+        drop-shadow(
+            0 2px 2px
+            rgba(40,25,0,.4)
         );
-}
-
-.mini-eye{
-    position:absolute;
-
-    width:3px;
-    height:4px;
-
-    top:10px;
-
-    border-radius:50%;
-
-    background:#17242a;
-}
-
-.mini-eye.l{
-    left:9px;
-}
-
-.mini-eye.r{
-    right:9px;
-}
-
-.mini-horn{
-    position:absolute;
-
-    width:6px;
-    height:9px;
-
-    top:0;
-
-    background:#dca82c;
-
-    border-radius:70% 30% 60% 20%;
-}
-
-.mini-horn.l{
-    left:5px;
-    transform:rotate(-25deg);
-}
-
-.mini-horn.r{
-    right:5px;
-    transform:scaleX(-1) rotate(-25deg);
 }
 
 
 /* user avatar */
 
-.user-avatar{
-    width:25px;
-    height:25px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:50%;
-
+.message.user .avatar{
     color:white;
 
-    font-size:11px;
-    font-weight:bold;
+    font-family:Arial,sans-serif;
+
+    font-size:12px;
 
     background:
         linear-gradient(
@@ -1207,12 +1239,18 @@ body.dark .scene{
             #0874c4,
             #1bcaff
         );
+
+    border:0;
+}
+
+.message.user .avatar:before{
+    content:"U";
+
+    filter:none;
 }
 
 
-/* ======================================================
-   BUBBLE
-====================================================== */
+/* bubble */
 
 .bubble{
     max-width:
@@ -1228,9 +1266,9 @@ body.dark .scene{
         7px 17px 17px 17px;
 
     background:
-        var(--panel);
+        rgba(255,255,255,.72);
 
-    color:var(--text);
+    color:#273e52;
 
     font-size:13px;
 
@@ -1244,8 +1282,7 @@ body.dark .scene{
         0 6px 25px
         var(--shadow);
 
-    backdrop-filter:
-        blur(14px);
+    backdrop-filter:blur(10px);
 }
 
 .message.user .bubble{
@@ -1269,9 +1306,9 @@ body.dark .scene{
 }
 
 
-/* ======================================================
+/* =====================================================
    TYPING
-====================================================== */
+===================================================== */
 
 .typing{
     display:flex;
@@ -1287,7 +1324,7 @@ body.dark .scene{
 
     border-radius:50%;
 
-    background:#d6a326;
+    background:var(--gold);
 
     animation:
         typing 1s infinite;
@@ -1314,9 +1351,9 @@ body.dark .scene{
 }
 
 
-/* ======================================================
+/* =====================================================
    COMPOSER
-====================================================== */
+===================================================== */
 
 .composer-area{
     width:min(900px,100%);
@@ -1339,32 +1376,26 @@ body.dark .scene{
 
     border:
         1px solid
-        rgba(0,120,215,.2);
+        rgba(120,105,65,.2);
 
     border-radius:19px;
 
     background:
-        var(--panel);
+        rgba(255,255,255,.76);
 
     box-shadow:
         0 12px 45px
-        var(--shadow);
+        rgba(20,70,60,.1),
 
-    backdrop-filter:
-        blur(18px);
+        0 0 0 5px
+        rgba(220,175,50,.035);
 
-    transition:.25s;
+    backdrop-filter:blur(16px);
 }
 
 .composer:focus-within{
     border-color:
-        rgba(0,150,230,.5);
-
-    box-shadow:
-        0 12px 45px
-        var(--shadow),
-        0 0 0 4px
-        rgba(0,180,240,.06);
+        rgba(190,145,35,.5);
 }
 
 textarea{
@@ -1411,13 +1442,13 @@ textarea::placeholder{
     background:
         linear-gradient(
             135deg,
-            #07518e,
-            #09c6ff
+            #89600f,
+            #e0b53d
         );
 
     box-shadow:
         0 7px 18px
-        rgba(0,120,220,.25);
+        rgba(145,100,10,.25);
 
     cursor:pointer;
 
@@ -1427,8 +1458,7 @@ textarea::placeholder{
 }
 
 .send:hover{
-    transform:
-        translateY(-2px);
+    transform:translateY(-2px);
 }
 
 .send:disabled{
@@ -1444,24 +1474,112 @@ textarea::placeholder{
     padding:
         7px 7px 0;
 
-    color:var(--muted);
+    color:#82919d;
 
     font-size:9px;
 }
 
 
-/* ======================================================
-   OVERLAY
-====================================================== */
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+body.dark{
+    --text:#edf5f5;
+    --muted:#a7b8bd;
+
+    --panel:rgba(24,34,37,.84);
+    --panel2:rgba(28,40,42,.72);
+
+    --line:rgba(220,225,200,.12);
+
+    --bg1:#0e1a1b;
+    --bg2:#142426;
+    --bg3:#182d2c;
+
+    --shadow:rgba(0,0,0,.3);
+
+    background:
+        radial-gradient(
+            circle at 80% 8%,
+            rgba(221,170,44,.12),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 15% 90%,
+            rgba(0,160,190,.08),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #0c1718,
+            #132526 55%,
+            #172b2a
+        );
+}
+
+body.dark .sidebar{
+    background:
+        rgba(15,27,29,.86);
+}
+
+body.dark .topbar{
+    background:
+        rgba(15,27,29,.55);
+}
+
+body.dark .bubble{
+    background:
+        rgba(28,40,42,.82);
+
+    color:#e8f0f0;
+}
+
+body.dark .composer{
+    background:
+        rgba(24,35,37,.9);
+}
+
+body.dark textarea{
+    color:#edf5f5;
+}
+
+body.dark .suggestion{
+    background:
+        rgba(30,45,46,.7);
+
+    color:#bdcbce;
+}
+
+body.dark .history-item{
+    color:#aebfc2;
+}
+
+body.dark .sidebar-bottom{
+    background:
+        rgba(28,40,42,.65);
+}
+
+body.dark .welcome p{
+    color:#9fb1b5;
+}
+
+body.dark .creator{
+    color:#a9b9bc;
+}
+
+body.dark .info{
+    color:#8da1a5;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 .overlay{
     display:none;
 }
-
-
-/* ======================================================
-   MOBILE
-====================================================== */
 
 @media(max-width:760px){
 
@@ -1497,13 +1615,10 @@ textarea::placeholder{
 
         inset:0;
 
-        z-index:9;
+        z-index:10;
 
         background:
-            rgba(0,30,50,.35);
-
-        backdrop-filter:
-            blur(2px);
+            rgba(0,30,50,.3);
     }
 
     .topbar{
@@ -1517,7 +1632,12 @@ textarea::placeholder{
     }
 
     .welcome{
-        padding-top:38px;
+        padding-top:35px;
+    }
+
+    .dragon-avatar{
+        width:112px;
+        height:112px;
     }
 
     .suggestions{
@@ -1551,10 +1671,6 @@ textarea::placeholder{
     .info span:last-child{
         display:none;
     }
-
-    .scene{
-        opacity:.20;
-    }
 }
 
 @media(max-width:430px){
@@ -1563,13 +1679,9 @@ textarea::placeholder{
         font-size:48px;
     }
 
-    .dragon{
-        width:94px;
-        height:94px;
-    }
-
-    .dragon-face{
-        transform:scale(.82);
+    .dragon-avatar{
+        width:100px;
+        height:100px;
     }
 
     .suggestions{
@@ -1579,48 +1691,31 @@ textarea::placeholder{
     .creator{
         max-width:37%;
     }
-
-    .birds,
-    .birds2{
-        display:none;
-    }
 }
-
 </style>
 </head>
 
+
 <body>
 
-<!-- ======================================================
+
+<!-- =====================================================
      VIETNAMESE BACKGROUND
-====================================================== -->
+===================================================== -->
 
-<div class="scene">
+<div class="vietnam-bg">
 
-    <div class="scene-sky"></div>
+    <div class="mountain"></div>
 
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
-    <div class="cloud cloud3"></div>
-
-    <div class="mountain m1"></div>
-    <div class="mountain m2"></div>
-    <div class="mountain m3"></div>
-    <div class="mountain m4"></div>
-
-    <div class="temple">
-        <div class="temple-roof"></div>
-        <div class="temple-body"></div>
-        <div class="temple-tower"></div>
-    </div>
+    <div class="temple"></div>
 
     <div class="birds">
-        ︵︵　︵　︵
+        ︵ ︵ ︵
     </div>
 
-    <div class="birds2">
-        ︵　︵︵　︵
-    </div>
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
 
 </div>
 
@@ -1628,9 +1723,9 @@ textarea::placeholder{
 <div class="app">
 
 
-<!-- ======================================================
+<!-- =====================================================
      SIDEBAR
-====================================================== -->
+===================================================== -->
 
 <aside
     class="sidebar"
@@ -1640,7 +1735,7 @@ textarea::placeholder{
     <div class="logo">
 
         <div class="logo-dragon">
-            龍
+            🐉
         </div>
 
         <div class="logo-text">
@@ -1655,9 +1750,7 @@ textarea::placeholder{
         id="newChat"
     >
 
-        <span class="plus">
-            ＋
-        </span>
+        <span class="plus">＋</span>
 
         Cuộc trò chuyện mới
 
@@ -1689,13 +1782,12 @@ textarea::placeholder{
     <div class="sidebar-bottom">
 
         <div class="sidebar-dragon">
-            ☁　龍　☁
+            ☁ 🐉 ☁
         </div>
 
         <p>
-            ChatLuk — Vietnamese Dragon AI.
-            <br>
-            Lấy cảm hứng từ rồng và văn hóa Việt Nam.
+            ChatLuk — trợ lý AI mang cảm hứng
+            rồng phương Đông và văn hóa Việt Nam.
         </p>
 
     </div>
@@ -1703,9 +1795,9 @@ textarea::placeholder{
 </aside>
 
 
-<!-- ======================================================
+<!-- =====================================================
      MAIN
-====================================================== -->
+===================================================== -->
 
 <main class="main">
 
@@ -1723,7 +1815,7 @@ textarea::placeholder{
     <div class="title">
 
         <div class="title-dragon">
-            龍
+            🐉
         </div>
 
         <div>
@@ -1751,15 +1843,15 @@ textarea::placeholder{
         id="themeButton"
         title="Đổi chế độ sáng/tối"
     >
-        ◐
+        ☀
     </button>
 
 </header>
 
 
-<!-- ======================================================
+<!-- =====================================================
      CHAT
-====================================================== -->
+===================================================== -->
 
 <section
     class="chat-area"
@@ -1773,24 +1865,46 @@ textarea::placeholder{
 >
 
 
-    <div class="dragon">
+    <!-- =================================================
+         GOLD DRAGON AVATAR
+    ================================================= -->
 
-        <div class="dragon-face">
+    <div class="dragon-avatar">
 
-            <div class="dragon-horn left"></div>
-            <div class="dragon-horn right"></div>
+        <div class="dragon-art">
 
-            <div class="dragon-head"></div>
+            <div class="mane"></div>
 
-            <div class="dragon-eye left"></div>
-            <div class="dragon-eye right"></div>
+            <div class="horn left"></div>
+            <div class="horn right"></div>
 
-            <div class="dragon-nose"></div>
+            <div class="dragon-body">
 
-            <div class="dragon-whisker left"></div>
-            <div class="dragon-whisker right"></div>
+                <div class="scale s1"></div>
+                <div class="scale s2"></div>
+                <div class="scale s3"></div>
+                <div class="scale s4"></div>
+                <div class="scale s5"></div>
 
-            <div class="dragon-beard"></div>
+                <div class="claw c1"></div>
+                <div class="claw c2"></div>
+
+            </div>
+
+
+            <div class="dragon-head">
+
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+
+                <div class="dragon-snout"></div>
+
+                <div class="whisker w1"></div>
+                <div class="whisker w2"></div>
+                <div class="whisker w3"></div>
+                <div class="whisker w4"></div>
+
+            </div>
 
         </div>
 
@@ -1808,9 +1922,9 @@ textarea::placeholder{
 
 
     <p>
-        Một không gian trò chuyện AI mang cảm hứng
-        từ rồng phương Đông, núi non và nét đẹp
-        Việt Nam xưa.
+        Trợ lý AI mang cảm hứng từ
+        rồng phương Đông, núi non,
+        chùa cổ và vẻ đẹp văn hóa Việt Nam.
     </p>
 
 
@@ -1834,7 +1948,6 @@ textarea::placeholder{
 
     </div>
 
-
 </div>
 
 
@@ -1847,18 +1960,16 @@ textarea::placeholder{
 </section>
 
 
-<!-- ======================================================
+<!-- =====================================================
      INPUT
-====================================================== -->
+===================================================== -->
 
 <footer class="composer-area">
-
 
 <form
     class="composer"
     id="chatForm"
 >
-
 
 <textarea
     id="input"
@@ -1876,7 +1987,6 @@ textarea::placeholder{
     ➤
 </button>
 
-
 </form>
 
 
@@ -1891,7 +2001,6 @@ textarea::placeholder{
     </span>
 
 </div>
-
 
 </footer>
 
@@ -1909,17 +2018,18 @@ textarea::placeholder{
 
 <script>
 
-/* ======================================================
-   DATA
-====================================================== */
+/* =====================================================
+   CHATLUK DATA
+===================================================== */
 
 let chats = [];
+
 let activeChat = null;
 
 
-/* ======================================================
+/* =====================================================
    ELEMENTS
-====================================================== */
+===================================================== */
 
 const historyBox =
     document.getElementById("history");
@@ -1952,24 +2062,24 @@ const themeButton =
     document.getElementById("themeButton");
 
 
-/* ======================================================
-   ID
-====================================================== */
+/* =====================================================
+   CREATE ID
+===================================================== */
 
 function createID(){
 
     return Date.now().toString(36)
         +
         Math.random()
-            .toString(36)
-            .substring(2,8);
+        .toString(36)
+        .substring(2,8);
 
 }
 
 
-/* ======================================================
+/* =====================================================
    NEW CHAT
-====================================================== */
+===================================================== */
 
 function newChat(){
 
@@ -1999,9 +2109,9 @@ function newChat(){
 }
 
 
-/* ======================================================
+/* =====================================================
    GET CHAT
-====================================================== */
+===================================================== */
 
 function getChat(){
 
@@ -2013,9 +2123,9 @@ function getChat(){
 }
 
 
-/* ======================================================
+/* =====================================================
    HISTORY
-====================================================== */
+===================================================== */
 
 function renderHistory(){
 
@@ -2039,70 +2149,90 @@ function renderHistory(){
         return;
     }
 
-    chats.forEach(chat => {
+    chats.forEach(
+        chat => {
 
-        const button =
-            document.createElement("button");
+            const button =
+                document.createElement("button");
 
-        button.className =
-            "history-item"
-            +
-            (
-                chat.id === activeChat
-                ? " active"
-                : ""
+            button.className =
+                "history-item" +
+                (
+                    chat.id === activeChat
+                        ? " active"
+                        : ""
+                );
+
+            button.textContent =
+                chat.title;
+
+            button.onclick =
+                function(){
+
+                    activeChat =
+                        chat.id;
+
+                    renderHistory();
+
+                    renderMessages();
+
+                    closeMenu();
+
+                };
+
+            historyBox.appendChild(button);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   RENDER MESSAGES
+===================================================== */
+
+function renderMessages(){
+
+    messagesBox.innerHTML = "";
+
+    const chat =
+        getChat();
+
+    if(
+        !chat ||
+        chat.messages.length === 0
+    ){
+
+        welcome.style.display =
+            "flex";
+
+        return;
+    }
+
+    welcome.style.display =
+        "none";
+
+    chat.messages.forEach(
+        message => {
+
+            addMessage(
+                message.role,
+                message.text,
+                false
             );
 
-        button.textContent =
-            chat.title;
+        }
+    );
 
-        button.onclick =
-            function(){
-
-                activeChat =
-                    chat.id;
-
-                renderHistory();
-
-                renderMessages();
-
-                closeMenu();
-
-            };
-
-        historyBox.appendChild(button);
-
-    });
+    scrollBottom();
 
 }
 
 
-/* ======================================================
-   DRAGON AVATAR HTML
-====================================================== */
-
-function dragonAvatar(){
-
-    return \`
-        <div class="mini-dragon">
-
-            <div class="mini-horn l"></div>
-            <div class="mini-horn r"></div>
-
-            <div class="mini-head"></div>
-
-            <div class="mini-eye l"></div>
-            <div class="mini-eye r"></div>
-
-        </div>
-    \`;
-
-}
-
-
-/* ======================================================
+/* =====================================================
    ADD MESSAGE
-====================================================== */
+===================================================== */
 
 function addMessage(
     role,
@@ -2124,35 +2254,17 @@ function addMessage(
         "avatar";
 
 
-    if(role === "ai"){
-
-        avatar.innerHTML =
-            dragonAvatar();
-
-    }
-    else{
-
-        const userAvatar =
-            document.createElement("div");
-
-        userAvatar.className =
-            "user-avatar";
-
-        userAvatar.textContent =
-            "U";
-
-        avatar.appendChild(
-            userAvatar
-        );
-
-    }
-
-
     const bubble =
         document.createElement("div");
 
     bubble.className =
         "bubble";
+
+
+    /*
+       Dùng textContent để tin nhắn
+       không thể chạy HTML/JavaScript.
+    */
 
     bubble.textContent =
         text;
@@ -2174,56 +2286,9 @@ function addMessage(
 }
 
 
-/* ======================================================
-   RENDER
-====================================================== */
-
-function renderMessages(){
-
-    messagesBox.innerHTML = "";
-
-    const chat =
-        getChat();
-
-
-    if(
-        !chat ||
-        chat.messages.length === 0
-    ){
-
-        welcome.style.display =
-            "flex";
-
-        return;
-
-    }
-
-
-    welcome.style.display =
-        "none";
-
-
-    chat.messages.forEach(
-        message => {
-
-            addMessage(
-                message.role,
-                message.text,
-                false
-            );
-
-        }
-    );
-
-
-    scrollBottom();
-
-}
-
-
-/* ======================================================
+/* =====================================================
    SCROLL
-====================================================== */
+===================================================== */
 
 function scrollBottom(){
 
@@ -2239,9 +2304,9 @@ function scrollBottom(){
 }
 
 
-/* ======================================================
+/* =====================================================
    TYPING
-====================================================== */
+===================================================== */
 
 function showTyping(){
 
@@ -2260,9 +2325,6 @@ function showTyping(){
 
     avatar.className =
         "avatar";
-
-    avatar.innerHTML =
-        dragonAvatar();
 
 
     const bubble =
@@ -2311,21 +2373,22 @@ function hideTyping(){
 }
 
 
-/* ======================================================
-   GEMINI API
-====================================================== */
+/* =====================================================
+   GEMINI AI
+=====================================================
+
+   Frontend gọi:
+
+       POST /api/chat
+
+   API KEY KHÔNG nằm trong HTML.
+
+   Secret cần đặt ở Worker:
+
+       GEMINI_API_KEY
+===================================================== */
 
 async function AI(text){
-
-    const chat =
-        getChat();
-
-
-    const history =
-        chat
-        ? chat.messages
-        : [];
-
 
     const response =
         await fetch(
@@ -2339,13 +2402,10 @@ async function AI(text){
                         "application/json"
                 },
 
-                body:JSON.stringify({
-
-                    message:text,
-
-                    history:history
-
-                })
+                body:
+                    JSON.stringify({
+                        message:text
+                    })
 
             }
         );
@@ -2360,7 +2420,7 @@ async function AI(text){
             await response.json();
 
     }
-    catch(error){
+    catch{
 
         throw new Error(
             "Worker không trả về JSON hợp lệ."
@@ -2378,7 +2438,7 @@ async function AI(text){
 
                 ? data.error
 
-                : "Worker trả về HTTP " +
+                : "Worker HTTP " +
                   response.status
 
         );
@@ -2388,7 +2448,7 @@ async function AI(text){
 
     if(
         !data ||
-        typeof data.reply !== "string"
+        !data.reply
     ){
 
         throw new Error(
@@ -2403,9 +2463,9 @@ async function AI(text){
 }
 
 
-/* ======================================================
-   SEND
-====================================================== */
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
 
 async function sendMessage(text){
 
@@ -2450,10 +2510,7 @@ async function sendMessage(text){
         chat.title =
             text.length > 35
 
-                ? text.substring(
-                    0,
-                    35
-                  ) + "..."
+                ? text.substring(0,35) + "..."
 
                 : text;
 
@@ -2468,9 +2525,7 @@ async function sendMessage(text){
 
     renderMessages();
 
-
-    send.disabled =
-        true;
+    send.disabled = true;
 
     showTyping();
 
@@ -2479,7 +2534,6 @@ async function sendMessage(text){
 
         const reply =
             await AI(text);
-
 
         hideTyping();
 
@@ -2505,7 +2559,7 @@ async function sendMessage(text){
 
 
         const errorText =
-            "🐉 ChatLuk gặp sự cố khi kết nối Gemini.\n\n" +
+            "🐉 ChatLuk gặp sự cố khi kết nối AI.\n\n" +
             "Chi tiết: " +
             (
                 error &&
@@ -2531,15 +2585,14 @@ async function sendMessage(text){
 
 
         console.error(
-            "ChatLuk Gemini Error:",
+            "ChatLuk AI Error:",
             error
         );
 
     }
 
 
-    send.disabled =
-        false;
+    send.disabled = false;
 
     renderHistory();
 
@@ -2548,9 +2601,9 @@ async function sendMessage(text){
 }
 
 
-/* ======================================================
+/* =====================================================
    FORM
-====================================================== */
+===================================================== */
 
 form.addEventListener(
     "submit",
@@ -2566,9 +2619,9 @@ form.addEventListener(
 );
 
 
-/* ======================================================
+/* =====================================================
    ENTER
-====================================================== */
+===================================================== */
 
 input.addEventListener(
     "keydown",
@@ -2589,9 +2642,9 @@ input.addEventListener(
 );
 
 
-/* ======================================================
+/* =====================================================
    RESIZE
-====================================================== */
+===================================================== */
 
 function resizeInput(){
 
@@ -2602,8 +2655,7 @@ function resizeInput(){
         Math.min(
             input.scrollHeight,
             170
-        )
-        + "px";
+        ) + "px";
 
 }
 
@@ -2613,14 +2665,12 @@ input.addEventListener(
 );
 
 
-/* ======================================================
+/* =====================================================
    SUGGESTIONS
-====================================================== */
+===================================================== */
 
 document
-    .querySelectorAll(
-        ".suggestion"
-    )
+    .querySelectorAll(".suggestion")
     .forEach(
         button => {
 
@@ -2630,8 +2680,8 @@ document
 
                     input.value =
                         button
-                            .textContent
-                            .trim();
+                        .textContent
+                        .trim();
 
                     resizeInput();
 
@@ -2644,9 +2694,9 @@ document
     );
 
 
-/* ======================================================
+/* =====================================================
    NEW CHAT
-====================================================== */
+===================================================== */
 
 document
     .getElementById("newChat")
@@ -2656,9 +2706,9 @@ document
     );
 
 
-/* ======================================================
-   CLEAR
-====================================================== */
+/* =====================================================
+   CLEAR HISTORY
+===================================================== */
 
 document
     .getElementById("clearHistory")
@@ -2678,9 +2728,9 @@ document
     );
 
 
-/* ======================================================
-   MOBILE
-====================================================== */
+/* =====================================================
+   MOBILE MENU
+===================================================== */
 
 document
     .getElementById("menuButton")
@@ -2712,16 +2762,15 @@ function closeMenu(){
 
 }
 
-
 overlay.addEventListener(
     "click",
     closeMenu
 );
 
 
-/* ======================================================
+/* =====================================================
    DARK MODE
-====================================================== */
+===================================================== */
 
 themeButton.addEventListener(
     "click",
@@ -2731,18 +2780,31 @@ themeButton.addEventListener(
             "dark"
         );
 
-        themeButton.textContent =
-            document.body.classList.contains("dark")
-                ? "☀"
-                : "◐";
+
+        if(
+            document.body.classList.contains(
+                "dark"
+            )
+        ){
+
+            themeButton.textContent =
+                "☾";
+
+        }
+        else{
+
+            themeButton.textContent =
+                "☀";
+
+        }
 
     }
 );
 
 
-/* ======================================================
+/* =====================================================
    START
-====================================================== */
+===================================================== */
 
 renderHistory();
 
@@ -2806,6 +2868,187 @@ function json(
 
 
 /* ======================================================
+   GEMINI API
+====================================================== */
+
+async function callGemini(
+    message,
+    apiKey
+){
+
+    const model =
+        "gemini-2.5-flash";
+
+
+    const endpoint =
+        "https://generativelanguage.googleapis.com/v1beta/models/" +
+        model +
+        ":generateContent?key=" +
+        encodeURIComponent(apiKey);
+
+
+    const response =
+        await fetch(
+            endpoint,
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify({
+
+                        systemInstruction:{
+                            parts:[
+                                {
+                                    text:
+                                        "Bạn là ChatLuk, " +
+                                        "một trợ lý AI nói tiếng Việt. " +
+                                        "Hãy trả lời tự nhiên, rõ ràng, " +
+                                        "thân thiện và hữu ích. " +
+                                        "Ưu tiên tiếng Việt. " +
+                                        "Khi giải thích kiến thức, " +
+                                        "hãy trình bày dễ hiểu. " +
+                                        "Không tự nhận mình là Gemini " +
+                                        "trừ khi người dùng hỏi trực tiếp."
+                                }
+                            ]
+                        },
+
+                        contents:[
+                            {
+                                role:"user",
+
+                                parts:[
+                                    {
+                                        text:message
+                                    }
+                                ]
+                            }
+                        ],
+
+                        generationConfig:{
+                            temperature:0.7,
+                            maxOutputTokens:4096
+                        }
+
+                    })
+
+            }
+        );
+
+
+    const raw =
+        await response.text();
+
+
+    let data;
+
+
+    try{
+
+        data =
+            JSON.parse(raw);
+
+    }
+    catch{
+
+        throw new Error(
+            "Gemini trả về dữ liệu không hợp lệ."
+        );
+
+    }
+
+
+    if(!response.ok){
+
+        const message =
+            data &&
+            data.error &&
+            data.error.message
+
+                ? data.error.message
+
+                : "Gemini HTTP " +
+                  response.status;
+
+
+        throw new Error(
+            message
+        );
+
+    }
+
+
+    let answer = "";
+
+
+    if(
+        data &&
+        Array.isArray(
+            data.candidates
+        )
+    ){
+
+        for(
+            const candidate
+            of data.candidates
+        ){
+
+            if(
+                candidate &&
+                candidate.content &&
+                Array.isArray(
+                    candidate.content.parts
+                )
+            ){
+
+                for(
+                    const part
+                    of candidate.content.parts
+                ){
+
+                    if(
+                        part &&
+                        typeof part.text ===
+                            "string"
+                    ){
+
+                        answer +=
+                            part.text;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    if(
+        !answer.trim()
+    ){
+
+        throw new Error(
+            "Gemini không trả về nội dung."
+        );
+
+    }
+
+
+    return answer.trim();
+
+}
+
+
+/* ======================================================
    WORKER
 ====================================================== */
 
@@ -2817,12 +3060,14 @@ export default {
     ){
 
         const url =
-            new URL(request.url);
+            new URL(
+                request.url
+            );
 
 
-        /* ==================================================
+        /* =================================================
            CORS
-        ================================================== */
+        ================================================= */
 
         if(
             request.method ===
@@ -2840,9 +3085,9 @@ export default {
         }
 
 
-        /* ==================================================
+        /* =================================================
            WEBSITE
-        ================================================== */
+        ================================================= */
 
         if(
             request.method === "GET" &&
@@ -2869,9 +3114,9 @@ export default {
         }
 
 
-        /* ==================================================
+        /* =================================================
            HEALTH
-        ================================================== */
+        ================================================= */
 
         if(
             request.method === "GET" &&
@@ -2885,7 +3130,10 @@ export default {
                 worker:
                     "ChatLuk Gemini Worker",
 
-                geminiSecretConfigured:
+                provider:
+                    "Google Gemini",
+
+                secretConfigured:
                     Boolean(
                         env.GEMINI_API_KEY
                     )
@@ -2895,9 +3143,9 @@ export default {
         }
 
 
-        /* ==================================================
+        /* =================================================
            CHAT API
-        ================================================== */
+        ================================================= */
 
         if(
             request.method === "POST" &&
@@ -2906,9 +3154,9 @@ export default {
 
             try{
 
-                /* ==========================================
+                /* =========================================
                    CHECK SECRET
-                ========================================== */
+                ========================================= */
 
                 if(
                     !env.GEMINI_API_KEY
@@ -2921,8 +3169,8 @@ export default {
 
                             error:
                                 "Không tìm thấy Secret GEMINI_API_KEY. " +
-                                "Hãy kiểm tra Settings → Variables and Secrets " +
-                                "của Cloudflare Worker."
+                                "Hãy vào Worker → Settings → Variables and Secrets " +
+                                "và kiểm tra đúng tên GEMINI_API_KEY."
 
                         },
                         500
@@ -2931,9 +3179,9 @@ export default {
                 }
 
 
-                /* ==========================================
-                   BODY
-                ========================================== */
+                /* =========================================
+                   READ BODY
+                ========================================= */
 
                 let body;
 
@@ -2966,18 +3214,9 @@ export default {
                     body.message;
 
 
-                const history =
-                    body &&
-                    Array.isArray(
-                        body.history
-                    )
-                        ? body.history
-                        : [];
-
-
-                /* ==========================================
+                /* =========================================
                    VALIDATE
-                ========================================== */
+                ========================================= */
 
                 if(
                     typeof message !== "string" ||
@@ -2999,6 +3238,10 @@ export default {
                 }
 
 
+                /* =========================================
+                   LIMIT
+                ========================================= */
+
                 if(
                     message.length > 8000
                 ){
@@ -3009,7 +3252,8 @@ export default {
                             ok:false,
 
                             error:
-                                "Tin nhắn quá dài."
+                                "Tin nhắn quá dài. " +
+                                "Vui lòng rút ngắn tin nhắn."
 
                         },
                         400
@@ -3018,297 +3262,26 @@ export default {
                 }
 
 
-                /* ==========================================
-                   BUILD GEMINI HISTORY
-                ========================================== */
+                /* =========================================
+                   GEMINI
+                ========================================= */
 
-                const contents = [];
-
-
-                for(
-                    const item
-                    of history.slice(-20)
-                ){
-
-                    if(
-                        !item ||
-                        typeof item.text !== "string"
-                    ){
-
-                        continue;
-
-                    }
-
-
-                    const role =
-                        item.role === "ai"
-                            ? "model"
-                            : "user";
-
-
-                    contents.push({
-
-                        role:role,
-
-                        parts:[
-                            {
-                                text:
-                                    item.text.substring(
-                                        0,
-                                        8000
-                                    )
-                            }
-                        ]
-
-                    });
-
-                }
-
-
-                /* ==========================================
-                   CURRENT MESSAGE
-                ========================================== */
-
-                contents.push({
-
-                    role:"user",
-
-                    parts:[
-                        {
-                            text:message
-                        }
-                    ]
-
-                });
-
-
-                /* ==========================================
-                   GEMINI REQUEST
-                ========================================== */
-
-                const geminiResponse =
-                    await fetch(
-
-                        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent",
-
-                        {
-
-                            method:"POST",
-
-                            headers:{
-
-                                "Content-Type":
-                                    "application/json",
-
-                                "x-goog-api-key":
-                                    env.GEMINI_API_KEY
-
-                            },
-
-                            body:JSON.stringify({
-
-                                systemInstruction:{
-
-                                    parts:[
-
-                                        {
-
-                                            text:
-                                                "Bạn là ChatLuk, " +
-                                                "một trợ lý AI Việt Nam " +
-                                                "thân thiện và thông minh. " +
-                                                "Luôn ưu tiên trả lời bằng tiếng Việt. " +
-                                                "Trình bày rõ ràng, dễ hiểu. " +
-                                                "Có thể dùng emoji vừa phải. " +
-                                                "Khi người dùng hỏi về học tập, " +
-                                                "hãy giải thích phù hợp với học sinh. " +
-                                                "Khi người dùng yêu cầu code, " +
-                                                "hãy đưa code hoàn chỉnh và dễ copy. " +
-                                                "Không tự nhận mình là Gemini nếu " +
-                                                "người dùng đang gọi bạn là ChatLuk."
-
-                                        }
-
-                                    ]
-
-                                },
-
-                                contents:contents,
-
-                                generationConfig:{
-
-                                    temperature:0.7,
-
-                                    maxOutputTokens:4096
-
-                                }
-
-                            })
-
-                        }
-
+                const reply =
+                    await callGemini(
+                        message,
+                        env.GEMINI_API_KEY
                     );
 
 
-                /* ==========================================
-                   READ RESPONSE
-                ========================================== */
-
-                const raw =
-                    await geminiResponse.text();
-
-
-                let data;
-
-
-                try{
-
-                    data =
-                        JSON.parse(raw);
-
-                }
-                catch{
-
-                    return json(
-                        {
-
-                            ok:false,
-
-                            error:
-                                "Gemini trả về dữ liệu không hợp lệ."
-
-                        },
-                        502
-                    );
-
-                }
-
-
-                /* ==========================================
-                   GEMINI ERROR
-                ========================================== */
-
-                if(
-                    !geminiResponse.ok
-                ){
-
-                    const geminiError =
-                        data &&
-                        data.error;
-
-
-                    return json(
-                        {
-
-                            ok:false,
-
-                            error:
-                                geminiError &&
-                                geminiError.message
-
-                                    ? geminiError.message
-
-                                    : "Gemini API trả về HTTP " +
-                                      geminiResponse.status,
-
-                            code:
-                                geminiError &&
-                                geminiError.status
-                                    ? geminiError.status
-                                    : null
-
-                        },
-                        geminiResponse.status
-                    );
-
-                }
-
-
-                /* ==========================================
-                   EXTRACT TEXT
-                ========================================== */
-
-                let answer = "";
-
-
-                if(
-                    data &&
-                    Array.isArray(
-                        data.candidates
-                    )
-                ){
-
-                    for(
-                        const candidate
-                        of data.candidates
-                    ){
-
-                        if(
-                            candidate &&
-                            candidate.content &&
-                            Array.isArray(
-                                candidate.content.parts
-                            )
-                        ){
-
-                            for(
-                                const part
-                                of candidate.content.parts
-                            ){
-
-                                if(
-                                    part &&
-                                    typeof part.text ===
-                                        "string"
-                                ){
-
-                                    answer +=
-                                        part.text;
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-
-                /* ==========================================
-                   EMPTY
-                ========================================== */
-
-                if(
-                    !answer.trim()
-                ){
-
-                    return json(
-                        {
-
-                            ok:false,
-
-                            error:
-                                "Gemini không trả về nội dung."
-
-                        },
-                        502
-                    );
-
-                }
-
-
-                /* ==========================================
+                /* =========================================
                    SUCCESS
-                ========================================== */
+                ========================================= */
 
                 return json({
 
                     ok:true,
 
-                    reply:
-                        answer.trim()
+                    reply:reply
 
                 });
 
@@ -3316,7 +3289,7 @@ export default {
             catch(error){
 
                 console.error(
-                    "ChatLuk Worker Error:",
+                    "ChatLuk Gemini Error:",
                     error
                 );
 
@@ -3332,7 +3305,7 @@ export default {
 
                                 ? error.message
 
-                                : "Worker gặp lỗi không xác định."
+                                : "Gemini Worker gặp lỗi."
 
                     },
                     500
@@ -3343,9 +3316,9 @@ export default {
         }
 
 
-        /* ==================================================
+        /* =================================================
            404
-        ================================================== */
+        ================================================= */
 
         return json(
             {
