@@ -2,18 +2,11 @@ const HTML = `
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ChatLuk — Vietnamese Dragon AI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ChatLuk</title>
 
 <style>
-
-/* =====================================================
-   RESET
-===================================================== */
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -21,551 +14,419 @@ const HTML = `
 }
 
 :root{
-
-    --gold:#b98228;
-    --gold2:#d6a64a;
-    --gold-light:#f1d79a;
-
-    --red:#9d2b20;
-    --red2:#c54835;
-
-    --ink:#493c2b;
-    --muted:#817361;
-
-    --paper:#f8f0df;
-    --paper2:#fffaf0;
-
-    --border:rgba(139,92,31,.22);
-
-    --shadow:
-        0 10px 35px rgba(77,48,20,.13);
-
-    --bubble-ai:
-        rgba(255,251,241,.92);
-
-    --bubble-user:
-        linear-gradient(
-            135deg,
-            #fff1cf,
-            #f6d994
-        );
+    --cream:#f8f0df;
+    --paper:#fffaf0;
+    --paper2:#f5ead5;
+    --gold:#b57a28;
+    --gold2:#d8a44b;
+    --red:#a91f18;
+    --red2:#d13b28;
+    --brown:#634523;
+    --text:#40372d;
+    --muted:#8c7d69;
+    --line:#dfc99e;
+    --shadow:rgba(80,48,18,.16);
 }
-
-
-/* =====================================================
-   DARK MODE
-===================================================== */
-
-body.dark{
-
-    --ink:#eee4d0;
-    --muted:#b9aa91;
-
-    --paper:#201b16;
-    --paper2:#2a241d;
-
-    --border:rgba(224,178,89,.24);
-
-    --bubble-ai:
-        rgba(47,40,31,.95);
-
-    --bubble-user:
-        linear-gradient(
-            135deg,
-            #5d4826,
-            #80612e
-        );
-
-    background:
-        radial-gradient(
-            circle at 80% 10%,
-            rgba(182,130,44,.14),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #171411,
-            #282117
-        );
-
-}
-
-
-/* =====================================================
-   BODY
-===================================================== */
 
 html,
 body{
-
     width:100%;
     height:100%;
-
 }
 
 body{
-
     font-family:
         "Segoe UI",
         Arial,
         sans-serif;
 
-    color:var(--ink);
+    color:var(--text);
 
     overflow:hidden;
 
     background:
-
-        radial-gradient(
-            circle at 80% 5%,
-            rgba(216,174,94,.20),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 15% 85%,
-            rgba(157,43,32,.08),
-            transparent 30%
-        ),
-
         linear-gradient(
             135deg,
-            #f5ead4,
-            #fffaf0,
-            #e9dcc3
+            #f8f0df,
+            #efe1c5
         );
 
     transition:
         background .3s,
         color .3s;
-
 }
 
+/* =====================================================
+   DECORATIVE BACKGROUND
+===================================================== */
+
+body:before{
+    content:"";
+
+    position:fixed;
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:.16;
+
+    background-image:
+        radial-gradient(
+            circle at 20% 20%,
+            #ffffff 0 2px,
+            transparent 3px
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            #b68a50 0 1px,
+            transparent 2px
+        );
+
+    background-size:
+        70px 70px,
+        90px 90px;
+}
 
 /* =====================================================
    APP
 ===================================================== */
 
 .app{
-
     width:100vw;
     height:100vh;
 
     display:flex;
 
-}
-
-
-/* =====================================================
-   DECORATIVE BACKGROUND
-===================================================== */
-
-.background-art{
-
-    position:fixed;
-
-    inset:0;
-
-    pointer-events:none;
-
     overflow:hidden;
 
-    z-index:0;
-
-    opacity:.48;
-
+    position:relative;
 }
-
-body.dark .background-art{
-
-    opacity:.16;
-
-}
-
-.mountain{
-
-    position:absolute;
-
-    left:18%;
-
-    bottom:8%;
-
-    width:58%;
-
-    height:52%;
-
-    opacity:.24;
-
-}
-
-.mountain svg{
-
-    width:100%;
-    height:100%;
-
-}
-
-.birds{
-
-    position:absolute;
-
-    top:105px;
-
-    left:48%;
-
-    font-size:17px;
-
-    letter-spacing:18px;
-
-    opacity:.32;
-
-}
-
-.sun{
-
-    position:absolute;
-
-    right:25%;
-
-    top:75px;
-
-    width:100px;
-    height:100px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(183,65,38,.35),
-            rgba(183,65,38,.04) 65%,
-            transparent 70%
-        );
-
-}
-
-.branch{
-
-    position:absolute;
-
-    right:-30px;
-
-    top:30px;
-
-    width:300px;
-
-    height:180px;
-
-    opacity:.35;
-
-}
-
-.branch svg{
-
-    width:100%;
-    height:100%;
-
-}
-
 
 /* =====================================================
    SIDEBAR
 ===================================================== */
 
 .sidebar{
-
-    width:275px;
+    width:180px;
     height:100vh;
 
-    padding:18px 14px;
+    flex-shrink:0;
 
     display:flex;
-
     flex-direction:column;
 
-    flex-shrink:0;
+    padding:8px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,250,239,.98),
+            rgba(247,236,213,.97)
+        );
+
+    border-right:
+        1px solid
+        var(--line);
 
     position:relative;
 
     z-index:20;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,251,240,.96),
-            rgba(242,231,207,.94)
-        );
-
-    border-right:
-        1px solid var(--border);
-
-    box-shadow:
-        8px 0 35px rgba(80,45,15,.07);
-
-    transition:
-        background .3s;
-
 }
 
-body.dark .sidebar{
+/* decorative gold frame */
 
-    background:
-        linear-gradient(
-            180deg,
-            #282119,
-            #1e1914
-        );
+.sidebar:before{
+    content:"";
 
+    position:absolute;
+
+    inset:4px;
+
+    border:
+        1px solid
+        rgba(181,122,40,.45);
+
+    pointer-events:none;
 }
-
 
 /* =====================================================
    LOGO
 ===================================================== */
 
 .logo{
+    height:70px;
 
     display:flex;
 
     align-items:center;
 
-    gap:10px;
+    justify-content:center;
 
-    padding:
-        3px 8px 17px;
+    gap:5px;
 
     border-bottom:
-        1px solid var(--border);
+        1px solid
+        rgba(181,122,40,.28);
 
+    position:relative;
+
+    z-index:2;
 }
 
 .logo-dragon{
-
-    width:54px;
-    height:45px;
+    width:49px;
+    height:49px;
 
     flex-shrink:0;
-
 }
 
-.logo-dragon svg{
-
+.logo-dragon img{
     width:100%;
     height:100%;
 
+    object-fit:contain;
 }
 
 .logo-text{
-
     font-family:
         Georgia,
+        "Times New Roman",
         serif;
 
-    font-size:25px;
+    font-size:20px;
 
     font-weight:bold;
 
-    color:var(--ink);
-
+    color:#7d4c19;
 }
 
-.logo-text span{
+.logo-sub{
+    font-size:7px;
 
-    color:var(--red);
+    color:#9a8061;
 
+    margin-top:2px;
 }
-
 
 /* =====================================================
    NEW CHAT
 ===================================================== */
 
 .new-chat{
+    margin:10px 7px;
 
-    width:100%;
+    height:32px;
 
-    margin-top:15px;
+    border:1px solid #d99c35;
 
-    padding:13px 15px;
+    border-radius:6px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.2);
-
-    border-radius:8px;
-
-    color:#fff;
+    color:#fff9e9;
 
     background:
         linear-gradient(
-            135deg,
-            #8c2119,
-            #bf4a2d
+            180deg,
+            #c73a22,
+            #8e1712
         );
 
     box-shadow:
-        0 8px 18px
-        rgba(126,40,24,.2);
+        inset 0 1px 0 rgba(255,255,255,.2),
+        0 4px 9px rgba(100,40,15,.16);
 
     cursor:pointer;
+
+    font-size:10px;
 
     font-weight:600;
 
     transition:.2s;
-
 }
 
 .new-chat:hover{
-
     transform:translateY(-1px);
 
-    box-shadow:
-        0 11px 23px
-        rgba(126,40,24,.28);
-
+    filter:brightness(1.08);
 }
-
 
 /* =====================================================
    HISTORY
 ===================================================== */
 
 .history-title{
+    padding:
+        8px 6px 5px;
+
+    color:#756552;
+
+    font-size:8px;
+
+    font-weight:bold;
+
+    letter-spacing:.6px;
 
     display:flex;
 
     justify-content:space-between;
 
     align-items:center;
-
-    margin:
-        25px 5px 9px;
-
-    color:var(--muted);
-
-    font-size:10px;
-
-    font-weight:bold;
-
-    letter-spacing:1.2px;
-
 }
 
 .clear-btn{
-
     border:0;
 
     background:none;
 
-    color:var(--muted);
+    color:#a78c67;
 
     cursor:pointer;
 
-    font-size:18px;
-
+    font-size:14px;
 }
 
 .history{
-
     flex:1;
 
     overflow-y:auto;
 
+    padding:0 3px;
+}
+
+.history::-webkit-scrollbar{
+    width:3px;
+}
+
+.history::-webkit-scrollbar-thumb{
+    background:#d4b77e;
 }
 
 .history-item{
-
     width:100%;
 
-    padding:10px 9px;
-
-    margin-bottom:5px;
+    min-height:48px;
 
     display:flex;
 
     align-items:center;
 
-    gap:8px;
+    gap:5px;
+
+    margin-bottom:4px;
+
+    padding:5px;
 
     border:
-        1px solid transparent;
+        1px solid
+        rgba(180,137,70,.2);
 
-    border-radius:8px;
+    border-radius:5px;
 
-    background:transparent;
+    background:
+        rgba(255,252,244,.72);
 
-    color:var(--ink);
-
-    text-align:left;
+    color:#594b3d;
 
     cursor:pointer;
 
-    font-size:11px;
+    text-align:left;
 
-    transition:.2s;
-
+    transition:.15s;
 }
 
 .history-item:hover,
 .history-item.active{
+    background:#fff8e9;
 
-    background:
-        rgba(188,133,45,.10);
-
-    border-color:
-        rgba(188,133,45,.18);
-
+    border-color:#d6aa62;
 }
 
 .history-dragon{
-
-    width:34px;
-    height:28px;
+    width:30px;
+    height:30px;
 
     flex-shrink:0;
-
 }
 
+.history-dragon img{
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+}
+
+.history-info{
+    min-width:0;
+}
+
+.history-name{
+    font-size:8px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+.history-time{
+    margin-top:3px;
+
+    color:#9a8b77;
+
+    font-size:7px;
+}
 
 /* =====================================================
-   SIDEBAR BOTTOM
+   SIDEBAR FOOTER
 ===================================================== */
 
-.sidebar-bottom{
+.sidebar-footer{
+    height:78px;
 
-    margin-top:12px;
+    margin-top:6px;
 
-    padding:12px;
+    padding:5px;
 
-    border:
-        1px solid var(--border);
+    position:relative;
 
-    border-radius:10px;
+    overflow:hidden;
 
-    background:
-        rgba(255,255,255,.28);
+    border-top:
+        1px solid
+        rgba(181,122,40,.3);
 
+    text-align:center;
 }
 
-.sidebar-bottom p{
+.sidebar-footer-dragon{
+    width:42px;
+    height:42px;
 
-    margin-top:5px;
-
-    color:var(--muted);
-
-    font-size:9px;
-
-    line-height:1.6;
-
+    margin:auto;
 }
 
+.sidebar-footer-dragon img{
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+}
+
+.sidebar-footer-title{
+    font-family:Georgia,serif;
+
+    color:#795323;
+
+    font-size:12px;
+
+    font-weight:bold;
+}
 
 /* =====================================================
    MAIN
 ===================================================== */
 
 .main{
-
     flex:1;
 
     min-width:0;
@@ -578,161 +439,335 @@ body.dark .sidebar{
 
     position:relative;
 
-    z-index:2;
-
+    overflow:hidden;
 }
 
+/* =====================================================
+   PAINTING BACKGROUND
+===================================================== */
+
+.painting{
+    position:absolute;
+
+    inset:44px 0 0 0;
+
+    pointer-events:none;
+
+    overflow:hidden;
+
+    opacity:.38;
+
+    z-index:0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(250,244,228,.85),
+            rgba(245,235,211,.8)
+        );
+}
+
+/* mountains */
+
+.mountain{
+    position:absolute;
+
+    bottom:20%;
+
+    width:0;
+    height:0;
+
+    border-left:
+        150px solid transparent;
+
+    border-right:
+        150px solid transparent;
+
+    border-bottom:
+        220px solid
+        rgba(105,110,94,.18);
+}
+
+.m1{
+    left:5%;
+    transform:scale(1.4);
+}
+
+.m2{
+    left:27%;
+    bottom:12%;
+    transform:scale(1.8);
+}
+
+.m3{
+    left:53%;
+    bottom:18%;
+    transform:scale(1.35);
+}
+
+.m4{
+    right:0;
+    bottom:10%;
+    transform:scale(1.7);
+}
+
+/* pagoda */
+
+.pagoda{
+    position:absolute;
+
+    right:8%;
+
+    bottom:16%;
+
+    width:120px;
+    height:170px;
+
+    opacity:.55;
+}
+
+.pagoda-roof{
+    position:absolute;
+
+    width:115px;
+    height:24px;
+
+    left:2px;
+
+    border-radius:
+        50% 50% 15% 15%;
+
+    background:
+        rgba(76,73,61,.25);
+
+    transform:
+        skewX(-18deg);
+}
+
+.pr1{
+    top:5px;
+}
+
+.pr2{
+    top:48px;
+    transform:
+        scale(.78)
+        skewX(-18deg);
+    left:14px;
+}
+
+.pr3{
+    top:88px;
+    transform:
+        scale(.58)
+        skewX(-18deg);
+    left:25px;
+}
+
+.pagoda-body{
+    position:absolute;
+
+    top:22px;
+    left:48px;
+
+    width:28px;
+    height:125px;
+
+    background:
+        rgba(72,67,57,.18);
+}
+
+/* sun */
+
+.sun{
+    position:absolute;
+
+    right:23%;
+    top:14%;
+
+    width:80px;
+    height:80px;
+
+    border-radius:50%;
+
+    background:
+        rgba(191,88,57,.25);
+}
+
+/* birds */
+
+.birds{
+    position:absolute;
+
+    top:11%;
+    left:37%;
+
+    color:#4b4d42;
+
+    font-size:25px;
+
+    letter-spacing:15px;
+
+    opacity:.45;
+}
+
+/* branches */
+
+.branch{
+    position:absolute;
+
+    top:0;
+    right:-30px;
+
+    width:320px;
+    height:150px;
+
+    border-top:
+        5px solid
+        rgba(77,71,55,.22);
+
+    border-radius:50%;
+
+    transform:
+        rotate(-12deg);
+}
+
+.flower{
+    position:absolute;
+
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:
+        rgba(183,75,61,.32);
+
+    box-shadow:
+        20px 20px rgba(183,75,61,.27),
+        50px 5px rgba(183,75,61,.3),
+        85px 35px rgba(183,75,61,.25),
+        120px 20px rgba(183,75,61,.3),
+        165px 50px rgba(183,75,61,.25);
+}
 
 /* =====================================================
    TOPBAR
 ===================================================== */
 
 .topbar{
+    height:50px;
 
-    min-height:67px;
-
-    padding:
-        8px 22px;
+    flex-shrink:0;
 
     display:flex;
 
     align-items:center;
+
+    justify-content:center;
 
     position:relative;
 
-    z-index:5;
+    z-index:10;
+
+    background:
+        rgba(255,250,240,.84);
 
     border-bottom:
-        1px solid var(--border);
+        1px solid
+        rgba(181,122,40,.28);
 
-    background:
-        rgba(255,250,238,.72);
-
-    backdrop-filter:
-        blur(14px);
-
+    backdrop-filter:blur(8px);
 }
 
-body.dark .topbar{
+.menu{
+    position:absolute;
 
-    background:
-        rgba(35,29,23,.78);
+    left:10px;
 
-}
-
-.mobile-menu{
-
-    display:none;
-
-    width:38px;
-    height:38px;
-
-    margin-right:9px;
+    width:29px;
+    height:29px;
 
     border:
-        1px solid var(--border);
-
-    border-radius:10px;
-
-    background:var(--paper2);
-
-    color:var(--ink);
-
-    cursor:pointer;
-
-}
-
-.title{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-}
-
-.title-dragon{
-
-    width:46px;
-    height:38px;
-
-}
-
-.title-dragon svg{
-
-    width:100%;
-    height:100%;
-
-}
-
-.title h1{
-
-    font-family:
-        Georgia,
-        serif;
-
-    font-size:19px;
-
-}
-
-.title small{
-
-    display:block;
-
-    margin-top:1px;
-
-    color:var(--muted);
-
-    font-size:8px;
-
-    letter-spacing:1px;
-
-}
-
-.creator{
-
-    margin-left:auto;
-
-    margin-right:13px;
-
-    color:var(--ink);
-
-    font-size:9px;
-
-    font-weight:bold;
-
-    white-space:nowrap;
-
-}
-
-.theme{
-
-    width:38px;
-    height:38px;
-
-    border:
-        1px solid var(--border);
+        1px solid
+        #dbc49a;
 
     border-radius:50%;
 
-    background:var(--paper2);
+    background:#fffaf0;
 
-    color:var(--ink);
+    color:#6e5a3d;
 
     cursor:pointer;
 
-    font-size:17px;
-
+    display:none;
 }
 
+.top-title{
+    text-align:center;
+}
+
+.top-title h1{
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:21px;
+
+    color:#70471d;
+}
+
+.top-title p{
+    margin-top:2px;
+
+    font-size:8px;
+
+    color:#9a876c;
+}
+
+.creator{
+    position:absolute;
+
+    right:58px;
+
+    top:18px;
+
+    font-size:7px;
+
+    color:#665543;
+
+    white-space:nowrap;
+}
+
+.theme{
+    position:absolute;
+
+    right:15px;
+
+    width:30px;
+    height:30px;
+
+    border:
+        1px solid
+        #ddc89e;
+
+    border-radius:50%;
+
+    background:#fffaf0;
+
+    color:#603d20;
+
+    cursor:pointer;
+
+    font-size:14px;
+}
 
 /* =====================================================
-   CHAT AREA
+   CHAT
 ===================================================== */
 
 .chat-area{
-
     flex:1;
 
     min-height:0;
@@ -741,181 +776,99 @@ body.dark .topbar{
 
     position:relative;
 
-    scroll-behavior:smooth;
-
+    z-index:2;
 }
 
+.chat-area::-webkit-scrollbar{
+    width:5px;
+}
+
+.chat-area::-webkit-scrollbar-thumb{
+    background:#cdb27d;
+}
 
 /* =====================================================
    WELCOME
 ===================================================== */
 
 .welcome{
-
-    max-width:760px;
-
-    margin:auto;
-
-    padding:
-        45px 22px 25px;
+    min-height:100%;
 
     display:flex;
 
-    flex-direction:column;
-
     align-items:center;
+
+    justify-content:center;
+
+    flex-direction:column;
 
     text-align:center;
 
+    padding:30px;
 }
 
-.welcome-avatar{
-
-    width:145px;
-    height:110px;
-
-    margin-bottom:8px;
-
-    filter:
-        drop-shadow(
-            0 10px 12px
-            rgba(104,50,20,.13)
-        );
-
+.welcome-dragon{
+    width:105px;
+    height:105px;
 }
 
-.welcome-avatar svg{
-
+.welcome-dragon img{
     width:100%;
     height:100%;
 
-}
-
-.welcome-label{
-
-    color:var(--red);
-
-    font-size:9px;
-
-    font-weight:bold;
-
-    letter-spacing:3px;
-
+    object-fit:contain;
 }
 
 .welcome h2{
-
-    margin-top:5px;
+    margin-top:4px;
 
     font-family:
         Georgia,
         serif;
 
-    font-size:
-        clamp(43px,6vw,63px);
+    color:#71491e;
 
-    letter-spacing:-3px;
-
-}
-
-.welcome h2 span{
-
-    color:var(--red);
-
+    font-size:42px;
 }
 
 .welcome p{
+    margin-top:7px;
 
-    max-width:590px;
+    color:#8b7960;
 
-    margin:
-        12px 0 23px;
-
-    color:var(--muted);
-
-    font-size:12px;
-
-    line-height:1.8;
-
+    font-size:11px;
 }
-
-.suggestions{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    justify-content:center;
-
-    gap:8px;
-
-}
-
-.suggestion{
-
-    padding:9px 12px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius:20px;
-
-    background:
-        rgba(255,255,255,.55);
-
-    color:var(--ink);
-
-    font-size:10px;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-.suggestion:hover{
-
-    transform:translateY(-1px);
-
-    border-color:
-        var(--gold);
-
-    background:
-        var(--paper2);
-
-}
-
 
 /* =====================================================
    MESSAGES
 ===================================================== */
 
 .messages{
+    width:100%;
 
-    width:min(900px,100%);
+    max-width:900px;
 
     margin:auto;
 
     padding:
-        16px 22px 25px;
-
+        18px 24px 30px;
 }
 
 .message{
-
     display:flex;
 
-    gap:10px;
+    align-items:flex-start;
 
-    margin:17px 0;
+    gap:7px;
+
+    margin:
+        12px 0;
 
     animation:
         appear .2s ease;
-
 }
 
 @keyframes appear{
-
     from{
         opacity:0;
         transform:translateY(5px);
@@ -925,143 +878,150 @@ body.dark .topbar{
         opacity:1;
         transform:translateY(0);
     }
-
 }
 
 .message.user{
-
     justify-content:flex-end;
-
 }
 
 .message.user .avatar{
-
     order:2;
-
 }
-
 
 /* =====================================================
    AVATAR
 ===================================================== */
 
 .avatar{
-
     width:48px;
-    height:39px;
+    height:48px;
 
     flex:
         0 0 48px;
 
-    display:grid;
+    display:flex;
 
-    place-items:center;
+    align-items:center;
 
-    align-self:flex-start;
+    justify-content:center;
 
-    margin-top:2px;
+    background:transparent;
 
+    border:0;
+
+    overflow:visible;
 }
 
-.avatar svg{
+.avatar img{
+    width:48px;
+    height:48px;
 
-    width:100%;
-    height:100%;
+    object-fit:contain;
 
     filter:
         drop-shadow(
-            0 5px 5px
-            rgba(80,40,20,.12)
+            0 3px 3px
+            rgba(80,30,10,.18)
         );
-
 }
+
+/* user avatar */
 
 .message.user .avatar{
+    width:34px;
+    height:34px;
 
-    display:none;
+    flex-basis:34px;
 
+    margin-top:2px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #b82d20,
+            #e27640
+        );
+
+    color:#fff;
+
+    font-size:10px;
+
+    font-weight:bold;
 }
-
 
 /* =====================================================
    BUBBLE
 ===================================================== */
 
 .bubble{
-
     max-width:
-        min(700px,82%);
+        min(650px,78%);
 
     padding:
-        12px 15px;
+        10px 13px;
 
     border:
-        1px solid var(--border);
+        1px solid
+        rgba(187,145,78,.28);
 
     border-radius:
-        6px 15px 15px 15px;
+        7px 13px 13px 13px;
 
     background:
-        var(--bubble-ai);
+        rgba(255,255,255,.9);
 
-    color:var(--ink);
+    color:#453c31;
 
-    font-size:12px;
+    font-size:11px;
 
-    line-height:1.75;
+    line-height:1.65;
 
     white-space:pre-wrap;
 
     word-break:break-word;
 
     box-shadow:
-        0 5px 20px
-        rgba(60,35,15,.06);
-
+        0 3px 12px
+        rgba(90,55,20,.07);
 }
 
 .message.user .bubble{
-
     border-radius:
-        15px 6px 15px 15px;
-
-    color:#4b351b;
+        13px 7px 13px 13px;
 
     background:
-        var(--bubble-user);
+        #fff1c9;
 
     border-color:
-        rgba(169,115,35,.25);
+        #e0c487;
 
+    color:#55432d;
 }
-
 
 /* =====================================================
    TYPING
 ===================================================== */
 
 .typing{
-
     display:flex;
-
-    align-items:center;
 
     gap:4px;
 
+    align-items:center;
 }
 
 .typing i{
-
     width:5px;
     height:5px;
 
     border-radius:50%;
 
-    background:var(--red);
+    background:#a96d29;
 
     animation:
         typing 1s infinite;
-
 }
 
 .typing i:nth-child(2){
@@ -1073,7 +1033,6 @@ body.dark .topbar{
 }
 
 @keyframes typing{
-
     0%,60%,100%{
         opacity:.3;
         transform:translateY(0);
@@ -1081,78 +1040,76 @@ body.dark .topbar{
 
     30%{
         opacity:1;
-        transform:translateY(-4px);
+        transform:translateY(-3px);
     }
-
 }
-
 
 /* =====================================================
    COMPOSER
 ===================================================== */
 
 .composer-area{
+    width:100%;
 
-    width:min(900px,100%);
+    max-width:900px;
 
     margin:auto;
 
     padding:
-        6px 22px 14px;
+        5px 24px 8px;
 
     position:relative;
 
-    z-index:5;
-
+    z-index:10;
 }
 
 .composer{
+    min-height:45px;
 
     display:flex;
 
-    align-items:flex-end;
+    align-items:center;
 
-    gap:8px;
+    gap:6px;
 
     padding:
-        6px 6px 6px 15px;
+        4px 5px 4px 10px;
 
     border:
-        1px solid var(--border);
+        1px solid
+        #d7b878;
 
-    border-radius:18px;
+    border-radius:12px;
 
     background:
-        rgba(255,251,241,.88);
+        rgba(255,250,239,.94);
 
     box-shadow:
-        0 9px 30px
-        rgba(60,35,15,.10);
-
-    backdrop-filter:
-        blur(15px);
-
+        0 5px 20px
+        rgba(100,60,20,.12);
 }
 
-body.dark .composer{
+.composer-dragon{
+    width:40px;
+    height:40px;
 
-    background:
-        rgba(45,38,30,.9);
+    flex-shrink:0;
+}
 
+.composer-dragon img{
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
 }
 
 textarea{
-
     flex:1;
 
-    min-height:40px;
-
-    max-height:150px;
+    min-height:30px;
+    max-height:110px;
 
     resize:none;
-
-    padding:
-        10px 0;
 
     border:0;
 
@@ -1160,126 +1117,85 @@ textarea{
 
     background:transparent;
 
-    color:var(--ink);
+    color:#463a2c;
 
-    font-size:12px;
+    font-family:inherit;
 
-    line-height:20px;
+    font-size:11px;
 
+    line-height:18px;
+
+    padding:
+        7px 4px;
 }
 
 textarea::placeholder{
-
-    color:var(--muted);
-
+    color:#a39480;
 }
 
 .send{
-
-    width:43px;
-    height:43px;
+    width:38px;
+    height:38px;
 
     flex:
-        0 0 43px;
+        0 0 38px;
 
     border:0;
 
-    border-radius:14px;
-
-    color:white;
+    border-radius:50%;
 
     background:
         linear-gradient(
             135deg,
-            #8f2019,
-            #d05032
+            #b9251b,
+            #d84a29
         );
 
-    box-shadow:
-        0 7px 16px
-        rgba(130,35,20,.22);
+    color:#fff;
 
     cursor:pointer;
 
-    font-size:18px;
+    font-size:16px;
+
+    box-shadow:
+        0 4px 10px
+        rgba(150,30,20,.25);
 
     transition:.2s;
-
 }
 
 .send:hover{
-
-    transform:translateY(-2px);
-
+    transform:scale(1.06);
 }
 
 .send:disabled{
-
-    opacity:.45;
-
+    opacity:.5;
     cursor:not-allowed;
-
 }
 
 .info{
+    height:15px;
 
     display:flex;
 
-    justify-content:space-between;
+    justify-content:center;
 
-    padding:
-        6px 7px 0;
+    align-items:center;
 
-    color:var(--muted);
+    gap:12px;
 
-    font-size:8px;
+    color:#9a896e;
 
+    font-size:7px;
 }
-
-
-/* =====================================================
-   ORNAMENT
-===================================================== */
-
-.ornament{
-
-    position:absolute;
-
-    pointer-events:none;
-
-    color:var(--gold);
-
-    opacity:.65;
-
-    font-size:20px;
-
-}
-
-.ornament.one{
-    top:4px;
-    left:45%;
-}
-
-.ornament.two{
-    bottom:4px;
-    left:50%;
-}
-
 
 /* =====================================================
    MOBILE
 ===================================================== */
 
-.overlay{
-
-    display:none;
-
-}
-
 @media(max-width:760px){
 
     .sidebar{
-
         position:fixed;
 
         left:0;
@@ -1291,484 +1207,589 @@ textarea::placeholder{
         transition:.25s;
 
         box-shadow:
-            12px 0 40px
-            rgba(40,20,10,.2);
-
+            10px 0 30px
+            rgba(50,30,10,.2);
     }
 
     .sidebar.open{
-
         transform:
             translateX(0);
-
     }
 
-    .mobile-menu{
-
+    .menu{
         display:block;
-
-    }
-
-    .overlay.show{
-
-        display:block;
-
-        position:fixed;
-
-        inset:0;
-
-        z-index:10;
-
-        background:
-            rgba(35,20,10,.3);
-
     }
 
     .creator{
+        right:48px;
 
-        max-width:42%;
-
-        overflow:hidden;
-
-        text-overflow:ellipsis;
-
-    }
-
-    .welcome{
-
-        padding-top:35px;
-
-    }
-
-    .suggestions{
-
-        display:grid;
-
-        grid-template-columns:1fr 1fr;
-
-        width:100%;
-
-    }
-
-    .suggestion{
-
-        min-height:45px;
-
+        font-size:6px;
     }
 
     .messages{
-
         padding:
-            10px 12px 20px;
-
+            12px 10px 20px;
     }
 
     .bubble{
+        max-width:78%;
 
-        max-width:86%;
-
-        font-size:11px;
-
+        font-size:10px;
     }
 
     .composer-area{
-
         padding:
-            5px 9px 10px;
-
+            4px 8px 5px;
     }
 
-    .info span:last-child{
-
-        display:none;
-
+    .painting{
+        opacity:.25;
     }
 
 }
-
-@media(max-width:430px){
-
-    .welcome h2{
-
-        font-size:46px;
-
-    }
-
-    .welcome-avatar{
-
-        width:120px;
-        height:92px;
-
-    }
-
-    .suggestions{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .creator{
-
-        max-width:36%;
-
-    }
-
-}
-
 
 /* =====================================================
-   SCROLLBAR
+   DARK MODE
 ===================================================== */
 
-::-webkit-scrollbar{
-
-    width:6px;
-
-}
-
-::-webkit-scrollbar-thumb{
+body.dark{
+    --paper:#29231d;
+    --paper2:#211d19;
+    --text:#eee3d0;
+    --muted:#b8a991;
+    --line:#64523b;
 
     background:
-        rgba(130,90,40,.25);
-
-    border-radius:10px;
-
+        linear-gradient(
+            135deg,
+            #28221d,
+            #181614
+        );
 }
 
+body.dark .sidebar,
+body.dark .topbar{
+    background:
+        rgba(39,33,27,.96);
+}
+
+body.dark .logo-text,
+body.dark .top-title h1,
+body.dark .welcome h2,
+body.dark .sidebar-footer-title{
+    color:#e4bb73;
+}
+
+body.dark .history-item,
+body.dark .composer{
+    background:
+        rgba(47,40,32,.94);
+
+    color:#eadbc5;
+}
+
+body.dark .bubble{
+    background:
+        rgba(49,43,36,.95);
+
+    color:#eadfce;
+
+    border-color:#66533b;
+}
+
+body.dark .message.user .bubble{
+    background:#59452c;
+
+    color:#fff1d4;
+}
+
+body.dark textarea{
+    color:#eee3d0;
+}
+
+body.dark .painting{
+    opacity:.13;
+}
+
+body.dark .theme,
+body.dark .menu{
+    background:#302a24;
+    color:#f0d49c;
+}
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
-     BACKGROUND ART
-===================================================== -->
-
-<div class="background-art">
-
-    <div class="sun"></div>
-
-    <div class="birds">
-        ︵ ︵　︵　︵
-    </div>
-
-    <div class="mountain">
-
-        <svg viewBox="0 0 800 500">
-
-            <path
-                d="M0 450
-                   L120 280
-                   L185 350
-                   L290 150
-                   L390 320
-                   L500 190
-                   L610 350
-                   L720 220
-                   L800 330
-                   L800 500
-                   Z"
-                fill="#817764"
-            />
-
-            <path
-                d="M0 450
-                   L120 280
-                   L185 350
-                   L290 150
-                   L390 320
-                   L500 190
-                   L610 350
-                   L720 220
-                   L800 330"
-                fill="none"
-                stroke="#5e574d"
-                stroke-width="5"
-            />
-
-            <path
-                d="M80 410
-                   Q160 350 230 410
-                   Q300 350 370 410
-                   Q440 350 510 410
-                   Q580 350 650 410"
-                fill="none"
-                stroke="#655d51"
-                stroke-width="4"
-            />
-
-        </svg>
-
-    </div>
-
-
-    <div class="branch">
-
-        <svg viewBox="0 0 300 180">
-
-            <path
-                d="M300 20
-                   C230 40 220 80 160 90
-                   C100 100 90 140 30 160"
-                fill="none"
-                stroke="#594633"
-                stroke-width="7"
-            />
-
-            <circle cx="210" cy="57" r="8" fill="#a23d31"/>
-            <circle cx="235" cy="42" r="6" fill="#b94a38"/>
-            <circle cx="178" cy="83" r="7" fill="#a23d31"/>
-            <circle cx="125" cy="110" r="7" fill="#b94a38"/>
-            <circle cx="75" cy="142" r="6" fill="#a23d31"/>
-
-        </svg>
-
-    </div>
-
-</div>
-
-
 <div class="app">
 
-
-<!-- =====================================================
+<!-- ===================================================
      SIDEBAR
-===================================================== -->
+=================================================== -->
 
-<aside
-    class="sidebar"
-    id="sidebar"
->
+<aside class="sidebar" id="sidebar">
 
     <div class="logo">
 
         <div class="logo-dragon">
-            ${dragonSVG()}
+            <img id="logoDragon">
         </div>
 
-        <div class="logo-text">
-            Chat<span>Luk</span>
+        <div>
+            <div class="logo-text">
+                ChatLuk
+            </div>
+
+            <div class="logo-sub">
+                Vietnamese Dragon AI
+            </div>
         </div>
 
     </div>
-
 
     <button
         class="new-chat"
         id="newChat"
     >
-        ＋　Cuộc trò chuyện mới
+        ⊕ &nbsp; Cuộc trò chuyện mới
     </button>
-
 
     <div class="history-title">
 
-        <span>LỊCH SỬ TRONG TAB</span>
+        <span>
+            LỊCH SỬ TRONG TAB
+        </span>
 
         <button
             class="clear-btn"
             id="clearHistory"
         >
-            ×
+            ▢
         </button>
 
     </div>
-
 
     <div
         class="history"
         id="history"
     ></div>
 
+    <div class="sidebar-footer">
 
-    <div class="sidebar-bottom">
-
-        <div>
-            🐉　ChatLuk
+        <div class="sidebar-footer-dragon">
+            <img id="footerDragon">
         </div>
 
-        <p>
-            Cảm hứng từ rồng Việt Nam,
-            tranh cổ và vẻ đẹp núi non.
-        </p>
+        <div class="sidebar-footer-title">
+            ChatLuk
+        </div>
 
     </div>
 
 </aside>
 
 
-<!-- =====================================================
+<!-- ===================================================
      MAIN
-===================================================== -->
+=================================================== -->
 
 <main class="main">
 
+    <!-- tranh nền -->
 
-<header class="topbar">
+    <div class="painting">
 
-    <button
-        class="mobile-menu"
-        id="menuButton"
-    >
-        ☰
-    </button>
+        <div class="sun"></div>
 
-
-    <div class="title">
-
-        <div class="title-dragon">
-            ${dragonSVG()}
+        <div class="birds">
+            ︵ ︵　︵　︵
         </div>
 
-        <div>
+        <div class="branch"></div>
 
-            <h1>ChatLuk</h1>
+        <div class="flower"
+             style="right:190px;top:45px;">
+        </div>
 
-            <small>
-                TRỢ LÝ AI THÔNG MINH CỦA BẠN
-            </small>
+        <div class="mountain m1"></div>
+        <div class="mountain m2"></div>
+        <div class="mountain m3"></div>
+        <div class="mountain m4"></div>
+
+        <div class="pagoda">
+
+            <div class="pagoda-roof pr1"></div>
+            <div class="pagoda-roof pr2"></div>
+            <div class="pagoda-roof pr3"></div>
+
+            <div class="pagoda-body"></div>
 
         </div>
 
     </div>
 
 
-    <div class="creator">
-        cre: Long Dep Trai Vai
-    </div>
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <button
+            class="menu"
+            id="menuButton"
+        >
+            ☰
+        </button>
+
+        <div class="top-title">
+
+            <h1>
+                ChatLuk
+            </h1>
+
+            <p>
+                ✦ Trợ lý AI thông minh của bạn ✦
+            </p>
+
+        </div>
+
+        <div class="creator">
+            cre: Long Dep Trai Vai
+        </div>
+
+        <button
+            class="theme"
+            id="themeButton"
+        >
+            ☾
+        </button>
+
+    </header>
 
 
-    <button
-        class="theme"
-        id="themeButton"
-        title="Đổi chế độ"
+    <!-- CHAT -->
+
+    <section
+        class="chat-area"
+        id="chatArea"
     >
-        ☾
-    </button>
 
-</header>
+        <div
+            class="welcome"
+            id="welcome"
+        >
 
+            <div class="welcome-dragon">
+                <img id="welcomeDragon">
+            </div>
 
-<section
-    class="chat-area"
-    id="chatArea"
->
+            <h2>
+                ChatLuk
+            </h2>
 
+            <p>
+                Cùng chú rồng nhỏ trò chuyện
+                và khám phá thế giới Việt Nam.
+            </p>
 
-<div
-    class="welcome"
-    id="welcome"
->
+        </div>
 
-    <div class="welcome-avatar">
-        ${dragonSVG()}
-    </div>
+        <div
+            class="messages"
+            id="messages"
+        ></div>
 
-    <div class="welcome-label">
-        CHÀO MỪNG ĐẾN VỚI
-    </div>
-
-    <h2>
-        Chat<span>Luk</span>
-    </h2>
-
-    <p>
-        Trợ lý AI mang cảm hứng rồng Việt,
-        núi non, chùa cổ và những bức tranh
-        phương Đông xưa.
-    </p>
+    </section>
 
 
-    <div class="suggestions">
+    <!-- INPUT -->
 
-        <button class="suggestion">
-            Giải thích một bài học cho tôi
-        </button>
+    <footer class="composer-area">
 
-        <button class="suggestion">
-            Giúp tôi lên một kế hoạch
-        </button>
+        <form
+            class="composer"
+            id="chatForm"
+        >
 
-        <button class="suggestion">
-            Viết một đoạn văn sáng tạo
-        </button>
+            <div class="composer-dragon">
+                <img id="composerDragon">
+            </div>
 
-        <button class="suggestion">
-            Cho tôi một ý tưởng mới
-        </button>
+            <textarea
+                id="input"
+                rows="1"
+                maxlength="8000"
+                placeholder="Nhập tin nhắn cho ChatLuk..."
+            ></textarea>
 
-    </div>
+            <button
+                class="send"
+                id="send"
+                type="submit"
+            >
+                ➤
+            </button>
 
-</div>
+        </form>
 
+        <div class="info">
 
-<div
-    class="messages"
-    id="messages"
-></div>
+            <span>
+                ✦
+            </span>
 
+            <span>
+                Nhấn Enter để gửi
+            </span>
 
-</section>
+            <span>
+                ·
+            </span>
 
+            <span>
+                Shift + Enter để xuống dòng
+            </span>
 
-<footer class="composer-area">
+            <span>
+                ✦
+            </span>
 
-<form
-    class="composer"
-    id="chatForm"
->
+        </div>
 
-<textarea
-    id="input"
-    maxlength="8000"
-    rows="1"
-    placeholder="Nhập tin nhắn cho ChatLuk..."
-></textarea>
-
-<button
-    class="send"
-    id="send"
-    type="submit"
->
-    ➤
-</button>
-
-</form>
-
-
-<div class="info">
-
-    <span>
-        🐉 ChatLuk AI
-    </span>
-
-    <span>
-        Enter để gửi · Shift + Enter để xuống dòng
-    </span>
-
-</div>
-
-</footer>
-
+    </footer>
 
 </main>
 
 </div>
 
 
-<div
-    class="overlay"
-    id="overlay"
-></div>
-
-
 <script>
 
 /* =====================================================
-   CHATLUK FRONTEND
+   DRAGON AVATAR
+   Rồng hồng kiểu minh họa dễ thương
+===================================================== */
+
+const DRAGON_SVG = \`
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 220 130">
+
+    <!-- tail -->
+
+    <path
+        d="M167 75
+           C195 88 207 77 211 60
+           C215 84 205 105 178 98
+           C166 95 158 88 151 83"
+        fill="#f7a5a0"
+        stroke="#5d2926"
+        stroke-width="4"
+        stroke-linejoin="round"/>
+
+    <!-- body -->
+
+    <path
+        d="M58 73
+           C83 46 122 41 155 59
+           C171 68 178 83 168 91
+           C147 105 119 102 95 100
+           C75 98 58 94 48 84"
+        fill="#ffd2ca"
+        stroke="#5d2926"
+        stroke-width="4"
+        stroke-linejoin="round"/>
+
+    <!-- belly -->
+
+    <path
+        d="M64 86
+           C93 102 128 106 157 91"
+        fill="none"
+        stroke="#e9918d"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+    <path
+        d="M75 91 L79 97
+           M87 94 L91 100
+           M101 96 L104 101
+           M116 96 L119 101
+           M131 95 L134 99"
+        stroke="#e9918d"
+        stroke-width="2"
+        stroke-linecap="round"/>
+
+    <!-- head -->
+
+    <path
+        d="M22 78
+           C17 60 26 40 44 31
+           C56 24 72 25 86 34
+           C98 42 101 57 93 69
+           C86 83 67 91 49 91
+           C35 91 25 87 22 78Z"
+        fill="#ffd1ca"
+        stroke="#5d2926"
+        stroke-width="4"/>
+
+    <!-- ear -->
+
+    <path
+        d="M43 34
+           C37 21 45 8 56 7
+           C62 18 57 29 51 37"
+        fill="#f3a29b"
+        stroke="#5d2926"
+        stroke-width="4"/>
+
+    <!-- horn -->
+
+    <path
+        d="M72 34
+           C78 16 91 8 101 12
+           C99 26 90 37 82 42"
+        fill="#f3a29b"
+        stroke="#5d2926"
+        stroke-width="4"/>
+
+    <!-- mane -->
+
+    <path
+        d="M83 37
+           L99 29
+           L94 43
+           L109 42
+           L98 52
+           L110 58
+           L96 62
+           L103 75
+           L87 70"
+        fill="#f5aaa3"
+        stroke="#5d2926"
+        stroke-width="4"
+        stroke-linejoin="round"/>
+
+    <!-- snout -->
+
+    <path
+        d="M20 66
+           C9 64 5 72 10 80
+           C16 88 30 88 41 82
+           L43 65"
+        fill="#f7aaa4"
+        stroke="#5d2926"
+        stroke-width="4"/>
+
+    <!-- nose -->
+
+    <ellipse
+        cx="22"
+        cy="73"
+        rx="8"
+        ry="6"
+        fill="#d97873"
+        stroke="#5d2926"
+        stroke-width="2"/>
+
+    <!-- eye -->
+
+    <ellipse
+        cx="59"
+        cy="52"
+        rx="5"
+        ry="7"
+        fill="#382321"/>
+
+    <circle
+        cx="61"
+        cy="49"
+        r="2"
+        fill="white"/>
+
+    <!-- cheek -->
+
+    <circle
+        cx="49"
+        cy="67"
+        r="8"
+        fill="#f3aaa4"
+        opacity=".65"/>
+
+    <!-- heart decoration -->
+
+    <path
+        d="M62 66
+           C55 57 43 63 47 71
+           C50 77 59 79 68 70
+           C75 62 66 58 62 66Z"
+        fill="#e98582"/>
+
+    <!-- wing -->
+
+    <path
+        d="M101 55
+           C113 38 135 37 147 51
+           C133 49 121 56 116 68"
+        fill="#f7aaa3"
+        stroke="#5d2926"
+        stroke-width="3"/>
+
+    <!-- scales -->
+
+    <path
+        d="M112 66
+           q7 -8 14 0
+           q7 -8 14 0
+           q7 -8 14 0"
+        fill="none"
+        stroke="#e78c88"
+        stroke-width="2"/>
+
+    <!-- legs -->
+
+    <path
+        d="M82 91
+           C78 103 73 109 66 108
+           M145 92
+           C143 102 148 107 156 106"
+        fill="none"
+        stroke="#5d2926"
+        stroke-width="4"
+        stroke-linecap="round"/>
+
+    <!-- tiny cloud-like breath -->
+
+    <path
+        d="M2 96
+           C8 91 14 94 17 99
+           C22 95 29 98 30 103"
+        fill="none"
+        stroke="#e8b0a9"
+        stroke-width="2"
+        stroke-linecap="round"/>
+
+</svg>
+\`;
+
+const DRAGON_URL =
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(DRAGON_SVG);
+
+
+/* =====================================================
+   SET ALL 3+ DRAGON IMAGES
+===================================================== */
+
+document
+    .querySelectorAll("img")
+    .forEach(function(img){
+
+        img.src = DRAGON_URL;
+
+    });
+
+
+/* =====================================================
+   DATA
 ===================================================== */
 
 let chats = [];
@@ -1803,9 +1824,6 @@ const chatArea =
 
 const sidebar =
     document.getElementById("sidebar");
-
-const overlay =
-    document.getElementById("overlay");
 
 
 /* =====================================================
@@ -1848,22 +1866,23 @@ function newChat(){
 
     renderMessages();
 
-    closeMenu();
-
     input.focus();
 
 }
 
 
 /* =====================================================
-   GET CHAT
+   ACTIVE CHAT
 ===================================================== */
 
 function getChat(){
 
     return chats.find(
-        chat =>
-            chat.id === activeChat
+        function(chat){
+
+            return chat.id === activeChat;
+
+        }
     );
 
 }
@@ -1883,12 +1902,10 @@ function renderHistory(){
             document.createElement("div");
 
         empty.style.cssText =
-            "padding:12px 8px;" +
-            "color:#817361;" +
-            "font-size:10px;";
+            "padding:10px;color:#9a8b77;font-size:8px;text-align:center;";
 
         empty.textContent =
-            "Chưa có cuộc trò chuyện nào.";
+            "Chưa có cuộc trò chuyện.";
 
         historyBox.appendChild(empty);
 
@@ -1896,8 +1913,7 @@ function renderHistory(){
 
     }
 
-
-    chats.forEach(chat => {
+    chats.forEach(function(chat){
 
         const button =
             document.createElement("button");
@@ -1907,32 +1923,53 @@ function renderHistory(){
             +
             (
                 chat.id === activeChat
-                    ? " active"
-                    : ""
+                ? " active"
+                : ""
             );
 
-
-        const mini =
+        const dragon =
             document.createElement("div");
 
-        mini.className =
+        dragon.className =
             "history-dragon";
 
-        mini.innerHTML =
-            dragonSVG();
+        const image =
+            document.createElement("img");
 
+        image.src =
+            DRAGON_URL;
 
-        const title =
-            document.createElement("span");
+        dragon.appendChild(image);
 
-        title.textContent =
+        const info =
+            document.createElement("div");
+
+        info.className =
+            "history-info";
+
+        const name =
+            document.createElement("div");
+
+        name.className =
+            "history-name";
+
+        name.textContent =
             chat.title;
 
+        const time =
+            document.createElement("div");
 
-        button.appendChild(mini);
+        time.className =
+            "history-time";
 
-        button.appendChild(title);
+        time.textContent =
+            "Hôm nay";
 
+        info.appendChild(name);
+        info.appendChild(time);
+
+        button.appendChild(dragon);
+        button.appendChild(info);
 
         button.onclick =
             function(){
@@ -1944,10 +1981,7 @@ function renderHistory(){
 
                 renderMessages();
 
-                closeMenu();
-
             };
-
 
         historyBox.appendChild(button);
 
@@ -1967,7 +2001,6 @@ function renderMessages(){
     const chat =
         getChat();
 
-
     if(
         !chat ||
         chat.messages.length === 0
@@ -1980,13 +2013,11 @@ function renderMessages(){
 
     }
 
-
     welcome.style.display =
         "none";
 
-
     chat.messages.forEach(
-        message => {
+        function(message){
 
             addMessage(
                 message.role,
@@ -1996,7 +2027,6 @@ function renderMessages(){
 
         }
     );
-
 
     scrollBottom();
 
@@ -2010,7 +2040,7 @@ function renderMessages(){
 function addMessage(
     role,
     text,
-    scroll = true
+    shouldScroll = true
 ){
 
     const row =
@@ -2019,21 +2049,29 @@ function addMessage(
     row.className =
         "message " + role;
 
-
     const avatar =
         document.createElement("div");
 
     avatar.className =
         "avatar";
 
-
     if(role === "ai"){
 
-        avatar.innerHTML =
-            dragonSVG();
+        const img =
+            document.createElement("img");
+
+        img.src =
+            DRAGON_URL;
+
+        avatar.appendChild(img);
 
     }
+    else{
 
+        avatar.textContent =
+            "U";
+
+    }
 
     const bubble =
         document.createElement("div");
@@ -2044,25 +2082,13 @@ function addMessage(
     bubble.textContent =
         text;
 
+    row.appendChild(avatar);
 
-    if(role === "ai"){
-
-        row.appendChild(avatar);
-
-        row.appendChild(bubble);
-
-    }
-    else{
-
-        row.appendChild(bubble);
-
-    }
-
+    row.appendChild(bubble);
 
     messagesBox.appendChild(row);
 
-
-    if(scroll){
+    if(shouldScroll){
 
         scrollBottom();
 
@@ -2078,7 +2104,7 @@ function addMessage(
 function scrollBottom(){
 
     requestAnimationFrame(
-        () => {
+        function(){
 
             chatArea.scrollTop =
                 chatArea.scrollHeight;
@@ -2104,23 +2130,25 @@ function showTyping(){
     row.id =
         "typing";
 
-
     const avatar =
         document.createElement("div");
 
     avatar.className =
         "avatar";
 
-    avatar.innerHTML =
-        dragonSVG();
+    const img =
+        document.createElement("img");
 
+    img.src =
+        DRAGON_URL;
+
+    avatar.appendChild(img);
 
     const bubble =
         document.createElement("div");
 
     bubble.className =
         "bubble";
-
 
     const dots =
         document.createElement("span");
@@ -2130,7 +2158,6 @@ function showTyping(){
 
     dots.innerHTML =
         "<i></i><i></i><i></i>";
-
 
     bubble.appendChild(dots);
 
@@ -2160,23 +2187,10 @@ function hideTyping(){
 
 
 /* =====================================================
-   GEMINI AI
+   GEMINI API
 ===================================================== */
 
-async function AI(){
-
-    const chat =
-        getChat();
-
-
-    if(!chat){
-
-        throw new Error(
-            "Không tìm thấy cuộc trò chuyện."
-        );
-
-    }
-
+async function AI(text){
 
     const response =
         await fetch(
@@ -2191,18 +2205,13 @@ async function AI(){
                 },
 
                 body:JSON.stringify({
-
-                    messages:
-                        chat.messages
-
+                    message:text
                 })
 
             }
         );
 
-
     let data;
-
 
     try{
 
@@ -2210,7 +2219,7 @@ async function AI(){
             await response.json();
 
     }
-    catch{
+    catch(error){
 
         throw new Error(
             "Worker không trả về JSON hợp lệ."
@@ -2218,19 +2227,17 @@ async function AI(){
 
     }
 
-
     if(!response.ok){
 
         throw new Error(
             data &&
             data.error
                 ? data.error
-                : "Worker HTTP " +
+                : "Lỗi HTTP " +
                   response.status
         );
 
     }
-
 
     if(
         !data ||
@@ -2243,21 +2250,19 @@ async function AI(){
 
     }
 
-
     return data.reply;
 
 }
 
 
 /* =====================================================
-   SEND MESSAGE
+   SEND
 ===================================================== */
 
 async function sendMessage(text){
 
     text =
         text.trim();
-
 
     if(
         !text ||
@@ -2268,17 +2273,14 @@ async function sendMessage(text){
 
     }
 
-
     if(!activeChat){
 
         newChat();
 
     }
 
-
     const chat =
         getChat();
-
 
     chat.messages.push({
 
@@ -2288,18 +2290,16 @@ async function sendMessage(text){
 
     });
 
-
     if(
         chat.messages.length === 1
     ){
 
         chat.title =
-            text.length > 35
-                ? text.substring(0,35) + "..."
+            text.length > 28
+                ? text.substring(0,28) + "..."
                 : text;
 
     }
-
 
     input.value = "";
 
@@ -2313,15 +2313,12 @@ async function sendMessage(text){
 
     showTyping();
 
-
     try{
 
         const reply =
-            await AI();
-
+            await AI(text);
 
         hideTyping();
-
 
         chat.messages.push({
 
@@ -2330,7 +2327,6 @@ async function sendMessage(text){
             text:reply
 
         });
-
 
         addMessage(
             "ai",
@@ -2342,9 +2338,8 @@ async function sendMessage(text){
 
         hideTyping();
 
-
         const errorText =
-            "🐉 ChatLuk gặp sự cố khi kết nối AI.\n\n" +
+            "🐉 ChatLuk gặp sự cố khi kết nối AI.\\n\\n" +
             "Chi tiết: " +
             (
                 error &&
@@ -2352,7 +2347,6 @@ async function sendMessage(text){
                     ? error.message
                     : "Lỗi không xác định."
             );
-
 
         chat.messages.push({
 
@@ -2362,20 +2356,17 @@ async function sendMessage(text){
 
         });
 
-
         addMessage(
             "ai",
             errorText
         );
 
-
         console.error(
-            "ChatLuk Gemini Error:",
+            "ChatLuk:",
             error
         );
 
     }
-
 
     send.disabled = false;
 
@@ -2428,7 +2419,7 @@ input.addEventListener(
 
 
 /* =====================================================
-   TEXTAREA
+   RESIZE INPUT
 ===================================================== */
 
 function resizeInput(){
@@ -2439,7 +2430,7 @@ function resizeInput(){
     input.style.height =
         Math.min(
             input.scrollHeight,
-            150
+            110
         ) + "px";
 
 }
@@ -2451,42 +2442,15 @@ input.addEventListener(
 
 
 /* =====================================================
-   SUGGESTIONS
-===================================================== */
-
-document
-.querySelectorAll(".suggestion")
-.forEach(
-    button => {
-
-        button.addEventListener(
-            "click",
-            function(){
-
-                input.value =
-                    button.textContent.trim();
-
-                resizeInput();
-
-                input.focus();
-
-            }
-        );
-
-    }
-);
-
-
-/* =====================================================
    NEW CHAT
 ===================================================== */
 
 document
-.getElementById("newChat")
-.addEventListener(
-    "click",
-    newChat
-);
+    .getElementById("newChat")
+    .addEventListener(
+        "click",
+        newChat
+    );
 
 
 /* =====================================================
@@ -2494,21 +2458,21 @@ document
 ===================================================== */
 
 document
-.getElementById("clearHistory")
-.addEventListener(
-    "click",
-    function(){
+    .getElementById("clearHistory")
+    .addEventListener(
+        "click",
+        function(){
 
-        chats = [];
+            chats = [];
 
-        activeChat = null;
+            activeChat = null;
 
-        renderHistory();
+            renderHistory();
 
-        renderMessages();
+            renderMessages();
 
-    }
-);
+        }
+    );
 
 
 /* =====================================================
@@ -2516,58 +2480,38 @@ document
 ===================================================== */
 
 document
-.getElementById("menuButton")
-.addEventListener(
-    "click",
-    function(){
+    .getElementById("menuButton")
+    .addEventListener(
+        "click",
+        function(){
 
-        sidebar.classList.add("open");
+            sidebar.classList.add("open");
 
-        overlay.classList.add("show");
-
-    }
-);
-
-
-function closeMenu(){
-
-    sidebar.classList.remove("open");
-
-    overlay.classList.remove("show");
-
-}
-
-
-overlay.addEventListener(
-    "click",
-    closeMenu
-);
+        }
+    );
 
 
 /* =====================================================
-   DARK MODE
+   THEME
 ===================================================== */
 
 document
-.getElementById("themeButton")
-.addEventListener(
-    "click",
-    function(){
+    .getElementById("themeButton")
+    .addEventListener(
+        "click",
+        function(){
 
-        document.body.classList.toggle("dark");
+            document.body.classList.toggle(
+                "dark"
+            );
 
+            this.textContent =
+                document.body.classList.contains("dark")
+                    ? "☀"
+                    : "☾";
 
-        const dark =
-            document.body.classList.contains("dark");
-
-
-        this.textContent =
-            dark
-                ? "☀"
-                : "☾";
-
-    }
-);
+        }
+    );
 
 
 /* =====================================================
@@ -2587,280 +2531,9 @@ input.focus();
 `;
 
 
-/* =====================================================
-   DRAGON SVG
-   Không cần file ảnh bên ngoài.
-===================================================== */
-
-function dragonSVG(){
-
-    return `
-<svg
-    viewBox="0 0 260 180"
-    xmlns="http://www.w3.org/2000/svg"
->
-
-    <!-- shadow -->
-
-    <ellipse
-        cx="128"
-        cy="158"
-        rx="82"
-        ry="9"
-        fill="rgba(80,35,15,.12)"
-    />
-
-
-    <!-- tail -->
-
-    <path
-        d="
-        M171 117
-        C205 133 220 133 232 119
-        C245 103 238 86 228 91
-        C220 95 224 107 214 109
-        C204 112 192 101 180 92
-        "
-        fill="#f8a5a5"
-        stroke="#3e2725"
-        stroke-width="5"
-        stroke-linecap="round"
-    />
-
-
-    <!-- body -->
-
-    <path
-        d="
-        M55 91
-        C65 62 96 49 129 56
-        C163 63 187 84 181 111
-        C174 138 139 147 104 137
-        C76 129 57 116 55 91
-        "
-        fill="#ffd0d0"
-        stroke="#3e2725"
-        stroke-width="5"
-    />
-
-
-    <!-- belly -->
-
-    <path
-        d="
-        M68 111
-        C90 127 123 133 151 123
-        "
-        fill="none"
-        stroke="#f09b9b"
-        stroke-width="4"
-        stroke-linecap="round"
-    />
-
-
-    <!-- scales -->
-
-    <g
-        fill="none"
-        stroke="#ef9c9c"
-        stroke-width="2"
-        opacity=".8"
-    >
-
-        <path d="M90 83 q8 8 16 0"/>
-        <path d="M110 78 q8 8 16 0"/>
-        <path d="M130 81 q8 8 16 0"/>
-
-        <path d="M83 96 q8 8 16 0"/>
-        <path d="M103 92 q8 8 16 0"/>
-        <path d="M123 95 q8 8 16 0"/>
-        <path d="M143 99 q8 8 16 0"/>
-
-        <path d="M88 109 q8 8 16 0"/>
-        <path d="M108 106 q8 8 16 0"/>
-        <path d="M128 110 q8 8 16 0"/>
-
-    </g>
-
-
-    <!-- head -->
-
-    <path
-        d="
-        M31 93
-        C27 72 41 51 62 48
-        C74 45 88 49 98 58
-        C108 67 107 82 96 96
-        C86 111 68 119 50 114
-        C38 111 32 103 31 93
-        "
-        fill="#ffbcbc"
-        stroke="#3e2725"
-        stroke-width="5"
-    />
-
-
-    <!-- ears / horns -->
-
-    <path
-        d="
-        M47 58
-        C40 43 44 31 55 28
-        C65 25 66 39 62 50
-        "
-        fill="#f69b9b"
-        stroke="#3e2725"
-        stroke-width="5"
-    />
-
-    <path
-        d="
-        M72 51
-        C72 34 82 23 93 26
-        C102 29 96 44 87 57
-        "
-        fill="#f69b9b"
-        stroke="#3e2725"
-        stroke-width="5"
-    />
-
-
-    <!-- mane -->
-
-    <path
-        d="
-        M94 60
-        L111 51
-        L105 67
-        L122 63
-        L111 78
-        L124 83
-        L108 89
-        "
-        fill="#f69b9b"
-        stroke="#3e2725"
-        stroke-width="5"
-        stroke-linejoin="round"
-    />
-
-
-    <!-- snout -->
-
-    <path
-        d="
-        M29 82
-        C18 78 13 87 19 96
-        C25 105 39 104 48 96
-        "
-        fill="#ffadad"
-        stroke="#3e2725"
-        stroke-width="5"
-    />
-
-
-    <!-- nose -->
-
-    <ellipse
-        cx="30"
-        cy="87"
-        rx="8"
-        ry="5"
-        fill="#d86666"
-    />
-
-
-    <!-- eye -->
-
-    <circle
-        cx="65"
-        cy="70"
-        r="6"
-        fill="#3e2725"
-    />
-
-    <circle
-        cx="67"
-        cy="68"
-        r="2"
-        fill="white"
-    />
-
-
-    <!-- cheek -->
-
-    <circle
-        cx="76"
-        cy="88"
-        r="8"
-        fill="#f58f9b"
-        opacity=".45"
-    />
-
-
-    <!-- decorative heart -->
-
-    <path
-        d="
-        M72 79
-        C66 72 57 78 61 84
-        C64 88 72 91 72 91
-        C72 91 82 86 84 81
-        C86 74 77 72 72 79
-        "
-        fill="#df777d"
-        opacity=".75"
-    />
-
-
-    <!-- feet -->
-
-    <path
-        d="
-        M91 129
-        C87 140 76 146 67 141
-        "
-        fill="none"
-        stroke="#3e2725"
-        stroke-width="5"
-        stroke-linecap="round"
-    />
-
-    <path
-        d="
-        M150 130
-        C149 141 140 146 132 143
-        "
-        fill="none"
-        stroke="#3e2725"
-        stroke-width="5"
-        stroke-linecap="round"
-    />
-
-
-    <!-- whiskers -->
-
-    <path
-        d="
-        M35 91
-        C19 86 11 88 5 84
-        M37 96
-        C21 98 14 102 8 101
-        "
-        fill="none"
-        stroke="#3e2725"
-        stroke-width="2"
-        stroke-linecap="round"
-    />
-
-</svg>
-`;
-
-}
-
-
-/* =====================================================
+/* ======================================================
    CORS
-===================================================== */
+====================================================== */
 
 const CORS = {
 
@@ -2875,9 +2548,9 @@ const CORS = {
 };
 
 
-/* =====================================================
+/* ======================================================
    JSON
-===================================================== */
+====================================================== */
 
 function json(
     data,
@@ -2906,9 +2579,9 @@ function json(
 }
 
 
-/* =====================================================
+/* ======================================================
    WORKER
-===================================================== */
+====================================================== */
 
 export default {
 
@@ -2921,9 +2594,9 @@ export default {
             new URL(request.url);
 
 
-        /* =================================================
+        /* ================================================
            OPTIONS
-        ================================================= */
+        ================================================ */
 
         if(
             request.method === "OPTIONS"
@@ -2940,9 +2613,9 @@ export default {
         }
 
 
-        /* =================================================
+        /* ================================================
            WEBSITE
-        ================================================= */
+        ================================================ */
 
         if(
             request.method === "GET" &&
@@ -2952,7 +2625,6 @@ export default {
             return new Response(
                 HTML,
                 {
-
                     status:200,
 
                     headers:{
@@ -2962,16 +2634,15 @@ export default {
                         "Cache-Control":
                             "no-store"
                     }
-
                 }
             );
 
         }
 
 
-        /* =================================================
+        /* ================================================
            HEALTH
-        ================================================= */
+        ================================================ */
 
         if(
             request.method === "GET" &&
@@ -2985,22 +2656,19 @@ export default {
                 worker:
                     "ChatLuk Gemini Worker",
 
-                geminiConfigured:
+                geminiSecretConfigured:
                     Boolean(
                         env.GEMINI_API_KEY
-                    ),
-
-                model:
-                    "gemini-2.5-flash"
+                    )
 
             });
 
         }
 
 
-        /* =================================================
-           GEMINI CHAT
-        ================================================= */
+        /* ================================================
+           CHAT
+        ================================================ */
 
         if(
             request.method === "POST" &&
@@ -3009,10 +2677,9 @@ export default {
 
             try{
 
-
-                /* =========================================
-                   CHECK SECRET
-                ========================================= */
+                /* -----------------------------------------
+                   SECRET
+                ----------------------------------------- */
 
                 if(
                     !env.GEMINI_API_KEY
@@ -3025,8 +2692,7 @@ export default {
 
                             error:
                                 "Không tìm thấy Secret GEMINI_API_KEY. " +
-                                "Hãy kiểm tra Variables and Secrets " +
-                                "của Cloudflare Worker."
+                                "Hãy kiểm tra Settings → Variables and Secrets."
 
                         },
                         500
@@ -3035,12 +2701,11 @@ export default {
                 }
 
 
-                /* =========================================
-                   READ BODY
-                ========================================= */
+                /* -----------------------------------------
+                   BODY
+                ----------------------------------------- */
 
                 let body;
-
 
                 try{
 
@@ -3065,14 +2730,37 @@ export default {
                 }
 
 
-                const messages =
+                const message =
                     body &&
-                    body.messages;
+                    body.message;
+
+
+                /* -----------------------------------------
+                   VALIDATE
+                ----------------------------------------- */
+
+                if(
+                    typeof message !== "string" ||
+                    !message.trim()
+                ){
+
+                    return json(
+                        {
+
+                            ok:false,
+
+                            error:
+                                "Tin nhắn không hợp lệ."
+
+                        },
+                        400
+                    );
+
+                }
 
 
                 if(
-                    !Array.isArray(messages) ||
-                    messages.length === 0
+                    message.length > 8000
                 ){
 
                     return json(
@@ -3081,7 +2769,7 @@ export default {
                             ok:false,
 
                             error:
-                                "Chưa có tin nhắn."
+                                "Tin nhắn quá dài."
 
                         },
                         400
@@ -3090,169 +2778,87 @@ export default {
                 }
 
 
-                /* =========================================
-                   LIMIT HISTORY
-                ========================================= */
+                /* -----------------------------------------
+                   GEMINI
+                ----------------------------------------- */
 
-                const recent =
-                    messages.slice(-30);
-
-
-                /* =========================================
-                   CONVERT CHAT HISTORY
-                ========================================= */
-
-                const contents = [];
-
-
-                for(
-                    const message
-                    of recent
-                ){
-
-                    if(
-                        !message ||
-                        typeof message.text !== "string"
-                    ){
-
-                        continue;
-
-                    }
-
-
-                    const text =
-                        message.text.trim();
-
-
-                    if(!text){
-
-                        continue;
-
-                    }
-
-
-                    contents.push({
-
-                        role:
-                            message.role === "ai"
-                                ? "model"
-                                : "user",
-
-                        parts:[
-                            {
-                                text:text
-                            }
-                        ]
-
-                    });
-
-                }
-
-
-                if(contents.length === 0){
-
-                    return json(
-                        {
-
-                            ok:false,
-
-                            error:
-                                "Không có nội dung hợp lệ."
-
-                        },
-                        400
+                const geminiURL =
+                    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
+                    encodeURIComponent(
+                        env.GEMINI_API_KEY
                     );
-
-                }
-
-
-                /* =========================================
-                   GEMINI API
-                ========================================= */
-
-                const GEMINI_URL =
-                    "https://generativelanguage.googleapis.com/v1beta/" +
-                    "models/gemini-2.5-flash:generateContent";
 
 
                 const geminiResponse =
                     await fetch(
-                        GEMINI_URL,
+                        geminiURL,
                         {
 
                             method:"POST",
 
                             headers:{
-
                                 "Content-Type":
-                                    "application/json",
-
-                                "x-goog-api-key":
-                                    env.GEMINI_API_KEY
-
+                                    "application/json"
                             },
 
-                            body:
-                                JSON.stringify({
+                            body:JSON.stringify({
 
-                                    systemInstruction:{
+                                system_instruction:{
+
+                                    parts:[
+                                        {
+                                            text:
+                                                "Bạn là ChatLuk, " +
+                                                "trợ lý AI nói tiếng Việt. " +
+                                                "Hãy trả lời tự nhiên, " +
+                                                "thân thiện, rõ ràng và hữu ích. " +
+                                                "Ưu tiên tiếng Việt. " +
+                                                "Khi giải thích bài học, " +
+                                                "hãy trình bày dễ hiểu. " +
+                                                "Không tự nhận mình là Gemini."
+                                        }
+                                    ]
+
+                                },
+
+                                contents:[
+
+                                    {
+                                        role:"user",
 
                                         parts:[
-
                                             {
                                                 text:
-                                                    "Bạn là ChatLuk, " +
-                                                    "một trợ lý AI tiếng Việt. " +
-
-                                                    "Hãy trả lời tự nhiên, " +
-                                                    "thân thiện, rõ ràng và hữu ích. " +
-
-                                                    "Ưu tiên tiếng Việt. " +
-
-                                                    "Khi giải thích bài học, " +
-                                                    "hãy giải thích dễ hiểu " +
-                                                    "và chia thành từng phần. " +
-
-                                                    "Khi viết code, " +
-                                                    "hãy cung cấp code hoàn chỉnh " +
-                                                    "có thể sao chép. " +
-
-                                                    "Không cần nhắc người dùng " +
-                                                    "rằng bạn là Gemini. " +
-
-                                                    "Tên của bạn là ChatLuk."
+                                                    message
                                             }
-
                                         ]
-
-                                    },
-
-                                    contents:contents,
-
-                                    generationConfig:{
-
-                                        temperature:0.8,
-
-                                        maxOutputTokens:4096
-
                                     }
 
-                                })
+                                ],
+
+                                generationConfig:{
+
+                                    temperature:0.7,
+
+                                    maxOutputTokens:2048
+
+                                }
+
+                            })
 
                         }
                     );
 
 
-                /* =========================================
+                /* -----------------------------------------
                    READ RESPONSE
-                ========================================= */
+                ----------------------------------------- */
 
                 const raw =
                     await geminiResponse.text();
 
 
                 let data;
-
 
                 try{
 
@@ -3277,15 +2883,15 @@ export default {
                 }
 
 
-                /* =========================================
+                /* -----------------------------------------
                    GEMINI ERROR
-                ========================================= */
+                ----------------------------------------- */
 
                 if(
                     !geminiResponse.ok
                 ){
 
-                    let message =
+                    let errorMessage =
                         "Gemini API trả về lỗi HTTP " +
                         geminiResponse.status;
 
@@ -3296,7 +2902,7 @@ export default {
                         data.error.message
                     ){
 
-                        message =
+                        errorMessage =
                             data.error.message;
 
                     }
@@ -3307,7 +2913,8 @@ export default {
 
                             ok:false,
 
-                            error:message,
+                            error:
+                                errorMessage,
 
                             status:
                                 geminiResponse.status
@@ -3319,9 +2926,9 @@ export default {
                 }
 
 
-                /* =========================================
+                /* -----------------------------------------
                    EXTRACT TEXT
-                ========================================= */
+                ----------------------------------------- */
 
                 let answer = "";
 
@@ -3353,7 +2960,8 @@ export default {
 
                                 if(
                                     part &&
-                                    typeof part.text === "string"
+                                    typeof part.text ===
+                                        "string"
                                 ){
 
                                     answer +=
@@ -3370,9 +2978,9 @@ export default {
                 }
 
 
-                /* =========================================
+                /* -----------------------------------------
                    EMPTY
-                ========================================= */
+                ----------------------------------------- */
 
                 if(
                     !answer.trim()
@@ -3393,9 +3001,9 @@ export default {
                 }
 
 
-                /* =========================================
+                /* -----------------------------------------
                    SUCCESS
-                ========================================= */
+                ----------------------------------------- */
 
                 return json({
 
@@ -3406,7 +3014,6 @@ export default {
 
                 });
 
-
             }
             catch(error){
 
@@ -3414,7 +3021,6 @@ export default {
                     "ChatLuk Worker Error:",
                     error
                 );
-
 
                 return json(
                     {
@@ -3436,9 +3042,9 @@ export default {
         }
 
 
-        /* =================================================
+        /* ================================================
            404
-        ================================================= */
+        ================================================ */
 
         return json(
             {
