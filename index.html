@@ -158,7 +158,11 @@ body{
     padding:15px;
     border:1px solid var(--line);
     border-radius:16px;
-    background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(213,225,232,.6));
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.8),
+        rgba(213,225,232,.6)
+    );
 }
 
 .sidebar-dragon{
@@ -277,7 +281,11 @@ body{
     place-items:center;
     position:relative;
     border-radius:50%;
-    background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(201,229,241,.65));
+    background:linear-gradient(
+        145deg,
+        rgba(255,255,255,.92),
+        rgba(201,229,241,.65)
+    );
     border:1px solid rgba(0,120,210,.16);
     box-shadow:0 16px 45px rgba(0,120,210,.15);
 }
@@ -293,10 +301,11 @@ body{
 
 .dragon span{
     position:relative;
-    font-family:"Times New Roman",serif;
     font-size:64px;
-    color:#078bd8;
-    text-shadow:0 7px 18px rgba(0,110,210,.2);
+    color:#d4a72c;
+    text-shadow:
+        0 2px 0 #fff0a0,
+        0 5px 15px rgba(180,120,0,.35);
 }
 
 @keyframes spin{
@@ -394,8 +403,7 @@ body{
     border-radius:11px;
     border:1px solid var(--line);
     background:rgba(255,255,255,.8);
-    color:#0877bd;
-    font-family:serif;
+    color:#d4a72c;
     font-size:20px;
 }
 
@@ -425,7 +433,6 @@ body{
     border-radius:17px 7px 17px 17px;
     color:white;
     background:linear-gradient(135deg,#0877ca,#23c5ff);
-    box-shadow:0 9px 24px rgba(0,130,220,.18);
 }
 
 .typing{
@@ -475,7 +482,9 @@ body{
     border:1px solid rgba(0,120,215,.2);
     border-radius:19px;
     background:rgba(255,255,255,.82);
-    box-shadow:0 12px 45px rgba(20,70,95,.1),0 0 0 5px rgba(20,190,255,.035);
+    box-shadow:
+        0 12px 45px rgba(20,70,95,.1),
+        0 0 0 5px rgba(20,190,255,.035);
     backdrop-filter:blur(16px);
 }
 
@@ -512,6 +521,11 @@ textarea::placeholder{
     box-shadow:0 7px 18px rgba(0,120,220,.25);
     cursor:pointer;
     font-size:17px;
+    transition:.2s;
+}
+
+.send:hover{
+    transform:translateY(-2px);
 }
 
 .send:disabled{
@@ -633,7 +647,9 @@ textarea::placeholder{
 
     <div class="logo">
         <div class="logo-dragon">龍</div>
-        <div class="logo-text">Chat<span>Luk</span></div>
+        <div class="logo-text">
+            Chat<span>Luk</span>
+        </div>
     </div>
 
     <button class="new-chat" id="newChat">
@@ -662,66 +678,75 @@ textarea::placeholder{
 
 <header class="topbar">
 
-    <button class="mobile-menu" id="menuButton">☰</button>
+    <button class="mobile-menu" id="menuButton">
+        ☰
+    </button>
 
     <div class="title">
+
         <div class="title-dragon">龍</div>
+
         <div>
             <h1>ChatLuk</h1>
             <small>VIETNAMESE DRAGON AI</small>
         </div>
+
     </div>
 
     <div class="creator">
         AnhLongDepZaiVaiDai-cre:Longlee
     </div>
 
-    <button class="theme" id="themeButton">◐</button>
+    <button class="theme" id="themeButton">
+        ◐
+    </button>
 
 </header>
 
 <section class="chat-area" id="chatArea">
 
-<div class="welcome" id="welcome">
+    <div class="welcome" id="welcome">
 
-    <div class="dragon">
-        <span>龍</span>
+        <div class="dragon">
+            <span>龍</span>
+        </div>
+
+        <div class="welcome-label">
+            CHÀO MỪNG ĐẾN VỚI
+        </div>
+
+        <h2>
+            Chat<span>Luk</span>
+        </h2>
+
+        <p>
+            Không gian trò chuyện AI lấy cảm hứng
+            từ rồng phương Đông và vẻ đẹp văn hóa Việt Nam.
+        </p>
+
+        <div class="suggestions">
+
+            <button class="suggestion">
+                Giải thích một bài học cho tôi
+            </button>
+
+            <button class="suggestion">
+                Giúp tôi lên một kế hoạch
+            </button>
+
+            <button class="suggestion">
+                Viết một đoạn văn sáng tạo
+            </button>
+
+            <button class="suggestion">
+                Cho tôi một ý tưởng mới
+            </button>
+
+        </div>
+
     </div>
 
-    <div class="welcome-label">
-        CHÀO MỪNG ĐẾN VỚI
-    </div>
-
-    <h2>Chat<span>Luk</span></h2>
-
-    <p>
-        Không gian trò chuyện AI lấy cảm hứng
-        từ rồng phương Đông và vẻ đẹp văn hóa Việt Nam.
-    </p>
-
-    <div class="suggestions">
-
-        <button class="suggestion">
-            Giải thích một bài học cho tôi
-        </button>
-
-        <button class="suggestion">
-            Giúp tôi lên một kế hoạch
-        </button>
-
-        <button class="suggestion">
-            Viết một đoạn văn sáng tạo
-        </button>
-
-        <button class="suggestion">
-            Cho tôi một ý tưởng mới
-        </button>
-
-    </div>
-
-</div>
-
-<div class="messages" id="messages"></div>
+    <div class="messages" id="messages"></div>
 
 </section>
 
@@ -729,14 +754,20 @@ textarea::placeholder{
 
 <form class="composer" id="chatForm">
 
-<textarea
-    id="input"
-    maxlength="8000"
-    rows="1"
-    placeholder="Nhập tin nhắn cho ChatLuk..."
-></textarea>
+    <textarea
+        id="input"
+        maxlength="8000"
+        rows="1"
+        placeholder="Nhập tin nhắn cho ChatLuk..."
+    ></textarea>
 
-<button class="send" id="send" type="submit">➤</button>
+    <button
+        class="send"
+        id="send"
+        type="submit"
+    >
+        ➤
+    </button>
 
 </form>
 
@@ -786,14 +817,12 @@ function newChat(){
     renderHistory();
     renderMessages();
     closeMenu();
+
     input.focus();
 }
 
 function getChat(){
-
-    return chats.find(
-        chat => chat.id === activeChat
-    );
+    return chats.find(chat => chat.id === activeChat);
 }
 
 function renderHistory(){
@@ -817,8 +846,7 @@ function renderHistory(){
 
     chats.forEach(chat => {
 
-        const button =
-            document.createElement("button");
+        const button = document.createElement("button");
 
         button.className =
             "history-item" +
@@ -871,15 +899,18 @@ function renderMessages(){
 function addMessage(role,text,scroll=true){
 
     const row = document.createElement("div");
+
     row.className = "message " + role;
 
     const avatar = document.createElement("div");
+
     avatar.className = "avatar";
 
     avatar.textContent =
         role === "ai" ? "龍" : "U";
 
     const bubble = document.createElement("div");
+
     bubble.className = "bubble";
 
     bubble.textContent = text;
@@ -923,9 +954,12 @@ function showTyping(){
     const dots = document.createElement("span");
 
     dots.className = "typing";
-    dots.innerHTML = "<i></i><i></i><i></i>";
+
+    dots.innerHTML =
+        "<i></i><i></i><i></i>";
 
     bubble.appendChild(dots);
+
     row.appendChild(avatar);
     row.appendChild(bubble);
 
@@ -966,20 +1000,15 @@ async function AI(text){
         }
     );
 
-    const raw = await response.text();
-
     let data;
 
     try{
-        data = JSON.parse(raw);
+        data = await response.json();
     }
-    catch(error){
-
+    catch{
         throw new Error(
-            "Worker không trả về JSON. HTTP " +
-            response.status
+            "Server không trả về JSON hợp lệ."
         );
-
     }
 
     if(!response.ok){
@@ -987,7 +1016,7 @@ async function AI(text){
         throw new Error(
             data && data.error
                 ? data.error
-                : "Worker HTTP " + response.status
+                : "API lỗi HTTP " + response.status
         );
     }
 
@@ -1000,6 +1029,11 @@ async function AI(text){
 
     return data.reply;
 }
+
+
+/* =====================================================
+   SEND
+===================================================== */
 
 async function sendMessage(text){
 
@@ -1029,6 +1063,7 @@ async function sendMessage(text){
     }
 
     input.value = "";
+
     resizeInput();
 
     renderHistory();
@@ -1049,10 +1084,7 @@ async function sendMessage(text){
             text:reply
         });
 
-        addMessage(
-            "ai",
-            reply
-        );
+        addMessage("ai",reply);
 
     }
     catch(error){
@@ -1060,7 +1092,7 @@ async function sendMessage(text){
         hideTyping();
 
         const errorText =
-            "🐉 ChatLuk gặp sự cố khi kết nối Gemini.\n\n" +
+            "🐉 ChatLuk không thể kết nối AI.\n\n" +
             "Chi tiết: " +
             (
                 error && error.message
@@ -1073,10 +1105,7 @@ async function sendMessage(text){
             text:errorText
         });
 
-        addMessage(
-            "ai",
-            errorText
-        );
+        addMessage("ai",errorText);
 
         console.error(
             "ChatLuk Gemini Error:",
@@ -1087,6 +1116,7 @@ async function sendMessage(text){
     send.disabled = false;
 
     renderHistory();
+
     input.focus();
 }
 
@@ -1113,7 +1143,9 @@ input.addEventListener(
             event.preventDefault();
 
             form.requestSubmit();
+
         }
+
     }
 );
 
@@ -1204,20 +1236,11 @@ document
     "click",
     function(){
 
-        if(
+        document.body.style.filter =
             document.body.style.filter ===
             "brightness(0.85)"
-        ){
-
-            document.body.style.filter = "";
-
-        }
-        else{
-
-            document.body.style.filter =
-                "brightness(0.85)";
-
-        }
+                ? ""
+                : "brightness(0.85)";
 
     }
 );
@@ -1265,7 +1288,7 @@ function json(data,status=200){
 
 
 /* ======================================================
-   CLOUDFLARE WORKER
+   WORKER
 ====================================================== */
 
 export default {
@@ -1276,9 +1299,7 @@ export default {
             new URL(request.url);
 
 
-        /* =========================
-           OPTIONS
-        ========================= */
+        /* OPTIONS */
 
         if(request.method === "OPTIONS"){
 
@@ -1289,12 +1310,11 @@ export default {
                     headers:CORS
                 }
             );
+
         }
 
 
-        /* =========================
-           WEBSITE
-        ========================= */
+        /* WEBSITE */
 
         if(
             request.method === "GET" &&
@@ -1308,17 +1328,17 @@ export default {
                     headers:{
                         "Content-Type":
                             "text/html; charset=utf-8",
+
                         "Cache-Control":
                             "no-store"
                     }
                 }
             );
+
         }
 
 
-        /* =========================
-           HEALTH
-        ========================= */
+        /* HEALTH */
 
         if(
             request.method === "GET" &&
@@ -1326,17 +1346,20 @@ export default {
         ){
 
             return json({
+
                 ok:true,
+
                 worker:"ChatLuk Gemini Worker",
+
                 geminiSecretConfigured:
                     Boolean(env.GEMINI_API_KEY)
+
             });
+
         }
 
 
-        /* =========================
-           CHAT API
-        ========================= */
+        /* CHAT */
 
         if(
             request.method === "POST" &&
@@ -1345,27 +1368,26 @@ export default {
 
             try{
 
-                /* =====================
-                   CHECK SECRET
-                ===================== */
+                /* CHECK SECRET */
 
                 if(!env.GEMINI_API_KEY){
 
                     return json(
                         {
                             ok:false,
+
                             error:
-                                "Không tìm thấy Secret GEMINI_API_KEY. " +
-                                "Hãy kiểm tra Settings → Variables and Secrets."
+                                "Không tìm thấy GEMINI_API_KEY. " +
+                                "Hãy vào Worker → Settings → Variables and Secrets " +
+                                "và kiểm tra Secret có tên chính xác là GEMINI_API_KEY."
                         },
                         500
                     );
+
                 }
 
 
-                /* =====================
-                   READ REQUEST
-                ===================== */
+                /* READ BODY */
 
                 let body;
 
@@ -1385,16 +1407,13 @@ export default {
                         },
                         400
                     );
+
                 }
 
 
                 const message =
                     body?.message;
 
-
-                /* =====================
-                   VALIDATE
-                ===================== */
 
                 if(
                     typeof message !== "string" ||
@@ -1409,6 +1428,7 @@ export default {
                         },
                         400
                     );
+
                 }
 
 
@@ -1422,16 +1442,25 @@ export default {
                         },
                         400
                     );
+
                 }
 
 
-                /* =====================
+                /* =================================================
                    GEMINI
-                ===================== */
+                ================================================= */
+
+                const model =
+                    "gemini-2.5-flash";
+
 
                 const geminiURL =
-                    "https://generativelanguage.googleapis.com/" +
-                    "v1beta/models/gemini-2.5-flash:generateContent";
+                    "https://generativelanguage.googleapis.com/v1beta/models/" +
+                    model +
+                    ":generateContent?key=" +
+                    encodeURIComponent(
+                        env.GEMINI_API_KEY
+                    );
 
 
                 const geminiResponse =
@@ -1442,15 +1471,12 @@ export default {
 
                             headers:{
                                 "Content-Type":
-                                    "application/json",
-
-                                "x-goog-api-key":
-                                    env.GEMINI_API_KEY
+                                    "application/json"
                             },
 
                             body:JSON.stringify({
 
-                                systemInstruction:{
+                                system_instruction:{
                                     parts:[
                                         {
                                             text:
@@ -1459,11 +1485,10 @@ export default {
                                                 "Hãy trả lời tự nhiên, rõ ràng, " +
                                                 "thân thiện và hữu ích. " +
                                                 "Ưu tiên tiếng Việt. " +
-                                                "Có thể sử dụng emoji vừa phải. " +
                                                 "Khi giải thích kiến thức, " +
                                                 "hãy trình bày dễ hiểu. " +
-                                                "Khi viết code, hãy đưa code " +
-                                                "hoàn chỉnh và chính xác."
+                                                "Khi người dùng hỏi về code, " +
+                                                "hãy đưa code hoàn chỉnh."
                                         }
                                     ]
                                 },
@@ -1482,7 +1507,7 @@ export default {
 
                                 generationConfig:{
                                     temperature:0.7,
-                                    maxOutputTokens:4096
+                                    maxOutputTokens:2048
                                 }
 
                             })
@@ -1490,12 +1515,9 @@ export default {
                     );
 
 
-                /* =====================
-                   READ RESPONSE
-                ===================== */
-
                 const raw =
                     await geminiResponse.text();
+
 
                 let data;
 
@@ -1510,119 +1532,74 @@ export default {
                     return json(
                         {
                             ok:false,
+
                             error:
                                 "Gemini trả về dữ liệu không hợp lệ."
                         },
                         502
                     );
+
                 }
 
 
-                /* =====================
-                   GEMINI ERROR
-                ===================== */
+                /* GEMINI ERROR */
 
                 if(!geminiResponse.ok){
 
-                    const apiError =
+                    const geminiError =
                         data?.error;
+
 
                     return json(
                         {
                             ok:false,
 
                             error:
-                                apiError?.message ||
-                                (
-                                    "Gemini API HTTP " +
-                                    geminiResponse.status
-                                ),
-
-                            status:
+                                geminiError?.message ||
+                                "Gemini API trả về HTTP " +
                                 geminiResponse.status,
 
-                            code:
-                                apiError?.status || null
+                            status:
+                                geminiResponse.status
                         },
                         geminiResponse.status
                     );
+
                 }
 
 
-                /* =====================
-                   GET TEXT
-                ===================== */
+                /* EXTRACT ANSWER */
 
-                let answer = "";
-
-
-                if(
-                    Array.isArray(data?.candidates)
-                ){
-
-                    for(
-                        const candidate
-                        of data.candidates
-                    ){
-
-                        const parts =
-                            candidate?.content?.parts;
-
-                        if(
-                            Array.isArray(parts)
-                        ){
-
-                            for(
-                                const part
-                                of parts
-                            ){
-
-                                if(
-                                    typeof part?.text ===
-                                    "string"
-                                ){
-
-                                    answer +=
-                                        part.text;
-
-                                }
-                            }
-                        }
-
-                        if(answer.trim()){
-                            break;
-                        }
-                    }
-                }
+                const answer =
+                    data?.candidates?.[0]
+                        ?.content?.parts
+                        ?.map(part => part.text || "")
+                        .join("")
+                        .trim();
 
 
-                /* =====================
-                   EMPTY
-                ===================== */
-
-                if(!answer.trim()){
+                if(!answer){
 
                     return json(
                         {
                             ok:false,
+
                             error:
                                 "Gemini không trả về nội dung."
                         },
                         502
                     );
+
                 }
 
 
-                /* =====================
-                   SUCCESS
-                ===================== */
+                /* SUCCESS */
 
                 return json({
 
                     ok:true,
 
-                    reply:
-                        answer.trim()
+                    reply:answer
 
                 });
 
@@ -1644,21 +1621,22 @@ export default {
                     },
                     500
                 );
+
             }
+
         }
 
 
-        /* =========================
-           404
-        ========================= */
+        /* 404 */
 
         return json(
             {
                 ok:false,
-                error:
-                    "Không tìm thấy đường dẫn."
+                error:"Không tìm thấy đường dẫn."
             },
             404
         );
+
     }
+
 };
