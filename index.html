@@ -158,11 +158,7 @@ body{
     padding:15px;
     border:1px solid var(--line);
     border-radius:16px;
-    background:linear-gradient(
-        135deg,
-        rgba(255,255,255,.8),
-        rgba(213,225,232,.6)
-    );
+    background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(213,225,232,.6));
 }
 
 .sidebar-dragon{
@@ -281,11 +277,7 @@ body{
     place-items:center;
     position:relative;
     border-radius:50%;
-    background:linear-gradient(
-        145deg,
-        rgba(255,255,255,.92),
-        rgba(201,229,241,.65)
-    );
+    background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(201,229,241,.65));
     border:1px solid rgba(0,120,210,.16);
     box-shadow:0 16px 45px rgba(0,120,210,.15);
 }
@@ -308,9 +300,7 @@ body{
 }
 
 @keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
+    to{transform:rotate(360deg);}
 }
 
 .welcome-label{
@@ -485,9 +475,7 @@ body{
     border:1px solid rgba(0,120,215,.2);
     border-radius:19px;
     background:rgba(255,255,255,.82);
-    box-shadow:
-        0 12px 45px rgba(20,70,95,.1),
-        0 0 0 5px rgba(20,190,255,.035);
+    box-shadow:0 12px 45px rgba(20,70,95,.1),0 0 0 5px rgba(20,190,255,.035);
     backdrop-filter:blur(16px);
 }
 
@@ -524,11 +512,6 @@ textarea::placeholder{
     box-shadow:0 7px 18px rgba(0,120,220,.25);
     cursor:pointer;
     font-size:17px;
-    transition:.2s;
-}
-
-.send:hover{
-    transform:translateY(-2px);
 }
 
 .send:disabled{
@@ -650,10 +633,7 @@ textarea::placeholder{
 
     <div class="logo">
         <div class="logo-dragon">龍</div>
-
-        <div class="logo-text">
-            Chat<span>Luk</span>
-        </div>
+        <div class="logo-text">Chat<span>Luk</span></div>
     </div>
 
     <button class="new-chat" id="newChat">
@@ -663,25 +643,17 @@ textarea::placeholder{
 
     <div class="history-title">
         <span>LỊCH SỬ TRONG TAB</span>
-
-        <button class="clear-btn" id="clearHistory">
-            ×
-        </button>
+        <button class="clear-btn" id="clearHistory">×</button>
     </div>
 
     <div class="history" id="history"></div>
 
     <div class="sidebar-bottom">
-
-        <div class="sidebar-dragon">
-            ☁　龍　☁
-        </div>
-
+        <div class="sidebar-dragon">☁　龍　☁</div>
         <p>
             Cuộc trò chuyện chỉ được lưu
             trong bộ nhớ của tab hiện tại.
         </p>
-
     </div>
 
 </aside>
@@ -690,80 +662,66 @@ textarea::placeholder{
 
 <header class="topbar">
 
-    <button class="mobile-menu" id="menuButton">
-        ☰
-    </button>
+    <button class="mobile-menu" id="menuButton">☰</button>
 
     <div class="title">
-
-        <div class="title-dragon">
-            龍
-        </div>
-
+        <div class="title-dragon">龍</div>
         <div>
             <h1>ChatLuk</h1>
-
-            <small>
-                VIETNAMESE DRAGON AI
-            </small>
+            <small>VIETNAMESE DRAGON AI</small>
         </div>
-
     </div>
 
     <div class="creator">
         AnhLongDepZaiVaiDai-cre:Longlee
     </div>
 
-    <button class="theme" id="themeButton">
-        ◐
-    </button>
+    <button class="theme" id="themeButton">◐</button>
 
 </header>
 
 <section class="chat-area" id="chatArea">
 
-    <div class="welcome" id="welcome">
+<div class="welcome" id="welcome">
 
-        <div class="dragon">
-            <span>龍</span>
-        </div>
+    <div class="dragon">
+        <span>龍</span>
+    </div>
 
-        <div class="welcome-label">
-            CHÀO MỪNG ĐẾN VỚI
-        </div>
+    <div class="welcome-label">
+        CHÀO MỪNG ĐẾN VỚI
+    </div>
 
-        <h2>
-            Chat<span>Luk</span>
-        </h2>
+    <h2>Chat<span>Luk</span></h2>
 
-        <p>
-            Không gian trò chuyện AI lấy cảm hứng
-            từ rồng phương Đông và vẻ đẹp văn hóa Việt Nam.
-        </p>
+    <p>
+        Không gian trò chuyện AI lấy cảm hứng
+        từ rồng phương Đông và vẻ đẹp văn hóa Việt Nam.
+    </p>
 
-        <div class="suggestions">
+    <div class="suggestions">
 
-            <button class="suggestion">
-                Giải thích một bài học cho tôi
-            </button>
+        <button class="suggestion">
+            Giải thích một bài học cho tôi
+        </button>
 
-            <button class="suggestion">
-                Giúp tôi lên một kế hoạch
-            </button>
+        <button class="suggestion">
+            Giúp tôi lên một kế hoạch
+        </button>
 
-            <button class="suggestion">
-                Viết một đoạn văn sáng tạo
-            </button>
+        <button class="suggestion">
+            Viết một đoạn văn sáng tạo
+        </button>
 
-            <button class="suggestion">
-                Cho tôi một ý tưởng mới
-            </button>
-
-        </div>
+        <button class="suggestion">
+            Cho tôi một ý tưởng mới
+        </button>
 
     </div>
 
-    <div class="messages" id="messages"></div>
+</div>
+
+<div class="messages" id="messages"></div>
 
 </section>
 
@@ -771,39 +729,25 @@ textarea::placeholder{
 
 <form class="composer" id="chatForm">
 
-    <textarea
-        id="input"
-        maxlength="8000"
-        rows="1"
-        placeholder="Nhập tin nhắn cho ChatLuk..."
-    ></textarea>
+<textarea
+    id="input"
+    maxlength="8000"
+    rows="1"
+    placeholder="Nhập tin nhắn cho ChatLuk..."
+></textarea>
 
-    <button
-        class="send"
-        id="send"
-        type="submit"
-    >
-        ➤
-    </button>
+<button class="send" id="send" type="submit">➤</button>
 
 </form>
 
 <div class="info">
-
-    <span>
-        AI ChatLuk
-    </span>
-
-    <span>
-        Enter để gửi · Shift + Enter để xuống dòng
-    </span>
-
+    <span>AI ChatLuk • Gemini</span>
+    <span>Enter để gửi · Shift + Enter để xuống dòng</span>
 </div>
 
 </footer>
 
 </main>
-
 </div>
 
 <div class="overlay" id="overlay"></div>
@@ -813,79 +757,44 @@ textarea::placeholder{
 let chats = [];
 let activeChat = null;
 
-const historyBox =
-    document.getElementById("history");
-
-const messagesBox =
-    document.getElementById("messages");
-
-const welcome =
-    document.getElementById("welcome");
-
-const input =
-    document.getElementById("input");
-
-const form =
-    document.getElementById("chatForm");
-
-const send =
-    document.getElementById("send");
-
-const chatArea =
-    document.getElementById("chatArea");
-
-const sidebar =
-    document.getElementById("sidebar");
-
-const overlay =
-    document.getElementById("overlay");
-
+const historyBox = document.getElementById("history");
+const messagesBox = document.getElementById("messages");
+const welcome = document.getElementById("welcome");
+const input = document.getElementById("input");
+const form = document.getElementById("chatForm");
+const send = document.getElementById("send");
+const chatArea = document.getElementById("chatArea");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
 
 function createID(){
-
     return Date.now().toString(36) +
-        Math.random()
-        .toString(36)
-        .substring(2,8);
-
+        Math.random().toString(36).substring(2,8);
 }
-
 
 function newChat(){
 
     const chat = {
-
         id:createID(),
-
         title:"Cuộc trò chuyện mới",
-
         messages:[]
-
     };
 
     chats.unshift(chat);
-
     activeChat = chat.id;
 
     renderHistory();
-
     renderMessages();
-
     closeMenu();
-
     input.focus();
-
 }
-
 
 function getChat(){
 
     return chats.find(
         chat => chat.id === activeChat
     );
-
 }
-
 
 function renderHistory(){
 
@@ -893,8 +802,7 @@ function renderHistory(){
 
     if(chats.length === 0){
 
-        const empty =
-            document.createElement("div");
+        const empty = document.createElement("div");
 
         empty.style.cssText =
             "padding:12px 8px;color:#8795a2;font-size:11px;";
@@ -914,23 +822,16 @@ function renderHistory(){
 
         button.className =
             "history-item" +
-            (
-                chat.id === activeChat
-                ? " active"
-                : ""
-            );
+            (chat.id === activeChat ? " active" : "");
 
-        button.textContent =
-            chat.title;
+        button.textContent = chat.title;
 
         button.onclick = function(){
 
             activeChat = chat.id;
 
             renderHistory();
-
             renderMessages();
-
             closeMenu();
 
         };
@@ -938,9 +839,7 @@ function renderHistory(){
         historyBox.appendChild(button);
 
     });
-
 }
-
 
 function renderMessages(){
 
@@ -951,7 +850,6 @@ function renderMessages(){
     if(!chat || chat.messages.length === 0){
 
         welcome.style.display = "flex";
-
         return;
     }
 
@@ -968,39 +866,25 @@ function renderMessages(){
     });
 
     scrollBottom();
-
 }
-
 
 function addMessage(role,text,scroll=true){
 
-    const row =
-        document.createElement("div");
+    const row = document.createElement("div");
+    row.className = "message " + role;
 
-    row.className =
-        "message " + role;
-
-    const avatar =
-        document.createElement("div");
-
-    avatar.className =
-        "avatar";
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
 
     avatar.textContent =
-        role === "ai"
-        ? "龍"
-        : "U";
+        role === "ai" ? "龍" : "U";
 
-    const bubble =
-        document.createElement("div");
-
-    bubble.className =
-        "bubble";
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
 
     bubble.textContent = text;
 
     row.appendChild(avatar);
-
     row.appendChild(bubble);
 
     messagesBox.appendChild(row);
@@ -1008,9 +892,7 @@ function addMessage(role,text,scroll=true){
     if(scroll){
         scrollBottom();
     }
-
 }
-
 
 function scrollBottom(){
 
@@ -1020,56 +902,37 @@ function scrollBottom(){
             chatArea.scrollHeight;
 
     });
-
 }
-
 
 function showTyping(){
 
-    const row =
-        document.createElement("div");
+    const row = document.createElement("div");
 
-    row.className =
-        "message ai";
+    row.className = "message ai";
+    row.id = "typing";
 
-    row.id =
-        "typing";
+    const avatar = document.createElement("div");
 
-    const avatar =
-        document.createElement("div");
-
-    avatar.className =
-        "avatar";
-
+    avatar.className = "avatar";
     avatar.textContent = "龍";
 
-    const bubble =
-        document.createElement("div");
+    const bubble = document.createElement("div");
 
-    bubble.className =
-        "bubble";
+    bubble.className = "bubble";
 
-    const dots =
-        document.createElement("span");
+    const dots = document.createElement("span");
 
-    dots.className =
-        "typing";
-
-    dots.innerHTML =
-        "<i></i><i></i><i></i>";
+    dots.className = "typing";
+    dots.innerHTML = "<i></i><i></i><i></i>";
 
     bubble.appendChild(dots);
-
     row.appendChild(avatar);
-
     row.appendChild(bubble);
 
     messagesBox.appendChild(row);
 
     scrollBottom();
-
 }
-
 
 function hideTyping(){
 
@@ -1079,93 +942,64 @@ function hideTyping(){
     if(typing){
         typing.remove();
     }
-
 }
 
 
-/*
-========================================================
-GEMINI AI
-========================================================
-
-Frontend gọi:
-
-POST /api/chat
-
-API key KHÔNG nằm ở đây.
-
-API key được lưu trong Cloudflare Worker Secret:
-
-GEMINI_API_KEY
-========================================================
-*/
+/* =====================================================
+   GEMINI API
+===================================================== */
 
 async function AI(text){
 
-    const response =
-        await fetch(
-            "/api/chat",
-            {
-                method:"POST",
+    const response = await fetch(
+        "/api/chat",
+        {
+            method:"POST",
 
-                headers:{
-                    "Content-Type":
-                        "application/json"
-                },
+            headers:{
+                "Content-Type":"application/json"
+            },
 
-                body:JSON.stringify({
-                    message:text
-                })
-            }
-        );
+            body:JSON.stringify({
+                message:text
+            })
+        }
+    );
 
+    const raw = await response.text();
 
     let data;
 
-
     try{
-
-        data =
-            await response.json();
-
+        data = JSON.parse(raw);
     }
-    catch{
+    catch(error){
 
         throw new Error(
-            "Worker không trả về JSON hợp lệ."
+            "Worker không trả về JSON. HTTP " +
+            response.status
         );
 
     }
-
 
     if(!response.ok){
 
         throw new Error(
             data && data.error
                 ? data.error
-                : "Worker lỗi HTTP " +
-                  response.status
+                : "Worker HTTP " + response.status
         );
-
     }
 
-
-    if(
-        !data ||
-        !data.reply
-    ){
+    if(!data || !data.reply){
 
         throw new Error(
             "Gemini không trả về câu trả lời."
         );
-
     }
 
-
     return data.reply;
-
 }
-
 
 async function sendMessage(text){
 
@@ -1175,60 +1009,44 @@ async function sendMessage(text){
         return;
     }
 
-
     if(!activeChat){
         newChat();
     }
 
-
     const chat = getChat();
 
-
     chat.messages.push({
-
         role:"user",
-
         text:text
-
     });
-
 
     if(chat.messages.length === 1){
 
         chat.title =
             text.length > 35
-            ? text.substring(0,35) + "..."
-            : text;
-
+                ? text.substring(0,35) + "..."
+                : text;
     }
 
-
     input.value = "";
-
     resizeInput();
 
     renderHistory();
-
     renderMessages();
 
     send.disabled = true;
 
     showTyping();
 
-
     try{
 
-        const reply =
-            await AI(text);
+        const reply = await AI(text);
 
         hideTyping();
 
         chat.messages.push({
-
             role:"ai",
-
             text:reply
-
         });
 
         addMessage(
@@ -1242,7 +1060,7 @@ async function sendMessage(text){
         hideTyping();
 
         const errorText =
-            "🐉 ChatLuk gặp sự cố khi kết nối AI.\n\n" +
+            "🐉 ChatLuk gặp sự cố khi kết nối Gemini.\n\n" +
             "Chi tiết: " +
             (
                 error && error.message
@@ -1251,11 +1069,8 @@ async function sendMessage(text){
             );
 
         chat.messages.push({
-
             role:"ai",
-
             text:errorText
-
         });
 
         addMessage(
@@ -1264,21 +1079,16 @@ async function sendMessage(text){
         );
 
         console.error(
-            "ChatLuk AI Error:",
+            "ChatLuk Gemini Error:",
             error
         );
-
     }
-
 
     send.disabled = false;
 
     renderHistory();
-
     input.focus();
-
 }
-
 
 form.addEventListener(
     "submit",
@@ -1290,7 +1100,6 @@ form.addEventListener(
 
     }
 );
-
 
 input.addEventListener(
     "keydown",
@@ -1304,12 +1113,9 @@ input.addEventListener(
             event.preventDefault();
 
             form.requestSubmit();
-
         }
-
     }
 );
-
 
 function resizeInput(){
 
@@ -1320,15 +1126,12 @@ function resizeInput(){
             input.scrollHeight,
             170
         ) + "px";
-
 }
-
 
 input.addEventListener(
     "input",
     resizeInput
 );
-
 
 document
 .querySelectorAll(".suggestion")
@@ -1342,14 +1145,12 @@ document
                 button.textContent.trim();
 
             resizeInput();
-
             input.focus();
 
         }
     );
 
 });
-
 
 document
 .getElementById("newChat")
@@ -1358,7 +1159,6 @@ document
     newChat
 );
 
-
 document
 .getElementById("clearHistory")
 .addEventListener(
@@ -1366,16 +1166,13 @@ document
     function(){
 
         chats = [];
-
         activeChat = null;
 
         renderHistory();
-
         renderMessages();
 
     }
 );
-
 
 document
 .getElementById("menuButton")
@@ -1384,27 +1181,22 @@ document
     function(){
 
         sidebar.classList.add("open");
-
         overlay.classList.add("show");
 
     }
 );
 
-
 function closeMenu(){
 
     sidebar.classList.remove("open");
-
     overlay.classList.remove("show");
 
 }
-
 
 overlay.addEventListener(
     "click",
     closeMenu
 );
-
 
 document
 .getElementById("themeButton")
@@ -1430,11 +1222,8 @@ document
     }
 );
 
-
 renderHistory();
-
 renderMessages();
-
 input.focus();
 
 </script>
@@ -1449,46 +1238,34 @@ input.focus();
 ====================================================== */
 
 const CORS = {
-
     "Access-Control-Allow-Origin":"*",
-
-    "Access-Control-Allow-Methods":
-        "GET, POST, OPTIONS",
-
-    "Access-Control-Allow-Headers":
-        "Content-Type"
-
+    "Access-Control-Allow-Methods":"GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers":"Content-Type"
 };
 
 
 /* ======================================================
-   JSON RESPONSE
+   JSON
 ====================================================== */
 
 function json(data,status=200){
 
     return new Response(
-
         JSON.stringify(data),
-
         {
             status:status,
-
             headers:{
                 ...CORS,
-
                 "Content-Type":
                     "application/json; charset=utf-8"
             }
         }
-
     );
-
 }
 
 
 /* ======================================================
-   WORKER
+   CLOUDFLARE WORKER
 ====================================================== */
 
 export default {
@@ -1499,9 +1276,9 @@ export default {
             new URL(request.url);
 
 
-        /* ==================================================
-           CORS
-        ================================================== */
+        /* =========================
+           OPTIONS
+        ========================= */
 
         if(request.method === "OPTIONS"){
 
@@ -1512,13 +1289,12 @@ export default {
                     headers:CORS
                 }
             );
-
         }
 
 
-        /* ==================================================
+        /* =========================
            WEBSITE
-        ================================================== */
+        ========================= */
 
         if(
             request.method === "GET" &&
@@ -1526,29 +1302,23 @@ export default {
         ){
 
             return new Response(
-
                 HTML,
-
                 {
                     status:200,
-
                     headers:{
                         "Content-Type":
                             "text/html; charset=utf-8",
-
                         "Cache-Control":
                             "no-store"
                     }
                 }
-
             );
-
         }
 
 
-        /* ==================================================
+        /* =========================
            HEALTH
-        ================================================== */
+        ========================= */
 
         if(
             request.method === "GET" &&
@@ -1556,25 +1326,17 @@ export default {
         ){
 
             return json({
-
                 ok:true,
-
-                worker:
-                    "ChatLuk Gemini Worker",
-
-                geminiKeyConfigured:
-                    Boolean(
-                        env.GEMINI_API_KEY
-                    )
-
+                worker:"ChatLuk Gemini Worker",
+                geminiSecretConfigured:
+                    Boolean(env.GEMINI_API_KEY)
             });
-
         }
 
 
-        /* ==================================================
+        /* =========================
            CHAT API
-        ================================================== */
+        ========================= */
 
         if(
             request.method === "POST" &&
@@ -1583,36 +1345,29 @@ export default {
 
             try{
 
-                /* ==========================================
+                /* =====================
                    CHECK SECRET
-                ========================================== */
+                ===================== */
 
                 if(!env.GEMINI_API_KEY){
 
                     return json(
-
                         {
                             ok:false,
-
                             error:
                                 "Không tìm thấy Secret GEMINI_API_KEY. " +
-                                "Hãy vào Cloudflare Worker → Settings → Variables and Secrets " +
-                                "và kiểm tra chính xác tên Secret."
+                                "Hãy kiểm tra Settings → Variables and Secrets."
                         },
-
                         500
-
                     );
-
                 }
 
 
-                /* ==========================================
-                   READ BODY
-                ========================================== */
+                /* =====================
+                   READ REQUEST
+                ===================== */
 
                 let body;
-
 
                 try{
 
@@ -1623,29 +1378,23 @@ export default {
                 catch{
 
                     return json(
-
                         {
                             ok:false,
-
                             error:
                                 "Request JSON không hợp lệ."
                         },
-
                         400
-
                     );
-
                 }
 
 
                 const message =
-                    body &&
-                    body.message;
+                    body?.message;
 
 
-                /* ==========================================
+                /* =====================
                    VALIDATE
-                ========================================== */
+                ===================== */
 
                 if(
                     typeof message !== "string" ||
@@ -1653,79 +1402,56 @@ export default {
                 ){
 
                     return json(
-
                         {
                             ok:false,
-
                             error:
                                 "Tin nhắn không hợp lệ."
                         },
-
                         400
-
                     );
-
                 }
 
 
                 if(message.length > 8000){
 
                     return json(
-
                         {
                             ok:false,
-
                             error:
-                                "Tin nhắn quá dài. " +
-                                "Vui lòng rút ngắn tin nhắn."
+                                "Tin nhắn quá dài."
                         },
-
                         400
-
                     );
-
                 }
 
 
-                /* ==========================================
-                   GEMINI API
-                ========================================== */
-
-                const GEMINI_MODEL =
-                    "gemini-2.5-flash";
-
+                /* =====================
+                   GEMINI
+                ===================== */
 
                 const geminiURL =
-                    "https://generativelanguage.googleapis.com/v1beta/models/" +
-                    GEMINI_MODEL +
-                    ":generateContent";
+                    "https://generativelanguage.googleapis.com/" +
+                    "v1beta/models/gemini-2.5-flash:generateContent";
 
 
                 const geminiResponse =
                     await fetch(
-
                         geminiURL,
-
                         {
-
                             method:"POST",
 
                             headers:{
-
                                 "Content-Type":
                                     "application/json",
 
                                 "x-goog-api-key":
                                     env.GEMINI_API_KEY
-
                             },
 
                             body:JSON.stringify({
 
                                 systemInstruction:{
-
                                     parts:[
-
                                         {
                                             text:
                                                 "Bạn là ChatLuk, " +
@@ -1739,54 +1465,39 @@ export default {
                                                 "Khi viết code, hãy đưa code " +
                                                 "hoàn chỉnh và chính xác."
                                         }
-
                                     ]
-
                                 },
 
                                 contents:[
-
                                     {
-
                                         role:"user",
 
                                         parts:[
-
                                             {
                                                 text:message
                                             }
-
                                         ]
-
                                     }
-
                                 ],
 
                                 generationConfig:{
-
                                     temperature:0.7,
-
                                     maxOutputTokens:4096
-
                                 }
 
                             })
-
                         }
-
                     );
 
 
-                /* ==========================================
-                   READ GEMINI
-                ========================================== */
+                /* =====================
+                   READ RESPONSE
+                ===================== */
 
                 const raw =
                     await geminiResponse.text();
 
-
                 let data;
-
 
                 try{
 
@@ -1797,75 +1508,56 @@ export default {
                 catch{
 
                     return json(
+                        {
+                            ok:false,
+                            error:
+                                "Gemini trả về dữ liệu không hợp lệ."
+                        },
+                        502
+                    );
+                }
 
+
+                /* =====================
+                   GEMINI ERROR
+                ===================== */
+
+                if(!geminiResponse.ok){
+
+                    const apiError =
+                        data?.error;
+
+                    return json(
                         {
                             ok:false,
 
                             error:
-                                "Gemini trả về dữ liệu không hợp lệ."
-                        },
-
-                        502
-
-                    );
-
-                }
-
-
-                /* ==========================================
-                   GEMINI ERROR
-                ========================================== */
-
-                if(!geminiResponse.ok){
-
-                    let errorMessage =
-                        "Gemini API lỗi HTTP " +
-                        geminiResponse.status;
-
-
-                    if(
-                        data &&
-                        data.error &&
-                        data.error.message
-                    ){
-
-                        errorMessage =
-                            data.error.message;
-
-                    }
-
-
-                    return json(
-
-                        {
-                            ok:false,
-
-                            error:errorMessage,
+                                apiError?.message ||
+                                (
+                                    "Gemini API HTTP " +
+                                    geminiResponse.status
+                                ),
 
                             status:
-                                geminiResponse.status
+                                geminiResponse.status,
 
+                            code:
+                                apiError?.status || null
                         },
-
                         geminiResponse.status
-
                     );
-
                 }
 
 
-                /* ==========================================
-                   EXTRACT ANSWER
-                ========================================== */
+                /* =====================
+                   GET TEXT
+                ===================== */
 
                 let answer = "";
 
 
                 if(
-                    data &&
-                    Array.isArray(
-                        data.candidates
-                    )
+                    Array.isArray(data?.candidates)
                 ){
 
                     for(
@@ -1873,64 +1565,57 @@ export default {
                         of data.candidates
                     ){
 
+                        const parts =
+                            candidate?.content?.parts;
+
                         if(
-                            candidate &&
-                            candidate.content &&
-                            Array.isArray(
-                                candidate.content.parts
-                            )
+                            Array.isArray(parts)
                         ){
 
                             for(
                                 const part
-                                of candidate.content.parts
+                                of parts
                             ){
 
                                 if(
-                                    part &&
-                                    typeof part.text ===
-                                        "string"
+                                    typeof part?.text ===
+                                    "string"
                                 ){
 
                                     answer +=
                                         part.text;
 
                                 }
-
                             }
-
                         }
 
+                        if(answer.trim()){
+                            break;
+                        }
                     }
-
                 }
 
 
-                /* ==========================================
-                   EMPTY ANSWER
-                ========================================== */
+                /* =====================
+                   EMPTY
+                ===================== */
 
                 if(!answer.trim()){
 
                     return json(
-
                         {
                             ok:false,
-
                             error:
                                 "Gemini không trả về nội dung."
                         },
-
                         502
-
                     );
-
                 }
 
 
-                /* ==========================================
+                /* =====================
                    SUCCESS
-                ========================================== */
+                ===================== */
 
                 return json({
 
@@ -1942,54 +1627,38 @@ export default {
                 });
 
             }
-
-
             catch(error){
 
                 console.error(
-                    "ChatLuk Gemini Worker Error:",
+                    "ChatLuk Worker Error:",
                     error
                 );
 
-
                 return json(
-
                     {
                         ok:false,
 
                         error:
-                            error &&
-                            error.message
-                                ? error.message
-                                : "Worker gặp lỗi không xác định."
+                            error?.message ||
+                            "Worker gặp lỗi không xác định."
                     },
-
                     500
-
                 );
-
             }
-
         }
 
 
-        /* ==================================================
+        /* =========================
            404
-        ================================================== */
+        ========================= */
 
         return json(
-
             {
                 ok:false,
-
                 error:
                     "Không tìm thấy đường dẫn."
             },
-
             404
-
         );
-
     }
-
 };
