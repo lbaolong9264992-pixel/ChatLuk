@@ -2189,68 +2189,97 @@ function json(data, status = 200){
 
 
 /* =====================================================
-   GET GEMINI TEXT
+   CORS
 ===================================================== */
 
-function extractGeminiText(data){
+const CORS = {
+    "Access-Control-Allow-Origin":"*",
+    "Access-Control-Allow-Methods":"GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers":"Content-Type",
+    "Access-Control-Max-Age":"86400"
+};
+
+
+/* =====================================================
+   JSON HELPER
+===================================================== */
+
+function json(data, status = 200){
+
+    return new Response(
+        JSON.stringify(data),
+        {
+            status,
+
+            headers:{
+                ...CORS,
+                "Content-Type":
+                    "application/json; charset=utf-8"
+            }
+        }
+    );
+}
+
+
+/* =====================================================
+   EXTRACT OPENAI RESPONSE
+===================================================== */
+
+function extractOpenAIText(data){
 
     if(
         data &&
-        typeof data.text === "string" &&
-        data.text.trim()
+        typeof data.output_text === "string" &&
+        data.output_text.trim()
     ){
 
-        return data.text.trim();
+        return data.output_text.trim();
 
     }
 
 
+    /*
+       Fallback nếu output_text không có
+    */
+
     if(
         data &&
-        Array.isArray(data.candidates)
+        Array.isArray(data.output)
     ){
 
         let result = "";
 
-
         for(
-            const candidate
-            of data.candidates
+            const item of data.output
         ){
 
             if(
-                !candidate ||
-                !candidate.content ||
-                !Array.isArray(
-                    candidate.content.parts
-                )
+                !item ||
+                item.type !== "message" ||
+                !Array.isArray(item.content)
             ){
 
                 continue;
 
             }
 
-
             for(
-                const part
-                of candidate.content.parts
+                const content of item.content
             ){
 
                 if(
-                    part &&
-                    typeof part.text ===
-                        "string"
+                    content &&
+                    content.type === "output_text" &&
+                    typeof content.text === "string"
                 ){
 
-                    result +=
-                        part.text;
+                    result += content.text;
 
                 }
 
             }
 
         }
-
 
         if(result.trim()){
 
@@ -2260,16 +2289,15 @@ function extractGeminiText(data){
 
     }
 
-
     return "";
 }
 
 
 /* =====================================================
-   BUILD GEMINI CONTENTS
+   BUILD OPENAI INPUT
 ===================================================== */
 
-function buildGeminiContents(messages){
+function buildOpenAIInput(messages){
 
     return messages
         .filter(
@@ -2289,20 +2317,17 @@ function buildGeminiContents(messages){
 
                     role:
                         message.role === "ai"
-                            ? "model"
+                            ? "assistant"
                             : "user",
 
-                    parts:[
-                        {
-                            text:
-                                message.text
-                        }
-                    ]
+                    content:
+                        message.text.trim()
 
                 };
 
             }
         );
+
 }
 
 
@@ -2378,14 +2403,178 @@ export default {
                 ok:true,
 
                 worker:
-                    "ChatLuk Gemini Worker",
+                    "ChatLuk OpenAI Worker",
 
-                secretConfigured:
+                openaiKeyConfigured:
                     Boolean(
                         env.OPENAI_API_KEY
                     )
 
             });
+
+        }
+
+
+        /* =============================================
+           OPENAI TEST
+        ============================================= */
+
+        if(
+            request.method === "GET" &&
+            url.pathname === "/test"
+        ){
+
+            if(
+                !env.OPENAI_API_KEY
+            ){
+
+                return json(
+                    {
+                        ok:false,
+
+                        worker:"online",
+
+                        openai:"not_configured",
+
+                        error:
+                            "Không tìm thấy OPENAI_API_KEY."
+                    },
+                    500
+                );
+
+            }
+
+
+            try{
+
+                const response =
+                    await fetch(
+                        "https://api.openai.com/v1/responses",
+                        {
+
+                            method:"POST",
+
+                            headers:{
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    "Bearer " +
+                                    env.OPENAI_API_KEY
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    model:
+                                        "gpt-5.6",
+
+                                    input:
+                                        "Trả lời đúng một câu: ChatLuk hoạt động."
+                                })
+
+                        }
+                    );
+
+
+                const raw =
+                    await response.text();
+
+
+                let data = null;
+
+
+                try{
+
+                    data =
+                        JSON.parse(raw);
+
+                }
+                catch{
+
+                    return json(
+                        {
+                            ok:false,
+
+                            worker:"online",
+
+                            openai:"invalid_response",
+
+                            status:
+                                response.status,
+
+                            raw:
+                                raw.slice(0,1000)
+                        },
+                        502
+                    );
+
+                }
+
+
+                if(
+                    !response.ok
+                ){
+
+                    return json(
+                        {
+                            ok:false,
+
+                            worker:"online",
+
+                            openai:"error",
+
+                            status:
+                                response.status,
+
+                            error:
+                                data?.error?.message ||
+                                "OpenAI API trả về lỗi."
+                        },
+                        response.status
+                    );
+
+                }
+
+
+                const reply =
+                    extractOpenAIText(
+                        data
+                    );
+
+
+                return json({
+
+                    ok:true,
+
+                    worker:"online",
+
+                    openai:"connected",
+
+                    reply:
+                        reply || "OpenAI đã phản hồi."
+
+                });
+
+            }
+            catch(error){
+
+                return json(
+                    {
+                        ok:false,
+
+                        worker:"online",
+
+                        openai:"connection_error",
+
+                        error:
+                            error?.message ||
+                            "Không thể kết nối OpenAI."
+                    },
+                    500
+                );
+
+            }
 
         }
 
@@ -2402,11 +2591,11 @@ export default {
             try{
 
                 /* =====================================
-                   CHECK SECRET
+                   CHECK API KEY
                 ===================================== */
 
                 if(
-                    !env.GEMINI_API_KEY
+                    !env.OPENAI_API_KEY
                 ){
 
                     return json(
@@ -2414,9 +2603,8 @@ export default {
                             ok:false,
 
                             error:
-                                "Không tìm thấy GEMINI_API_KEY. " +
-                                "Hãy vào Cloudflare Worker → Settings → Variables and Secrets " +
-                                "và tạo Secret có tên chính xác là GEMINI_API_KEY."
+                                "Không tìm thấy OPENAI_API_KEY. " +
+                                "Hãy vào Cloudflare Worker → Settings → Variables and Secrets."
                         },
                         500
                     );
@@ -2472,8 +2660,7 @@ export default {
                 }
                 else if(
                     body &&
-                    typeof body.message ===
-                        "string"
+                    typeof body.message === "string"
                 ){
 
                     messages = [
@@ -2502,21 +2689,21 @@ export default {
 
 
                 /* =====================================
-                   LIMIT
+                   LIMIT HISTORY
                 ===================================== */
 
                 messages =
                     messages.slice(-30);
 
 
-                const contents =
-                    buildGeminiContents(
+                const input =
+                    buildOpenAIInput(
                         messages
                     );
 
 
                 if(
-                    contents.length === 0
+                    input.length === 0
                 ){
 
                     return json(
@@ -2533,22 +2720,12 @@ export default {
 
 
                 /* =====================================
-                   GEMINI REQUEST
+                   OPENAI REQUEST
                 ===================================== */
 
-                const model =
-                    "gemini-3.5-flash";
-
-
-                const endpoint =
-                    "https://generativelanguage.googleapis.com/v1beta/models/" +
-                    model +
-                    ":generateContent";
-
-
-                const geminiResponse =
+                const response =
                     await fetch(
-                        endpoint,
+                        "https://api.openai.com/v1/responses",
                         {
 
                             method:"POST",
@@ -2557,40 +2734,32 @@ export default {
                                 "Content-Type":
                                     "application/json",
 
-                                "x-goog-api-key":
-                                    env.GEMINI_API_KEY
+                                "Authorization":
+                                    "Bearer " +
+                                    env.OPENAI_API_KEY
                             },
 
                             body:
                                 JSON.stringify({
 
-                                    systemInstruction:{
-                                        parts:[
-                                            {
-                                                text:
-                                                    "Bạn là ChatLuk, " +
-                                                    "một trợ lý AI tiếng Việt. " +
-                                                    "Hãy trả lời bằng tiếng Việt " +
-                                                    "một cách tự nhiên, rõ ràng, " +
-                                                    "thân thiện và hữu ích. " +
-                                                    "Khi người dùng hỏi kiến thức, " +
-                                                    "hãy giải thích dễ hiểu. " +
-                                                    "Khi người dùng yêu cầu code, " +
-                                                    "hãy đưa code hoàn chỉnh. " +
-                                                    "Không tự nhận mình là con người. " +
-                                                    "Có thể dùng emoji vừa phải."
-                                            }
-                                        ]
-                                    },
+                                    model:
+                                        "gpt-5.6",
 
-                                    contents:
+                                    instructions:
+                                        "Bạn là ChatLuk, " +
+                                        "một trợ lý AI tiếng Việt. " +
+                                        "Hãy trả lời bằng tiếng Việt " +
+                                        "một cách tự nhiên, rõ ràng, " +
+                                        "thân thiện và hữu ích. " +
+                                        "Khi người dùng hỏi kiến thức, " +
+                                        "hãy giải thích dễ hiểu. " +
+                                        "Khi người dùng yêu cầu code, " +
+                                        "hãy đưa code hoàn chỉnh. " +
+                                        "Không tự nhận mình là con người. " +
+                                        "Có thể dùng emoji vừa phải.",
 
-                                        contents,
-
-                                    generationConfig:{
-                                        temperature:0.7,
-                                        maxOutputTokens:2048
-                                    }
+                                    input:
+                                        input
 
                                 })
 
@@ -2599,11 +2768,11 @@ export default {
 
 
                 /* =====================================
-                   READ GEMINI RESPONSE
+                   READ RESPONSE
                 ===================================== */
 
                 const raw =
-                    await geminiResponse.text();
+                    await response.text();
 
 
                 let data = null;
@@ -2622,10 +2791,10 @@ export default {
                             ok:false,
 
                             error:
-                                "Gemini trả về dữ liệu không phải JSON.",
+                                "OpenAI trả về dữ liệu không phải JSON.",
 
                             status:
-                                geminiResponse.status
+                                response.status
                         },
                         502
                     );
@@ -2634,28 +2803,19 @@ export default {
 
 
                 /* =====================================
-                   GEMINI ERROR
+                   OPENAI ERROR
                 ===================================== */
 
                 if(
-                    !geminiResponse.ok
+                    !response.ok
                 ){
 
-                    let message =
-                        "Gemini API trả về HTTP " +
-                        geminiResponse.status;
-
-
-                    if(
-                        data &&
-                        data.error &&
-                        data.error.message
-                    ){
-
-                        message =
-                            data.error.message;
-
-                    }
+                    const message =
+                        data?.error?.message ||
+                        (
+                            "OpenAI API trả về HTTP " +
+                            response.status
+                        );
 
 
                     return json(
@@ -2665,20 +2825,20 @@ export default {
                             error:message,
 
                             status:
-                                geminiResponse.status
+                                response.status
                         },
-                        geminiResponse.status
+                        response.status
                     );
 
                 }
 
 
                 /* =====================================
-                   EXTRACT
+                   EXTRACT ANSWER
                 ===================================== */
 
                 const answer =
-                    extractGeminiText(
+                    extractOpenAIText(
                         data
                     );
 
@@ -2692,7 +2852,7 @@ export default {
                             ok:false,
 
                             error:
-                                "Gemini không trả về nội dung văn bản."
+                                "OpenAI không trả về nội dung văn bản."
                         },
                         502
                     );
@@ -2717,7 +2877,7 @@ export default {
             catch(error){
 
                 console.error(
-                    "ChatLuk Worker Error:",
+                    "ChatLuk OpenAI Worker Error:",
                     error
                 );
 
@@ -2727,10 +2887,8 @@ export default {
                         ok:false,
 
                         error:
-                            error &&
-                            error.message
-                                ? error.message
-                                : "Worker gặp lỗi không xác định."
+                            error?.message ||
+                            "Worker gặp lỗi không xác định."
                     },
                     500
                 );
@@ -2749,7 +2907,10 @@ export default {
                 ok:false,
 
                 error:
-                    "Không tìm thấy đường dẫn."
+                    "Không tìm thấy đường dẫn.",
+
+                path:
+                    url.pathname
             },
             404
         );
