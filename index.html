@@ -1,13 +1,11 @@
-const HTML = `
-<!DOCTYPE html>
+const HTML = `<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ChatLuk — Vietnamese Dragon AI</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -15,33 +13,37 @@ const HTML = `
 }
 
 :root{
-    --bg:#f5ecdc;
-    --bg2:#fffaf0;
-    --panel:rgba(255,250,240,.88);
-    --panel2:rgba(255,255,255,.72);
-    --text:#4a3525;
-    --muted:#8c7864;
-    --gold:#bd7a28;
-    --gold2:#e1a84d;
-    --red:#a92c1d;
-    --red2:#d14a31;
-    --line:rgba(130,82,30,.18);
-    --shadow:rgba(91,54,25,.15);
+    --paper:#f6eddb;
+    --paper2:#fffaf0;
+    --paper3:#ead9bb;
+    --ink:#493722;
+    --ink2:#755c3b;
+    --gold:#b77b27;
+    --gold2:#d39a3c;
+    --red:#a92d20;
+    --red2:#c74631;
+    --line:rgba(112,73,30,.20);
+    --shadow:rgba(72,43,15,.15);
+    --bg:#eee2c9;
+    --bubble:#fffdf7;
+    --user:#f4dcae;
 }
 
 body.dark{
-    --bg:#181512;
-    --bg2:#211b16;
-    --panel:rgba(34,29,24,.94);
-    --panel2:rgba(45,38,31,.88);
-    --text:#f3e5cf;
-    --muted:#b6a48d;
-    --gold:#e0a24a;
-    --gold2:#f1c26d;
-    --red:#d6573c;
-    --red2:#ef7357;
-    --line:rgba(230,180,95,.18);
+    --paper:#211d18;
+    --paper2:#29231c;
+    --paper3:#3b3022;
+    --ink:#f2e5cc;
+    --ink2:#cdbb9d;
+    --gold:#e0a64a;
+    --gold2:#f1bd62;
+    --red:#d85a42;
+    --red2:#ed7658;
+    --line:rgba(236,201,143,.20);
     --shadow:rgba(0,0,0,.35);
+    --bg:#171512;
+    --bubble:#2a251f;
+    --user:#4a3824;
 }
 
 html,
@@ -51,97 +53,153 @@ body{
 }
 
 body{
-    font-family:
-        Arial,
-        "Segoe UI",
-        "Noto Sans",
-        sans-serif;
-
-    color:var(--text);
-    background:
-        radial-gradient(
-            circle at 80% 10%,
-            rgba(220,170,80,.16),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 10% 80%,
-            rgba(180,100,45,.12),
-            transparent 28%
-        ),
-        linear-gradient(
-            135deg,
-            var(--bg),
-            var(--bg2)
-        );
-
     overflow:hidden;
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    color:var(--ink);
+    background:var(--bg);
     transition:
-        background .3s,
-        color .3s;
+        background .35s ease,
+        color .35s ease;
 }
 
-/* ==============================
-   TRANG TRÍ NỀN
-============================== */
-
-body:before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-
-    background-image:
-        radial-gradient(
-            circle,
-            rgba(110,75,40,.09) 1px,
-            transparent 1px
-        );
-
-    background-size:22px 22px;
-    opacity:.22;
-}
+/* =========================================================
+   APP
+========================================================= */
 
 .app{
     width:100vw;
     height:100vh;
     display:flex;
     position:relative;
-    z-index:1;
+    overflow:hidden;
 }
 
-/* ==============================
+/* =========================================================
+   DECORATIVE FRAME
+========================================================= */
+
+.frame{
+    position:fixed;
+    inset:7px;
+    pointer-events:none;
+    z-index:50;
+    border:1px solid rgba(169,111,38,.32);
+    border-radius:14px;
+}
+
+.frame:before,
+.frame:after{
+    content:"";
+    position:absolute;
+    width:55px;
+    height:55px;
+    border-color:var(--gold2);
+    opacity:.65;
+}
+
+.frame:before{
+    left:-1px;
+    top:-1px;
+    border-left:2px solid;
+    border-top:2px solid;
+    border-radius:12px 0 0 0;
+}
+
+.frame:after{
+    right:-1px;
+    bottom:-1px;
+    border-right:2px solid;
+    border-bottom:2px solid;
+    border-radius:0 0 12px 0;
+}
+
+/* =========================================================
+   BACKGROUND LANDSCAPE
+========================================================= */
+
+.landscape{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:0;
+}
+
+.landscape svg{
+    width:100%;
+    height:100%;
+    opacity:.27;
+    filter:blur(1.2px);
+    transform:scale(1.02);
+}
+
+body.dark .landscape svg{
+    opacity:.16;
+    filter:
+        blur(1.4px)
+        brightness(.65);
+}
+
+/* =========================================================
    SIDEBAR
-============================== */
+========================================================= */
 
 .sidebar{
-    width:270px;
+    width:285px;
     height:100vh;
     flex-shrink:0;
-
-    padding:18px 15px;
-
     display:flex;
     flex-direction:column;
-
-    background:var(--panel);
+    padding:17px 13px;
+    position:relative;
+    z-index:10;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,250,238,.96),
+            rgba(240,226,199,.91)
+        );
     border-right:1px solid var(--line);
-
-    backdrop-filter:blur(20px);
+    box-shadow:8px 0 30px var(--shadow);
+    transition:
+        background .35s ease,
+        transform .3s ease;
 }
+
+body.dark .sidebar{
+    background:
+        linear-gradient(
+            180deg,
+            rgba(39,34,28,.97),
+            rgba(28,25,21,.96)
+        );
+}
+
+/* =========================================================
+   LOGO
+========================================================= */
 
 .logo{
     display:flex;
     align-items:center;
-    gap:10px;
-
-    padding:4px 7px 18px;
+    gap:9px;
+    padding:2px 8px 14px;
+    border-bottom:1px solid var(--line);
 }
 
 .logo-dragon{
     width:48px;
-    height:48px;
-    flex-shrink:0;
+    height:42px;
+    display:grid;
+    place-items:center;
+}
+
+.logo-dragon svg{
+    width:48px;
+    height:42px;
 }
 
 .logo-text{
@@ -149,490 +207,427 @@ body:before{
         Georgia,
         "Times New Roman",
         serif;
-
-    font-size:25px;
-    font-weight:bold;
-    color:var(--text);
+    font-size:23px;
+    font-weight:700;
+    color:var(--ink);
 }
 
 .logo-text span{
     color:var(--gold);
 }
 
-.subtitle{
-    color:var(--muted);
-    font-size:9px;
-    margin-top:3px;
+.logo-sub{
+    font-size:8px;
+    color:var(--ink2);
+    margin-top:2px;
+    letter-spacing:.7px;
 }
 
+/* =========================================================
+   NEW CHAT
+========================================================= */
+
 .new-chat{
-    width:100%;
-    border:0;
-    border-radius:12px;
-
-    padding:13px;
-
-    color:#fff;
+    margin:14px 3px 0;
+    width:calc(100% - 6px);
+    border:1px solid rgba(255,226,165,.45);
+    border-radius:8px;
+    padding:12px 13px;
+    color:#fff8e8;
     background:
         linear-gradient(
             135deg,
-            var(--red),
-            var(--red2)
+            #8c2118,
+            #c84a2e
         );
-
-    font-size:12px;
-    font-weight:bold;
-    cursor:pointer;
-
     box-shadow:
-        0 8px 20px
-        rgba(160,50,25,.18);
-
+        0 7px 17px rgba(126,42,22,.22),
+        inset 0 1px rgba(255,255,255,.18);
+    cursor:pointer;
+    font-size:12px;
+    font-weight:600;
     transition:.2s;
 }
 
 .new-chat:hover{
-    transform:translateY(-2px);
+    transform:translateY(-1px);
+    filter:brightness(1.05);
 }
+
+.new-chat:active{
+    transform:translateY(1px);
+}
+
+.plus{
+    margin-right:7px;
+    font-size:15px;
+}
+
+/* =========================================================
+   HISTORY
+========================================================= */
 
 .history-title{
     display:flex;
     align-items:center;
     justify-content:space-between;
-
-    margin:
-        25px 5px 10px;
-
-    color:var(--muted);
-
+    margin:18px 7px 9px;
     font-size:9px;
-    font-weight:bold;
+    font-weight:700;
     letter-spacing:1px;
+    color:var(--ink2);
 }
 
 .clear-btn{
-    border:0;
-    background:none;
-    color:var(--muted);
+    width:23px;
+    height:23px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:transparent;
+    color:var(--ink2);
     cursor:pointer;
-    font-size:17px;
+}
+
+.clear-btn:hover{
+    background:rgba(180,100,30,.10);
 }
 
 .history{
     flex:1;
+    min-height:0;
     overflow-y:auto;
+    padding-right:2px;
+}
+
+.history::-webkit-scrollbar{
+    width:4px;
+}
+
+.history::-webkit-scrollbar-thumb{
+    background:rgba(150,100,40,.25);
+    border-radius:10px;
 }
 
 .history-item{
     width:100%;
-
+    min-height:55px;
     display:flex;
     align-items:center;
     gap:8px;
-
-    padding:9px;
-
-    margin-bottom:5px;
-
     border:1px solid transparent;
-    border-radius:10px;
-
-    background:transparent;
-    color:var(--text);
-
+    border-radius:9px;
+    padding:7px;
+    margin-bottom:5px;
+    background:rgba(255,255,255,.28);
+    color:var(--ink);
     text-align:left;
     cursor:pointer;
+    transition:.2s;
+}
 
-    font-size:11px;
+body.dark .history-item{
+    background:rgba(255,255,255,.035);
 }
 
 .history-item:hover,
 .history-item.active{
-    background:
-        rgba(190,120,35,.10);
-
-    border-color:
-        rgba(190,120,35,.20);
+    border-color:rgba(181,119,38,.27);
+    background:rgba(193,143,67,.12);
 }
 
-.history-dragon{
-    width:28px;
-    height:28px;
-    flex-shrink:0;
+.history-avatar{
+    width:36px;
+    height:36px;
+    flex:0 0 36px;
 }
 
-.history-text{
+.history-avatar svg{
+    width:100%;
+    height:100%;
+}
+
+.history-info{
     min-width:0;
+    flex:1;
 }
 
-.history-title-text{
-    white-space:nowrap;
+.history-name{
     overflow:hidden;
+    white-space:nowrap;
     text-overflow:ellipsis;
+    font-size:10px;
+    font-weight:600;
 }
 
 .history-time{
-    color:var(--muted);
-    font-size:8px;
     margin-top:3px;
+    font-size:8px;
+    color:var(--ink2);
 }
 
-.sidebar-bottom{
-    margin-top:12px;
+/* =========================================================
+   SIDEBAR FOOTER
+========================================================= */
 
-    padding:12px;
-
-    border:
-        1px solid var(--line);
-
-    border-radius:13px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.28),
-            rgba(190,135,65,.08)
-        );
-
+.sidebar-footer{
+    margin-top:9px;
+    padding:13px 8px;
+    border-top:1px solid var(--line);
     text-align:center;
 }
 
-.bottom-dragon{
-    width:72px;
-    height:45px;
-    margin:auto;
-}
-
-.sidebar-bottom strong{
-    display:block;
-    margin-top:5px;
-
+.footer-title{
     font-family:Georgia,serif;
-    color:var(--gold);
-    font-size:17px;
+    font-size:18px;
+    color:var(--ink);
 }
 
-.sidebar-bottom p{
-    margin-top:4px;
-    color:var(--muted);
+.footer-sub{
+    margin-top:3px;
     font-size:8px;
     line-height:1.5;
+    color:var(--ink2);
 }
 
-/* ==============================
+/* =========================================================
    MAIN
-============================== */
+========================================================= */
 
 .main{
-    flex:1;
     min-width:0;
+    flex:1;
     height:100vh;
-
     display:flex;
     flex-direction:column;
+    position:relative;
+    z-index:5;
 }
 
-/* ==============================
+/* =========================================================
    TOPBAR
-============================== */
+========================================================= */
 
 .topbar{
-    height:64px;
-    flex-shrink:0;
-
+    height:62px;
+    flex:0 0 62px;
     display:flex;
     align-items:center;
-
-    padding:
-        8px 20px;
-
-    border-bottom:
-        1px solid var(--line);
-
-    background:
-        var(--panel);
-
-    backdrop-filter:blur(15px);
-
+    justify-content:center;
     position:relative;
+    border-bottom:1px solid var(--line);
+    background:rgba(250,242,224,.72);
+    backdrop-filter:blur(15px);
+}
+
+body.dark .topbar{
+    background:rgba(29,25,21,.76);
 }
 
 .mobile-menu{
     display:none;
-
-    width:38px;
-    height:38px;
-
-    margin-right:8px;
-
-    border:
-        1px solid var(--line);
-
-    border-radius:10px;
-
-    background:var(--panel2);
-
-    color:var(--text);
-
+    position:absolute;
+    left:13px;
+    width:34px;
+    height:34px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:var(--paper2);
+    color:var(--ink);
     cursor:pointer;
 }
 
-.top-title{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-
-    text-align:center;
+.title{
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
 
-.top-title h1{
+.title-decoration{
+    color:var(--gold);
+    font-size:14px;
+}
+
+.title h1{
     font-family:
         Georgia,
         "Times New Roman",
         serif;
-
-    font-size:20px;
-    color:var(--text);
+    font-size:21px;
+    font-weight:700;
+    color:var(--ink);
 }
 
-.top-title small{
+.title small{
     display:block;
-
-    margin-top:2px;
-
-    color:var(--muted);
-    font-size:8px;
+    text-align:center;
+    margin-top:1px;
+    font-size:7px;
+    color:var(--ink2);
+    letter-spacing:1px;
 }
 
 .creator{
-    margin-left:auto;
-    margin-right:14px;
-
-    font-size:9px;
-    font-weight:bold;
-
-    color:var(--text);
+    position:absolute;
+    right:67px;
+    top:22px;
+    font-size:8px;
+    color:var(--ink2);
+    white-space:nowrap;
 }
 
 .theme{
-    width:38px;
-    height:38px;
-
-    border:
-        1px solid var(--line);
-
+    position:absolute;
+    right:15px;
+    width:35px;
+    height:35px;
+    border:1px solid var(--line);
     border-radius:50%;
-
-    background:var(--panel2);
-    color:var(--text);
-
+    background:var(--paper2);
+    color:var(--ink);
     cursor:pointer;
-
-    font-size:17px;
+    font-size:16px;
+    transition:.25s;
 }
 
-/* ==============================
+.theme:hover{
+    transform:rotate(18deg) scale(1.05);
+}
+
+/* =========================================================
    CHAT AREA
-============================== */
+========================================================= */
 
 .chat-area{
     flex:1;
     min-height:0;
-
     overflow-y:auto;
-
     position:relative;
-
-    background:
-        radial-gradient(
-            circle at 75% 20%,
-            rgba(205,145,80,.10),
-            transparent 30%
-        );
+    scroll-behavior:smooth;
 }
 
-/* tranh nền */
-
-.chat-area:before{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    pointer-events:none;
-
-    opacity:.17;
-
-    background:
-        linear-gradient(
-            165deg,
-            transparent 0 55%,
-            rgba(80,70,55,.16) 55.5%,
-            transparent 57%
-        ),
-        linear-gradient(
-            15deg,
-            transparent 0 62%,
-            rgba(80,70,55,.12) 62.5%,
-            transparent 64%
-        );
+.chat-area::-webkit-scrollbar{
+    width:6px;
 }
 
-/* mây */
-
-.chat-area:after{
-    content:"☁     ☁          ☁";
-    position:absolute;
-
-    top:35px;
-    left:0;
-    right:0;
-
-    color:var(--gold);
-
-    opacity:.12;
-
-    font-size:40px;
-    letter-spacing:30px;
-
-    pointer-events:none;
+.chat-area::-webkit-scrollbar-thumb{
+    background:rgba(130,85,30,.22);
+    border-radius:20px;
 }
 
-/* ==============================
+/* =========================================================
    WELCOME
-============================== */
+========================================================= */
 
 .welcome{
-    position:relative;
-    z-index:2;
-
-    max-width:760px;
-
-    margin:auto;
-
-    padding:
-        65px 25px 35px;
-
+    min-height:100%;
     display:flex;
     flex-direction:column;
     align-items:center;
-
+    justify-content:center;
+    padding:30px 20px 50px;
     text-align:center;
+    position:relative;
 }
 
 .welcome-dragon{
-    width:125px;
+    width:115px;
     height:95px;
-
-    margin-bottom:18px;
-
+    margin-bottom:8px;
     filter:
         drop-shadow(
-            0 10px 15px
-            rgba(100,60,20,.18)
+            0 9px 13px
+            rgba(88,43,17,.18)
         );
+}
+
+.welcome-dragon svg{
+    width:100%;
+    height:100%;
 }
 
 .welcome-label{
     color:var(--gold);
-
-    font-size:10px;
-    font-weight:bold;
-
-    letter-spacing:3px;
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:2.5px;
 }
 
 .welcome h2{
-    margin-top:7px;
-
+    margin-top:6px;
     font-family:
         Georgia,
         "Times New Roman",
         serif;
-
     font-size:
-        clamp(45px,7vw,68px);
-
-    letter-spacing:-3px;
+        clamp(42px,6vw,65px);
+    line-height:1;
+    color:var(--ink);
 }
 
 .welcome h2 span{
-    color:var(--gold);
+    color:var(--red);
 }
 
 .welcome p{
-    max-width:600px;
-
-    margin:
-        15px 0 25px;
-
-    color:var(--muted);
-
+    max-width:570px;
+    margin:15px auto 24px;
     font-size:12px;
     line-height:1.8;
+    color:var(--ink2);
 }
 
 .suggestions{
     display:flex;
-    flex-wrap:wrap;
     justify-content:center;
+    flex-wrap:wrap;
     gap:8px;
+    max-width:680px;
 }
 
 .suggestion{
-    padding:10px 13px;
-
-    border:
-        1px solid var(--line);
-
-    border-radius:12px;
-
-    background:var(--panel2);
-
-    color:var(--text);
-
-    font-size:10px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:9px 13px;
+    background:rgba(255,250,238,.68);
+    color:var(--ink);
     cursor:pointer;
-
+    font-size:10px;
     transition:.2s;
 }
 
-.suggestion:hover{
-    border-color:var(--gold);
-    transform:translateY(-2px);
+body.dark .suggestion{
+    background:rgba(255,255,255,.05);
 }
 
-/* ==============================
+.suggestion:hover{
+    transform:translateY(-2px);
+    border-color:var(--gold);
+    box-shadow:0 5px 15px var(--shadow);
+}
+
+/* =========================================================
    MESSAGES
-============================== */
+========================================================= */
 
 .messages{
-    width:min(900px,100%);
-
+    width:min(920px,100%);
     margin:auto;
-
-    padding:
-        20px 22px 30px;
-
-    position:relative;
-    z-index:3;
+    padding:25px 22px 20px;
 }
 
 .message{
     display:flex;
+    align-items:flex-start;
     gap:9px;
-
     margin:17px 0;
-
-    animation:
-        appear .2s ease;
+    animation:messageIn .22s ease;
 }
 
-@keyframes appear{
+@keyframes messageIn{
     from{
         opacity:0;
-        transform:translateY(5px);
+        transform:translateY(7px);
     }
-
     to{
         opacity:1;
         transform:translateY(0);
@@ -647,105 +642,67 @@ body:before{
     order:2;
 }
 
-/* ==============================
-   DRAGON AVATAR
-============================== */
-
 .avatar{
-    width:48px;
+    width:47px;
     height:42px;
-
-    flex:
-        0 0 48px;
-
+    flex:0 0 47px;
     display:flex;
     align-items:center;
     justify-content:center;
-
-    position:relative;
 }
 
 .avatar svg{
     width:100%;
     height:100%;
-
     filter:
         drop-shadow(
-            0 4px 5px
-            rgba(80,40,15,.18)
+            0 3px 4px
+            rgba(70,30,10,.13)
         );
 }
 
 .bubble{
-    max-width:
-        min(700px,82%);
-
-    padding:
-        12px 15px;
-
-    border:
-        1px solid var(--line);
-
-    border-radius:
-        7px 15px 15px 15px;
-
-    background:
-        var(--panel2);
-
-    color:var(--text);
-
+    max-width:min(700px,80%);
+    padding:12px 15px;
+    border:1px solid var(--line);
+    border-radius:5px 16px 16px 16px;
+    background:rgba(255,253,247,.92);
+    color:var(--ink);
     font-size:12px;
     line-height:1.7;
-
     white-space:pre-wrap;
     word-break:break-word;
-
-    box-shadow:
-        0 6px 22px
-        var(--shadow);
-
+    box-shadow:0 7px 23px var(--shadow);
     backdrop-filter:blur(10px);
 }
 
-.message.user .bubble{
-    border:
-        1px solid
-        rgba(180,110,30,.20);
-
-    border-radius:
-        15px 7px 15px 15px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(235,193,119,.45),
-            rgba(255,244,216,.72)
-        );
-
-    color:
-        var(--text);
+body.dark .bubble{
+    background:rgba(42,37,31,.94);
 }
 
-/* ==============================
+.message.user .bubble{
+    border-radius:16px 5px 16px 16px;
+    background:var(--user);
+    border-color:rgba(174,119,44,.27);
+}
+
+/* =========================================================
    TYPING
-============================== */
+========================================================= */
 
 .typing{
     display:flex;
     gap:4px;
     align-items:center;
+    height:18px;
 }
 
 .typing i{
     width:5px;
     height:5px;
-
     border-radius:50%;
-
     background:var(--gold);
-
-    animation:
-        typing 1s infinite;
+    animation:typeDot 1s infinite;
 }
 
 .typing i:nth-child(2){
@@ -756,169 +713,150 @@ body:before{
     animation-delay:.3s;
 }
 
-@keyframes typing{
+@keyframes typeDot{
     0%,60%,100%{
         opacity:.3;
         transform:translateY(0);
     }
-
     30%{
         opacity:1;
         transform:translateY(-4px);
     }
 }
 
-/* ==============================
+/* =========================================================
    COMPOSER
-============================== */
+========================================================= */
 
 .composer-area{
-    width:min(900px,100%);
-
+    width:min(920px,100%);
     margin:auto;
-
-    padding:
-        6px 22px 15px;
-
-    position:relative;
-    z-index:5;
+    padding:6px 22px 14px;
 }
 
 .composer{
     display:flex;
     align-items:flex-end;
     gap:8px;
-
-    padding:
-        7px 7px 7px 15px;
-
-    border:
-        1px solid var(--line);
-
+    padding:7px 7px 7px 15px;
+    border:1px solid rgba(166,110,39,.31);
     border-radius:18px;
-
-    background:
-        var(--panel);
-
+    background:rgba(255,250,238,.91);
     box-shadow:
-        0 10px 30px
-        var(--shadow);
+        0 10px 30px var(--shadow),
+        inset 0 1px rgba(255,255,255,.7);
+    transition:.25s;
+}
 
-    backdrop-filter:blur(16px);
+body.dark .composer{
+    background:rgba(42,37,31,.94);
+}
+
+.composer:focus-within{
+    border-color:var(--gold);
+    box-shadow:
+        0 10px 30px var(--shadow),
+        0 0 0 3px rgba(190,130,45,.08);
 }
 
 textarea{
     flex:1;
-
     min-height:40px;
-    max-height:160px;
-
+    max-height:150px;
     resize:none;
-
-    padding:10px 0;
-
     border:0;
     outline:0;
-
+    padding:10px 0;
     background:transparent;
-
-    color:var(--text);
-
+    color:var(--ink);
+    font-family:inherit;
     font-size:12px;
     line-height:20px;
 }
 
 textarea::placeholder{
-    color:var(--muted);
+    color:var(--ink2);
+    opacity:.65;
 }
 
 .send{
     width:43px;
     height:43px;
-
-    flex:
-        0 0 43px;
-
+    flex:0 0 43px;
     border:0;
     border-radius:50%;
-
-    color:white;
-
+    color:#fff9e9;
     background:
         linear-gradient(
             135deg,
-            var(--red),
-            var(--red2)
+            #a82a1e,
+            #d45b36
         );
-
     box-shadow:
-        0 6px 16px
-        rgba(160,50,25,.25);
-
+        0 7px 15px rgba(133,42,23,.23);
     cursor:pointer;
-
     font-size:17px;
-
     transition:.2s;
 }
 
 .send:hover{
-    transform:
-        translateY(-2px)
-        scale(1.03);
+    transform:translateY(-2px) scale(1.03);
 }
 
 .send:disabled{
-    opacity:.5;
+    opacity:.45;
     cursor:not-allowed;
+    transform:none;
 }
 
 .info{
     display:flex;
     justify-content:space-between;
-
-    padding:
-        6px 7px 0;
-
-    color:var(--muted);
-
+    padding:6px 8px 0;
+    color:var(--ink2);
     font-size:8px;
 }
 
-/* ==============================
+.status{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.status-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#4c9a53;
+}
+
+/* =========================================================
    OVERLAY
-============================== */
+========================================================= */
 
 .overlay{
     display:none;
 }
 
-/* ==============================
+/* =========================================================
    MOBILE
-============================== */
+========================================================= */
 
 @media(max-width:760px){
 
     .sidebar{
         position:fixed;
-        z-index:30;
-
         left:0;
         top:0;
-
-        transform:
-            translateX(-105%);
-
-        transition:.25s;
-
-        box-shadow:
-            15px 0 45px
-            rgba(0,0,0,.25);
+        bottom:0;
+        transform:translateX(-105%);
+        transition:transform .28s ease;
+        z-index:100;
+        box-shadow:18px 0 50px rgba(40,20,5,.25);
     }
 
     .sidebar.open{
-        transform:
-            translateX(0);
+        transform:translateX(0);
     }
 
     .mobile-menu{
@@ -927,76 +865,223 @@ textarea::placeholder{
 
     .overlay.show{
         display:block;
-
         position:fixed;
         inset:0;
-
-        z-index:20;
-
-        background:
-            rgba(30,20,10,.35);
+        z-index:90;
+        background:rgba(35,20,8,.30);
+        backdrop-filter:blur(2px);
     }
 
     .creator{
-        display:none;
+        right:58px;
+        max-width:120px;
+        overflow:hidden;
+        text-overflow:ellipsis;
     }
 
-    .top-title h1{
-        font-size:17px;
+    .topbar{
+        height:57px;
+        flex-basis:57px;
     }
 
-    .welcome{
-        padding-top:40px;
+    .title h1{
+        font-size:18px;
+    }
+
+    .title small{
+        font-size:6px;
     }
 
     .messages{
         padding:
-            10px 11px 25px;
+            15px 10px 15px;
     }
 
     .bubble{
-        max-width:86%;
+        max-width:83%;
         font-size:11px;
+    }
+
+    .avatar{
+        width:42px;
+        height:38px;
+        flex-basis:42px;
     }
 
     .composer-area{
         padding:
-            5px 10px 12px;
+            5px 9px 10px;
     }
 
     .info span:last-child{
         display:none;
     }
-}
 
-@media(max-width:430px){
+    .welcome{
+        padding:
+            30px 15px 35px;
+    }
 
     .welcome h2{
         font-size:47px;
     }
 
-    .welcome-dragon{
-        width:105px;
-        height:80px;
-    }
-
     .suggestions{
         display:grid;
-        grid-template-columns:1fr;
+        grid-template-columns:1fr 1fr;
         width:100%;
     }
 
     .suggestion{
-        width:100%;
+        min-height:48px;
     }
 }
 
+@media(max-width:430px){
+
+    .creator{
+        display:none;
+    }
+
+    .welcome h2{
+        font-size:43px;
+    }
+
+    .suggestions{
+        grid-template-columns:1fr;
+    }
+
+    .bubble{
+        max-width:80%;
+    }
+}
 </style>
 </head>
 
 <body>
 
 <div class="app">
+
+<div class="landscape">
+<svg viewBox="0 0 1400 900"
+     preserveAspectRatio="xMidYMid slice"
+     xmlns="http://www.w3.org/2000/svg">
+
+    <rect width="1400" height="900" fill="#efe2c8"/>
+
+    <!-- sun -->
+    <circle cx="1040" cy="170" r="72"
+            fill="#d9785b"
+            opacity=".35"/>
+
+    <!-- distant mountains -->
+    <path
+        d="M0 470
+           Q120 360 230 455
+           Q340 300 480 445
+           Q610 310 760 460
+           Q900 330 1050 465
+           Q1200 310 1400 450
+           L1400 900
+           L0 900Z"
+        fill="#7e8d83"
+        opacity=".55"/>
+
+    <path
+        d="M0 535
+           Q150 420 290 515
+           Q430 370 600 525
+           Q760 405 900 520
+           Q1080 390 1230 520
+           Q1320 450 1400 500
+           L1400 900
+           L0 900Z"
+        fill="#9b9a86"
+        opacity=".45"/>
+
+    <!-- temple -->
+    <g transform="translate(1060 390)"
+       fill="#765f43"
+       stroke="#634b32"
+       stroke-width="5"
+       opacity=".65">
+
+        <path d="M-125 35 L0 -10 L125 35 L105 50 L0 18 L-105 50Z"/>
+        <path d="M-105 70 L0 28 L105 70 L92 84 L0 48 L-92 84Z"/>
+        <rect x="-70" y="78" width="140" height="115"/>
+        <path d="M-58 78 L0 50 L58 78 L48 90 L0 68 L-48 90Z"/>
+        <rect x="-10" y="120" width="20" height="73"/>
+        <path d="M-8 -10 L0 -85 L8 -10Z"/>
+        <circle cx="0" cy="-94" r="8"/>
+
+    </g>
+
+    <!-- old tree -->
+    <g stroke="#71563a"
+       fill="none"
+       stroke-linecap="round"
+       opacity=".7">
+
+        <path d="M1210 0 Q1160 150 1210 330"/>
+        <path d="M1210 120 Q1100 80 1030 35"/>
+        <path d="M1200 180 Q1300 100 1390 65"/>
+        <path d="M1190 230 Q1080 210 1010 155"/>
+
+    </g>
+
+    <!-- branches -->
+    <g fill="#8b4936" opacity=".55">
+        <circle cx="1040" cy="55" r="13"/>
+        <circle cx="1080" cy="75" r="15"/>
+        <circle cx="1120" cy="42" r="12"/>
+        <circle cx="1290" cy="75" r="14"/>
+        <circle cx="1340" cy="115" r="12"/>
+    </g>
+
+    <!-- birds -->
+    <g fill="none"
+       stroke="#4f493d"
+       stroke-width="5"
+       stroke-linecap="round"
+       opacity=".65">
+
+        <path d="M410 145 q12 -12 24 0 q12 -12 24 0"/>
+        <path d="M470 185 q12 -12 24 0 q12 -12 24 0"/>
+        <path d="M550 125 q12 -12 24 0 q12 -12 24 0"/>
+        <path d="M650 205 q12 -12 24 0 q12 -12 24 0"/>
+        <path d="M710 155 q12 -12 24 0 q12 -12 24 0"/>
+
+    </g>
+
+    <!-- river -->
+    <path
+        d="M0 720
+           Q300 650 550 750
+           Q850 840 1400 690
+           L1400 900
+           L0 900Z"
+        fill="#c3c5b4"
+        opacity=".35"/>
+
+    <!-- little boat -->
+    <g transform="translate(760 650)"
+       opacity=".7"
+       fill="#76583b">
+
+        <path d="M-42 0 L42 0 L25 18 L-25 18Z"/>
+        <path d="M0 0 L0 -65"/>
+        <path d="M0 -65 L35 -35 L0 -25Z"/>
+
+    </g>
+
+</svg>
+</div>
+
+<div class="frame"></div>
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
 <aside class="sidebar" id="sidebar">
 
@@ -1009,80 +1094,68 @@ textarea::placeholder{
                 Chat<span>Luk</span>
             </div>
 
-            <div class="subtitle">
+            <div class="logo-sub">
                 Vietnamese Dragon AI
             </div>
         </div>
 
     </div>
 
-    <button
-        class="new-chat"
-        id="newChat"
-    >
-        ＋ &nbsp; Cuộc trò chuyện mới
+    <button class="new-chat" id="newChat">
+        <span class="plus">⊕</span>
+        Cuộc trò chuyện mới
     </button>
 
     <div class="history-title">
+        <span>LỊCH SỬ TRONG TRÌNH DUYỆT</span>
 
-        <span>
-            LỊCH SỬ TRONG TAB
-        </span>
-
-        <button
-            class="clear-btn"
-            id="clearHistory"
-        >
+        <button class="clear-btn" id="clearHistory">
             ×
         </button>
-
     </div>
 
-    <div
-        class="history"
-        id="history"
-    ></div>
+    <div class="history" id="history"></div>
 
-    <div class="sidebar-bottom">
+    <div class="sidebar-footer">
 
-        <div
-            class="bottom-dragon"
-            id="bottomDragon"
-        ></div>
-
-        <strong>
+        <div class="footer-title">
             ChatLuk
-        </strong>
+        </div>
 
-        <p>
+        <div class="footer-sub">
             Cảm hứng từ rồng<br>
             và văn hóa Việt Nam
-        </p>
+        </div>
 
     </div>
 
 </aside>
 
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
 <main class="main">
 
 <header class="topbar">
 
-    <button
-        class="mobile-menu"
-        id="menuButton"
-    >
+    <button class="mobile-menu" id="menuButton">
         ☰
     </button>
 
-    <div class="top-title">
+    <div class="title">
 
-        <h1>
-            ChatLuk
-        </h1>
+        <span class="title-decoration">❖</span>
 
-        <small>
-            ✦ Trợ lý AI thông minh của bạn ✦
-        </small>
+        <div>
+            <h1>ChatLuk</h1>
+
+            <small>
+                TRỢ LÝ AI THÔNG MINH CỦA BẠN
+            </small>
+        </div>
+
+        <span class="title-decoration">❖</span>
 
     </div>
 
@@ -1090,30 +1163,20 @@ textarea::placeholder{
         cre: Long Dep Trai Vai
     </div>
 
-    <button
-        class="theme"
-        id="themeButton"
-        title="Đổi chế độ sáng/tối"
-    >
+    <button class="theme"
+            id="themeButton"
+            title="Chuyển chế độ ngày/đêm">
         ☾
     </button>
 
 </header>
 
-<section
-    class="chat-area"
-    id="chatArea"
->
+<section class="chat-area" id="chatArea">
 
-    <div
-        class="welcome"
-        id="welcome"
-    >
+    <div class="welcome" id="welcome">
 
-        <div
-            class="welcome-dragon"
-            id="welcomeDragon"
-        ></div>
+        <div class="welcome-dragon"
+             id="welcomeDragon"></div>
 
         <div class="welcome-label">
             CHÀO MỪNG ĐẾN VỚI
@@ -1124,19 +1187,19 @@ textarea::placeholder{
         </h2>
 
         <p>
-            Trợ lý AI mang phong cách rồng Việt,
-            kết hợp cảm hứng tranh cổ, núi non,
-            mây trời và nét đẹp truyền thống Việt Nam.
+            Trợ lý AI mang hơi thở rồng phương Đông,
+            kết hợp nét thanh lịch của tranh phong cảnh
+            Việt Nam cổ.
         </p>
 
         <div class="suggestions">
 
             <button class="suggestion">
-                Giải thích một bài học cho tôi
+                Giải thích định luật Newton cho tôi
             </button>
 
             <button class="suggestion">
-                Giúp tôi lên một kế hoạch
+                Lên kế hoạch học tập
             </button>
 
             <button class="suggestion">
@@ -1151,41 +1214,35 @@ textarea::placeholder{
 
     </div>
 
-    <div
-        class="messages"
-        id="messages"
-    ></div>
+    <div class="messages" id="messages"></div>
 
 </section>
 
 <footer class="composer-area">
 
-<form
-    class="composer"
-    id="chatForm"
->
+<form class="composer" id="chatForm">
 
-<textarea
-    id="input"
-    rows="1"
-    maxlength="8000"
-    placeholder="Nhập tin nhắn cho ChatLuk..."
-></textarea>
+    <textarea
+        id="input"
+        rows="1"
+        maxlength="8000"
+        placeholder="Nhập tin nhắn cho ChatLuk..."
+    ></textarea>
 
-<button
-    class="send"
-    id="send"
-    type="submit"
->
-    ➤
-</button>
+    <button
+        class="send"
+        id="send"
+        type="submit">
+        ➤
+    </button>
 
 </form>
 
 <div class="info">
 
-    <span>
-        🐉 Gemini AI · ChatLuk
+    <span class="status">
+        <span class="status-dot"></span>
+        AI ChatLuk
     </span>
 
     <span>
@@ -1200,208 +1257,192 @@ textarea::placeholder{
 
 </div>
 
-<div
-    class="overlay"
-    id="overlay"
-></div>
+<div class="overlay" id="overlay"></div>
 
 <script>
-
-/* =====================================================
+/* =========================================================
    CHATLUK
-===================================================== */
+   Không dùng ảnh ngoài.
+   Avatar rồng được tạo trực tiếp bằng SVG.
+========================================================= */
 
-let chats = [];
-let activeChat = null;
+const DRAGON_SVG = \`
+<svg viewBox="0 0 180 130"
+     xmlns="http://www.w3.org/2000/svg">
 
+    <defs>
+        <linearGradient id="dragonBody"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="1">
+            <stop offset="0%" stop-color="#fff3e6"/>
+            <stop offset="48%" stop-color="#ffd9d2"/>
+            <stop offset="100%" stop-color="#ef9b91"/>
+        </linearGradient>
 
-/* =====================================================
-   DRAGON SVG
-   Không dùng ảnh ngoài nên không bị lỗi avatar.
-===================================================== */
+        <linearGradient id="dragonPink"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="1">
+            <stop offset="0%" stop-color="#ffaaa0"/>
+            <stop offset="100%" stop-color="#df746b"/>
+        </linearGradient>
+    </defs>
 
-function dragonSVG(){
+    <!-- tail/body -->
+    <path
+        d="M64 84
+           C82 57 114 47 137 61
+           C151 70 153 91 139 101
+           C126 110 112 104 120 93
+           C104 103 83 108 64 100Z"
+        fill="url(#dragonBody)"
+        stroke="#3c2824"
+        stroke-width="4"
+        stroke-linejoin="round"/>
 
-    return \`
-    <svg
-        viewBox="0 0 180 120"
-        xmlns="http://www.w3.org/2000/svg"
-    >
+    <!-- tail -->
+    <path
+        d="M127 89
+           C151 78 164 79 169 92
+           C173 104 160 115 148 107
+           C158 104 157 96 147 96
+           C139 97 134 99 127 103Z"
+        fill="url(#dragonPink)"
+        stroke="#3c2824"
+        stroke-width="4"/>
 
-        <!-- thân -->
-        <path
-            d="M38 74
-               C52 46 91 43 121 61
-               C139 71 151 78 165 65
-               C158 89 132 97 111 89
-               C91 82 72 99 50 92
-               C37 88 31 81 38 74Z"
-            fill="#fff5e9"
-            stroke="#8e3024"
-            stroke-width="4"
-        />
+    <!-- head -->
+    <path
+        d="M22 70
+           C18 53 26 32 44 23
+           C60 15 79 21 87 34
+           C96 49 87 72 72 83
+           C55 95 28 89 22 70Z"
+        fill="url(#dragonBody)"
+        stroke="#3c2824"
+        stroke-width="4"/>
 
-        <!-- vảy -->
-        <path
-            d="M71 64
-               C77 72 83 72 89 64
-               M84 61
-               C90 69 96 69 102 61
-               M97 62
-               C103 70 109 70 115 64
-               M108 69
-               C114 76 120 76 126 70"
-            fill="none"
-            stroke="#ef9b92"
-            stroke-width="3"
-            stroke-linecap="round"
-        />
+    <!-- ear/horn -->
+    <path
+        d="M42 27
+           C36 12 47 3 57 9
+           C62 13 57 25 51 33Z"
+        fill="#ffb1a8"
+        stroke="#3c2824"
+        stroke-width="4"/>
 
-        <!-- đầu -->
-        <path
-            d="M18 73
-               C13 58 22 42 38 37
-               C51 33 68 39 75 50
-               C81 60 74 75 61 82
-               C46 90 24 88 18 73Z"
-            fill="#fff5e9"
-            stroke="#8e3024"
-            stroke-width="4"
-        />
+    <path
+        d="M69 28
+           C70 9 83 2 91 11
+           C95 18 85 29 77 36Z"
+        fill="#ffb1a8"
+        stroke="#3c2824"
+        stroke-width="4"/>
 
-        <!-- sừng -->
-        <path
-            d="M34 39
-               C29 25 39 17 49 28
-               L47 39Z"
-            fill="#ef9b92"
-            stroke="#8e3024"
-            stroke-width="4"
-        />
+    <!-- mane -->
+    <path
+        d="M28 47
+           L12 42
+           L22 56
+           L8 61
+           L25 67"
+        fill="#ffaaa0"
+        stroke="#3c2824"
+        stroke-width="4"
+        stroke-linejoin="round"/>
 
-        <path
-            d="M53 38
-               C51 21 63 15 69 29
-               L64 43Z"
-            fill="#ef9b92"
-            stroke="#8e3024"
-            stroke-width="4"
-        />
+    <!-- snout -->
+    <path
+        d="M20 64
+           C12 65 10 74 18 79
+           C26 83 38 79 39 70
+           C35 65 29 63 20 64Z"
+        fill="#f19a90"
+        stroke="#3c2824"
+        stroke-width="4"/>
 
-        <!-- tai -->
-        <path
-            d="M23 50
-               C9 43 7 52 17 61
-               L28 61Z"
-            fill="#ef9b92"
-            stroke="#8e3024"
-            stroke-width="4"
-        />
+    <!-- eye -->
+    <ellipse
+        cx="49"
+        cy="48"
+        rx="5"
+        ry="7"
+        fill="#3c2824"/>
 
-        <!-- mắt -->
-        <ellipse
-            cx="47"
-            cy="53"
-            rx="5"
-            ry="7"
-            fill="#382016"
-        />
+    <circle
+        cx="50"
+        cy="45"
+        r="2"
+        fill="white"/>
 
-        <circle
-            cx="49"
-            cy="51"
-            r="1.7"
-            fill="white"
-        />
+    <!-- cheek -->
+    <ellipse
+        cx="66"
+        cy="63"
+        rx="12"
+        ry="6"
+        fill="#f18b89"
+        opacity=".65"/>
 
-        <!-- má -->
-        <ellipse
-            cx="31"
-            cy="67"
-            rx="8"
-            ry="4"
-            fill="#f3b0aa"
-            opacity=".75"
-        />
+    <!-- smile -->
+    <path
+        d="M52 68
+           Q62 74 71 67"
+        fill="none"
+        stroke="#713c37"
+        stroke-width="3"
+        stroke-linecap="round"/>
 
-        <!-- mõm -->
-        <path
-            d="M18 67
-               C24 61 34 62 39 68
-               C35 76 24 78 18 67Z"
-            fill="#efaaa2"
-            stroke="#8e3024"
-            stroke-width="3"
-        />
+    <!-- little wing -->
+    <path
+        d="M85 57
+           C98 43 113 48 112 62
+           C104 57 98 64 92 70Z"
+        fill="#f39a91"
+        stroke="#3c2824"
+        stroke-width="4"/>
 
-        <!-- miệng -->
-        <path
-            d="M30 69
-               Q35 73 40 69"
-            fill="none"
-            stroke="#8e3024"
-            stroke-width="2"
-            stroke-linecap="round"
-        />
+    <!-- body scales -->
+    <path
+        d="M87 78 q6 7 12 0
+           M101 75 q6 7 12 0
+           M114 77 q6 7 12 0"
+        fill="none"
+        stroke="#df8a83"
+        stroke-width="2"
+        stroke-linecap="round"/>
 
-        <!-- ria -->
-        <path
-            d="M21 62
-               C8 59 5 55 2 50
-               M21 68
-               C9 69 5 72 2 77"
-            fill="none"
-            stroke="#8e3024"
-            stroke-width="2"
-            stroke-linecap="round"
-        />
+    <!-- whisker -->
+    <path
+        d="M26 70
+           Q8 68 3 58"
+        fill="none"
+        stroke="#3c2824"
+        stroke-width="2"
+        stroke-linecap="round"/>
 
-        <!-- chân -->
-        <path
-            d="M55 87
-               C51 98 43 102 36 98
-               M65 89
-               C62 100 55 104 48 101"
-            fill="none"
-            stroke="#8e3024"
-            stroke-width="4"
-            stroke-linecap="round"
-        />
+    <!-- blush -->
+    <circle
+        cx="31"
+        cy="72"
+        r="4"
+        fill="#ee8584"
+        opacity=".55"/>
 
-        <!-- đuôi -->
-        <path
-            d="M129 74
-               C150 84 164 80 169 66
-               C177 48 183 57 178 73
-               C173 91 154 98 132 91"
-            fill="#fff5e9"
-            stroke="#8e3024"
-            stroke-width="4"
-        />
-
-    </svg>
-    \`;
-
-}
-
-
-/* =====================================================
-   INSERT DRAGONS
-===================================================== */
+</svg>\`;
 
 document.getElementById("logoDragon").innerHTML =
-    dragonSVG();
-
-document.getElementById("bottomDragon").innerHTML =
-    dragonSVG();
+    DRAGON_SVG;
 
 document.getElementById("welcomeDragon").innerHTML =
-    dragonSVG();
+    DRAGON_SVG;
 
-
-/* =====================================================
+/* =========================================================
    ELEMENTS
-===================================================== */
+========================================================= */
 
 const historyBox =
     document.getElementById("history");
@@ -1430,10 +1471,151 @@ const sidebar =
 const overlay =
     document.getElementById("overlay");
 
+/* =========================================================
+   STATE
+========================================================= */
 
-/* =====================================================
+let chats = [];
+
+let activeChat = null;
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function loadChats(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(
+                "chatluk_chats"
+            );
+
+        chats =
+            saved
+                ? JSON.parse(saved)
+                : [];
+
+        if(!Array.isArray(chats)){
+            chats = [];
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        chats = [];
+
+    }
+
+}
+
+function saveChats(){
+
+    try{
+
+        localStorage.setItem(
+            "chatluk_chats",
+            JSON.stringify(chats)
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Không thể lưu lịch sử:",
+            error
+        );
+
+    }
+
+}
+
+/* =========================================================
+   THEME
+========================================================= */
+
+function loadTheme(){
+
+    const theme =
+        localStorage.getItem(
+            "chatluk_theme"
+        );
+
+    if(theme === "dark"){
+
+        document.body.classList.add(
+            "dark"
+        );
+
+    }
+
+    updateThemeButton();
+
+}
+
+function updateThemeButton(){
+
+    const button =
+        document.getElementById(
+            "themeButton"
+        );
+
+    if(
+        document.body.classList.contains(
+            "dark"
+        )
+    ){
+
+        button.textContent = "☀";
+
+        button.title =
+            "Chuyển sang chế độ ngày";
+
+    }
+    else{
+
+        button.textContent = "☾";
+
+        button.title =
+            "Chuyển sang chế độ đêm";
+
+    }
+
+}
+
+document
+    .getElementById("themeButton")
+    .addEventListener(
+        "click",
+        function(){
+
+            document.body.classList.toggle(
+                "dark"
+            );
+
+            const dark =
+                document.body.classList.contains(
+                    "dark"
+                );
+
+            localStorage.setItem(
+                "chatluk_theme",
+                dark
+                    ? "dark"
+                    : "light"
+            );
+
+            updateThemeButton();
+
+        }
+    );
+
+/* =========================================================
    ID
-===================================================== */
+========================================================= */
 
 function createID(){
 
@@ -1441,14 +1623,30 @@ function createID(){
         +
         Math.random()
             .toString(36)
-            .substring(2,8);
+            .slice(2,9);
 
 }
 
+/* =========================================================
+   TIME
+========================================================= */
 
-/* =====================================================
+function timeNow(){
+
+    return new Date()
+        .toLocaleTimeString(
+            "vi-VN",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+}
+
+/* =========================================================
    NEW CHAT
-===================================================== */
+========================================================= */
 
 function newChat(){
 
@@ -1458,13 +1656,18 @@ function newChat(){
 
         title:"Cuộc trò chuyện mới",
 
+        time:timeNow(),
+
         messages:[]
 
     };
 
     chats.unshift(chat);
 
-    activeChat = chat.id;
+    activeChat =
+        chat.id;
+
+    saveChats();
 
     renderHistory();
 
@@ -1472,27 +1675,32 @@ function newChat(){
 
     closeMenu();
 
-    input.focus();
-
-}
-
-
-/* =====================================================
-   ACTIVE CHAT
-===================================================== */
-
-function getChat(){
-
-    return chats.find(
-        chat => chat.id === activeChat
+    setTimeout(
+        function(){
+            input.focus();
+        },
+        50
     );
 
 }
 
+/* =========================================================
+   ACTIVE CHAT
+========================================================= */
 
-/* =====================================================
+function getChat(){
+
+    return chats.find(
+        function(chat){
+            return chat.id === activeChat;
+        }
+    );
+
+}
+
+/* =========================================================
    HISTORY
-===================================================== */
+========================================================= */
 
 function renderHistory(){
 
@@ -1500,89 +1708,119 @@ function renderHistory(){
 
     if(chats.length === 0){
 
-        historyBox.innerHTML =
-            '<div style="padding:12px 8px;color:var(--muted);font-size:10px;">Chưa có cuộc trò chuyện nào.</div>';
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+        empty.style.cssText =
+            "padding:12px 8px;" +
+            "font-size:10px;" +
+            "color:var(--ink2);";
+
+        empty.textContent =
+            "Chưa có cuộc trò chuyện.";
+
+        historyBox.appendChild(
+            empty
+        );
 
         return;
 
     }
 
-    chats.forEach(chat => {
+    chats.forEach(
+        function(chat){
 
-        const button =
-            document.createElement("button");
+            const button =
+                document.createElement(
+                    "button"
+                );
 
-        button.className =
-            "history-item" +
-            (
-                chat.id === activeChat
-                ? " active"
-                : ""
+            button.className =
+                "history-item"
+                +
+                (
+                    chat.id === activeChat
+                        ? " active"
+                        : ""
+                );
+
+            const avatar =
+                document.createElement(
+                    "div"
+                );
+
+            avatar.className =
+                "history-avatar";
+
+            avatar.innerHTML =
+                DRAGON_SVG;
+
+            const info =
+                document.createElement(
+                    "div"
+                );
+
+            info.className =
+                "history-info";
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+            name.className =
+                "history-name";
+
+            name.textContent =
+                chat.title;
+
+            const time =
+                document.createElement(
+                    "div"
+                );
+
+            time.className =
+                "history-time";
+
+            time.textContent =
+                chat.time || "";
+
+            info.appendChild(name);
+            info.appendChild(time);
+
+            button.appendChild(avatar);
+            button.appendChild(info);
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    activeChat =
+                        chat.id;
+
+                    renderHistory();
+
+                    renderMessages();
+
+                    closeMenu();
+
+                }
             );
 
-        const dragon =
-            document.createElement("div");
+            historyBox.appendChild(
+                button
+            );
 
-        dragon.className =
-            "history-dragon";
-
-        dragon.innerHTML =
-            dragonSVG();
-
-        const text =
-            document.createElement("div");
-
-        text.className =
-            "history-text";
-
-        const title =
-            document.createElement("div");
-
-        title.className =
-            "history-title-text";
-
-        title.textContent =
-            chat.title;
-
-        const time =
-            document.createElement("div");
-
-        time.className =
-            "history-time";
-
-        time.textContent =
-            chat.messages.length
-            ? "Có tin nhắn"
-            : "Mới";
-
-        text.appendChild(title);
-        text.appendChild(time);
-
-        button.appendChild(dragon);
-        button.appendChild(text);
-
-        button.onclick =
-            function(){
-
-                activeChat = chat.id;
-
-                renderHistory();
-                renderMessages();
-
-                closeMenu();
-
-            };
-
-        historyBox.appendChild(button);
-
-    });
+        }
+    );
 
 }
 
-
-/* =====================================================
-   RENDER
-===================================================== */
+/* =========================================================
+   RENDER MESSAGES
+========================================================= */
 
 function renderMessages(){
 
@@ -1593,6 +1831,7 @@ function renderMessages(){
 
     if(
         !chat ||
+        !Array.isArray(chat.messages) ||
         chat.messages.length === 0
     ){
 
@@ -1607,7 +1846,7 @@ function renderMessages(){
         "none";
 
     chat.messages.forEach(
-        message => {
+        function(message){
 
             addMessage(
                 message.role,
@@ -1622,25 +1861,28 @@ function renderMessages(){
 
 }
 
-
-/* =====================================================
+/* =========================================================
    ADD MESSAGE
-===================================================== */
+========================================================= */
 
 function addMessage(
     role,
     text,
-    scroll = true
+    scroll=true
 ){
 
     const row =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     row.className =
         "message " + role;
 
     const avatar =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     avatar.className =
         "avatar";
@@ -1648,28 +1890,35 @@ function addMessage(
     if(role === "ai"){
 
         avatar.innerHTML =
-            dragonSVG();
+            DRAGON_SVG;
 
     }
     else{
 
         avatar.innerHTML =
-            '<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">' +
-            '<circle cx="25" cy="25" r="22" fill="#bd7a28"/>' +
-            '<circle cx="25" cy="19" r="7" fill="#fff5e9"/>' +
-            '<path d="M12 39 Q25 27 38 39" fill="#fff5e9"/>' +
-            '</svg>';
+            "<svg viewBox='0 0 50 50' " +
+            "xmlns='http://www.w3.org/2000/svg'>" +
+            "<circle cx='25' cy='25' r='23' " +
+            "fill='#a82a1e'/>" +
+            "<text x='25' y='32' " +
+            "text-anchor='middle' " +
+            "font-size='17' " +
+            "font-family='Arial' " +
+            "fill='white'>U</text>" +
+            "</svg>";
 
     }
 
     const bubble =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     bubble.className =
         "bubble";
 
     bubble.textContent =
-        text;
+        String(text || "");
 
     row.appendChild(avatar);
     row.appendChild(bubble);
@@ -1682,10 +1931,9 @@ function addMessage(
 
 }
 
-
-/* =====================================================
+/* =========================================================
    SCROLL
-===================================================== */
+========================================================= */
 
 function scrollBottom(){
 
@@ -1700,47 +1948,47 @@ function scrollBottom(){
 
 }
 
-
-/* =====================================================
+/* =========================================================
    TYPING
-===================================================== */
+========================================================= */
 
 function showTyping(){
 
+    hideTyping();
+
     const row =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
+    row.id = "typing";
 
     row.className =
         "message ai";
 
-    row.id =
-        "typing";
-
     const avatar =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     avatar.className =
         "avatar";
 
     avatar.innerHTML =
-        dragonSVG();
+        DRAGON_SVG;
 
     const bubble =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     bubble.className =
         "bubble";
 
-    const dots =
-        document.createElement("span");
-
-    dots.className =
-        "typing";
-
-    dots.innerHTML =
-        "<i></i><i></i><i></i>";
-
-    bubble.appendChild(dots);
+    bubble.innerHTML =
+        "<span class='typing'>" +
+        "<i></i><i></i><i></i>" +
+        "</span>";
 
     row.appendChild(avatar);
     row.appendChild(bubble);
@@ -1754,7 +2002,9 @@ function showTyping(){
 function hideTyping(){
 
     const typing =
-        document.getElementById("typing");
+        document.getElementById(
+            "typing"
+        );
 
     if(typing){
         typing.remove();
@@ -1762,31 +2012,38 @@ function hideTyping(){
 
 }
 
-
-/* =====================================================
+/* =========================================================
    GEMINI API
-===================================================== */
+========================================================= */
 
 async function AI(chat){
 
     const history =
         chat.messages
-            .slice(-20)
-            .map(message => ({
+            .slice(-30)
+            .map(
+                function(message){
 
-                role:
-                    message.role === "ai"
-                    ? "model"
-                    : "user",
+                    return {
 
-                parts:[
-                    {
-                        text:
-                            message.text
-                    }
-                ]
+                        role:
+                            message.role === "ai"
+                                ? "model"
+                                : "user",
 
-            }));
+                        parts:[
+                            {
+                                text:
+                                    String(
+                                        message.text
+                                    )
+                            }
+                        ]
+
+                    };
+
+                }
+            );
 
     const response =
         await fetch(
@@ -1801,31 +2058,30 @@ async function AI(chat){
                 },
 
                 body:JSON.stringify({
-
                     contents:history
-
                 })
 
             }
         );
 
+    const raw =
+        await response.text();
 
     let data;
 
     try{
 
         data =
-            await response.json();
+            JSON.parse(raw);
 
     }
-    catch{
+    catch(error){
 
         throw new Error(
-            "Worker không trả về JSON."
+            "Worker trả về dữ liệu không hợp lệ."
         );
 
     }
-
 
     if(!response.ok){
 
@@ -1833,16 +2089,16 @@ async function AI(chat){
             data &&
             data.error
                 ? data.error
-                : "Lỗi HTTP " +
+                : "HTTP " +
                   response.status
         );
 
     }
 
-
     if(
         !data ||
-        typeof data.reply !== "string"
+        typeof data.reply !== "string" ||
+        !data.reply.trim()
     ){
 
         throw new Error(
@@ -1851,20 +2107,18 @@ async function AI(chat){
 
     }
 
-
-    return data.reply;
+    return data.reply.trim();
 
 }
 
-
-/* =====================================================
+/* =========================================================
    SEND
-===================================================== */
+========================================================= */
 
 async function sendMessage(text){
 
     text =
-        text.trim();
+        String(text || "").trim();
 
     if(
         !text ||
@@ -1873,15 +2127,18 @@ async function sendMessage(text){
         return;
     }
 
-
     if(!activeChat){
-        newChat();
-    }
 
+        newChat();
+
+    }
 
     const chat =
         getChat();
 
+    if(!chat){
+        return;
+    }
 
     chat.messages.push({
 
@@ -1891,16 +2148,21 @@ async function sendMessage(text){
 
     });
 
-
-    if(chat.messages.length === 1){
+    if(
+        chat.messages.length === 1
+    ){
 
         chat.title =
-            text.length > 36
-            ? text.substring(0,36) + "..."
-            : text;
+            text.length > 42
+                ? text.slice(0,42) + "..."
+                : text;
+
+        chat.time =
+            timeNow();
 
     }
 
+    saveChats();
 
     input.value = "";
 
@@ -1913,7 +2175,6 @@ async function sendMessage(text){
     send.disabled = true;
 
     showTyping();
-
 
     try{
 
@@ -1930,6 +2191,11 @@ async function sendMessage(text){
 
         });
 
+        chat.time =
+            timeNow();
+
+        saveChats();
+
         addMessage(
             "ai",
             reply
@@ -1940,28 +2206,32 @@ async function sendMessage(text){
 
         hideTyping();
 
-        const message =
-            error &&
-            error.message
-            ? error.message
-            : "Lỗi không xác định.";
-
-        const errorText =
-            "🐉 ChatLuk gặp sự cố khi kết nối Gemini.\\n\\n" +
+        const errorMessage =
+            "🐉 ChatLuk không thể kết nối Gemini.\\n\\n" +
             "Chi tiết: " +
-            message;
+            (
+                error &&
+                error.message
+                    ? error.message
+                    : "Lỗi không xác định."
+            ) +
+            "\\n\\n" +
+            "Hãy kiểm tra Secret GEMINI_API_KEY " +
+            "trong Worker.";
 
         chat.messages.push({
 
             role:"ai",
 
-            text:errorText
+            text:errorMessage
 
         });
 
+        saveChats();
+
         addMessage(
             "ai",
-            errorText
+            errorMessage
         );
 
         console.error(
@@ -1971,7 +2241,6 @@ async function sendMessage(text){
 
     }
 
-
     send.disabled = false;
 
     renderHistory();
@@ -1980,10 +2249,9 @@ async function sendMessage(text){
 
 }
 
-
-/* =====================================================
+/* =========================================================
    FORM
-===================================================== */
+========================================================= */
 
 form.addEventListener(
     "submit",
@@ -1998,10 +2266,9 @@ form.addEventListener(
     }
 );
 
-
-/* =====================================================
+/* =========================================================
    ENTER
-===================================================== */
+========================================================= */
 
 input.addEventListener(
     "keydown",
@@ -2014,17 +2281,30 @@ input.addEventListener(
 
             event.preventDefault();
 
-            form.requestSubmit();
+            if(
+                typeof form.requestSubmit ===
+                "function"
+            ){
+
+                form.requestSubmit();
+
+            }
+            else{
+
+                sendMessage(
+                    input.value
+                );
+
+            }
 
         }
 
     }
 );
 
-
-/* =====================================================
+/* =========================================================
    RESIZE
-===================================================== */
+========================================================= */
 
 function resizeInput(){
 
@@ -2034,7 +2314,7 @@ function resizeInput(){
     input.style.height =
         Math.min(
             input.scrollHeight,
-            160
+            150
         ) + "px";
 
 }
@@ -2044,164 +2324,117 @@ input.addEventListener(
     resizeInput
 );
 
-
-/* =====================================================
+/* =========================================================
    SUGGESTIONS
-===================================================== */
+========================================================= */
 
 document
-.querySelectorAll(".suggestion")
-.forEach(button => {
+    .querySelectorAll(".suggestion")
+    .forEach(
+        function(button){
 
-    button.addEventListener(
-        "click",
-        function(){
+            button.addEventListener(
+                "click",
+                function(){
 
-            input.value =
-                button.textContent.trim();
+                    input.value =
+                        button.textContent.trim();
 
-            resizeInput();
+                    resizeInput();
 
-            input.focus();
+                    input.focus();
+
+                }
+            );
 
         }
     );
 
-});
-
-
-/* =====================================================
+/* =========================================================
    NEW CHAT
-===================================================== */
+========================================================= */
 
 document
-.getElementById("newChat")
-.addEventListener(
-    "click",
-    newChat
-);
+    .getElementById("newChat")
+    .addEventListener(
+        "click",
+        newChat
+    );
 
-
-/* =====================================================
+/* =========================================================
    CLEAR HISTORY
-===================================================== */
+========================================================= */
 
 document
-.getElementById("clearHistory")
-.addEventListener(
-    "click",
-    function(){
+    .getElementById("clearHistory")
+    .addEventListener(
+        "click",
+        function(){
 
-        chats = [];
+            if(
+                !confirm(
+                    "Xóa toàn bộ lịch sử ChatLuk?"
+                )
+            ){
+                return;
+            }
 
-        activeChat = null;
+            chats = [];
 
-        renderHistory();
+            activeChat = null;
 
-        renderMessages();
+            saveChats();
 
-    }
-);
+            renderHistory();
 
+            renderMessages();
 
-/* =====================================================
+        }
+    );
+
+/* =========================================================
    MOBILE
-===================================================== */
+========================================================= */
 
 document
-.getElementById("menuButton")
-.addEventListener(
-    "click",
-    function(){
+    .getElementById("menuButton")
+    .addEventListener(
+        "click",
+        function(){
 
-        sidebar.classList.add("open");
+            sidebar.classList.add(
+                "open"
+            );
 
-        overlay.classList.add("show");
+            overlay.classList.add(
+                "show"
+            );
 
-    }
-);
-
+        }
+    );
 
 function closeMenu(){
 
-    sidebar.classList.remove("open");
+    sidebar.classList.remove(
+        "open"
+    );
 
-    overlay.classList.remove("show");
+    overlay.classList.remove(
+        "show"
+    );
 
 }
-
 
 overlay.addEventListener(
     "click",
     closeMenu
 );
 
-
-/* =====================================================
-   DARK MODE
-===================================================== */
-
-const themeButton =
-    document.getElementById("themeButton");
-
-
-function updateThemeIcon(){
-
-    themeButton.textContent =
-        document.body.classList.contains("dark")
-        ? "☀"
-        : "☾";
-
-}
-
-
-function loadTheme(){
-
-    const saved =
-        localStorage.getItem(
-            "chatluk-theme"
-        );
-
-    if(saved === "dark"){
-
-        document.body.classList.add(
-            "dark"
-        );
-
-    }
-
-    updateThemeIcon();
-
-}
-
-
-themeButton.addEventListener(
-    "click",
-    function(){
-
-        document.body.classList.toggle(
-            "dark"
-        );
-
-        localStorage.setItem(
-            "chatluk-theme",
-
-            document.body.classList.contains(
-                "dark"
-            )
-            ? "dark"
-            : "light"
-        );
-
-        updateThemeIcon();
-
-    }
-);
-
-
-/* =====================================================
+/* =========================================================
    START
-===================================================== */
+========================================================= */
+
+loadChats();
 
 loadTheme();
 
@@ -2209,90 +2442,82 @@ renderHistory();
 
 renderMessages();
 
+resizeInput();
+
 input.focus();
 
 </script>
 
 </body>
-</html>
-`;
+</html>`;
 
 
-/* ======================================================
-   RESPONSE JSON
-====================================================== */
+/* =========================================================
+   CORS
+========================================================= */
 
-function json(data, status = 200){
+const CORS = {
+    "Access-Control-Allow-Origin":"*",
+    "Access-Control-Allow-Methods":
+        "GET,POST,OPTIONS",
+    "Access-Control-Allow-Headers":
+        "Content-Type"
+};
+
+
+/* =========================================================
+   JSON
+========================================================= */
+
+function json(data,status=200){
 
     return new Response(
-
         JSON.stringify(data),
-
         {
-
-            status,
-
+            status:status,
             headers:{
+                ...CORS,
                 "Content-Type":
-                    "application/json; charset=utf-8",
-
-                "Cache-Control":
-                    "no-store",
-
-                "Access-Control-Allow-Origin":
-                    "*",
-
-                "Access-Control-Allow-Methods":
-                    "GET, POST, OPTIONS",
-
-                "Access-Control-Allow-Headers":
-                    "Content-Type"
-
+                    "application/json; charset=utf-8"
             }
-
         }
-
     );
 
 }
 
 
-/* ======================================================
+/* =========================================================
    WORKER
-====================================================== */
+========================================================= */
 
 export default {
 
-    async fetch(request, env){
+    async fetch(request,env){
 
         const url =
             new URL(request.url);
 
-
-        /* ===============================================
+        /* -------------------------------------------------
            OPTIONS
-        =============================================== */
+        ------------------------------------------------- */
 
-        if(request.method === "OPTIONS"){
+        if(
+            request.method === "OPTIONS"
+        ){
 
             return new Response(
                 null,
                 {
                     status:204,
-                    headers:{
-                        "Access-Control-Allow-Origin":"*",
-                        "Access-Control-Allow-Methods":"GET, POST, OPTIONS",
-                        "Access-Control-Allow-Headers":"Content-Type"
-                    }
+                    headers:CORS
                 }
             );
 
         }
 
-
-        /* ===============================================
+        /* -------------------------------------------------
            WEBSITE
-        =============================================== */
+        ------------------------------------------------- */
 
         if(
             request.method === "GET" &&
@@ -2315,10 +2540,9 @@ export default {
 
         }
 
-
-        /* ===============================================
+        /* -------------------------------------------------
            HEALTH
-        =============================================== */
+        ------------------------------------------------- */
 
         if(
             request.method === "GET" &&
@@ -2332,19 +2556,21 @@ export default {
                 worker:
                     "ChatLuk Gemini Worker",
 
-                geminiSecretConfigured:
+                secretConfigured:
                     Boolean(
                         env.GEMINI_API_KEY
-                    )
+                    ),
+
+                secretName:
+                    "GEMINI_API_KEY"
 
             });
 
         }
 
-
-        /* ===============================================
+        /* -------------------------------------------------
            CHAT
-        =============================================== */
+        ------------------------------------------------- */
 
         if(
             request.method === "POST" &&
@@ -2353,32 +2579,31 @@ export default {
 
             try{
 
-                /* =======================================
-                   SECRET
-                ======================================= */
+                /* -----------------------------------------
+                   CHECK SECRET
+                ----------------------------------------- */
 
-                if(!env.GEMINI_API_KEY){
+                if(
+                    !env.GEMINI_API_KEY
+                ){
 
                     return json(
                         {
-
                             ok:false,
 
                             error:
-                                "Chưa tìm thấy GEMINI_API_KEY. " +
-                                "Hãy kiểm tra Variables and Secrets " +
-                                "trong Cloudflare Worker."
-
+                                "Không tìm thấy Secret GEMINI_API_KEY. " +
+                                "Hãy kiểm tra Settings → Variables and Secrets " +
+                                "của Worker."
                         },
                         500
                     );
 
                 }
 
-
-                /* =======================================
-                   BODY
-                ======================================= */
+                /* -----------------------------------------
+                   READ BODY
+                ----------------------------------------- */
 
                 let body;
 
@@ -2388,7 +2613,7 @@ export default {
                         await request.json();
 
                 }
-                catch{
+                catch(error){
 
                     return json(
                         {
@@ -2401,17 +2626,18 @@ export default {
 
                 }
 
+                /* -----------------------------------------
+                   CONTENTS
+                ----------------------------------------- */
 
-                const contents =
+                let contents =
                     body &&
-                    Array.isArray(
-                        body.contents
-                    )
-                    ? body.contents
-                    : [];
+                    body.contents;
 
-
-                if(contents.length === 0){
+                if(
+                    !Array.isArray(contents) ||
+                    contents.length === 0
+                ){
 
                     return json(
                         {
@@ -2424,136 +2650,131 @@ export default {
 
                 }
 
+                /* -----------------------------------------
+                   CLEAN HISTORY
+                ----------------------------------------- */
 
-                /* =======================================
-                   GIỚI HẠN LỊCH SỬ
-                ======================================= */
-
-                const safeContents =
+                contents =
                     contents
-                        .slice(-20)
-                        .map(item => ({
+                        .slice(-30)
+                        .map(
+                            function(item){
 
-                            role:
-                                item.role === "model"
-                                ? "model"
-                                : "user",
+                                return {
 
-                            parts:
-                                Array.isArray(
-                                    item.parts
-                                )
-                                ? item.parts
-                                    .filter(
-                                        part =>
-                                            part &&
-                                            typeof part.text ===
-                                                "string"
-                                    )
-                                    .map(
-                                        part => ({
+                                    role:
+                                        item.role === "model"
+                                            ? "model"
+                                            : "user",
+
+                                    parts:[
+                                        {
                                             text:
-                                                part.text
-                                        })
-                                    )
-                                : []
+                                                String(
+                                                    item &&
+                                                    item.parts &&
+                                                    item.parts[0] &&
+                                                    item.parts[0].text
+                                                        ? item.parts[0].text
+                                                        : ""
+                                                ).slice(
+                                                    0,
+                                                    8000
+                                                )
+                                        }
+                                    ]
 
-                        }))
+                                };
+
+                            }
+                        )
                         .filter(
-                            item =>
-                                item.parts.length > 0
+                            function(item){
+
+                                return (
+                                    item.parts[0].text.trim()
+                                    .length > 0
+                                );
+
+                            }
                         );
 
-
-                if(safeContents.length === 0){
+                if(contents.length === 0){
 
                     return json(
                         {
                             ok:false,
                             error:
-                                "Tin nhắn không hợp lệ."
+                                "Tin nhắn trống."
                         },
                         400
                     );
 
                 }
 
-
-                /* =======================================
+                /* -----------------------------------------
                    GEMINI
-                ======================================= */
-
-                const GEMINI_MODEL =
-                    "gemini-3.6-flash";
-
-
-                const endpoint =
-                    "https://generativelanguage.googleapis.com/v1beta/models/" +
-                    GEMINI_MODEL +
-                    ":generateContent";
-
+                   
+                   Gemini REST API:
+                   POST /v1beta/models/...:generateContent
+                   
+                   API key gửi bằng x-goog-api-key.
+                ----------------------------------------- */
 
                 const geminiResponse =
                     await fetch(
-                        endpoint,
+                        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
                         {
 
                             method:"POST",
 
                             headers:{
-
                                 "Content-Type":
                                     "application/json",
 
                                 "x-goog-api-key":
                                     env.GEMINI_API_KEY
-
                             },
 
-                            body:
-                                JSON.stringify({
+                            body:JSON.stringify({
 
-                                    systemInstruction:{
-                                        parts:[
-                                            {
-                                                text:
-                                                    "Bạn là ChatLuk, " +
-                                                    "trợ lý AI nói tiếng Việt. " +
-                                                    "Hãy trả lời tự nhiên, " +
-                                                    "thân thiện, rõ ràng và hữu ích. " +
-                                                    "Ưu tiên tiếng Việt. " +
-                                                    "Khi giải bài học, hãy giải thích " +
-                                                    "dễ hiểu và có cấu trúc. " +
-                                                    "Khi người dùng yêu cầu code, " +
-                                                    "hãy đưa code hoàn chỉnh."
-                                            }
-                                        ]
-                                    },
+                                systemInstruction:{
+                                    parts:[
+                                        {
+                                            text:
+                                                "Bạn là ChatLuk, " +
+                                                "một trợ lý AI nói tiếng Việt. " +
+                                                "Hãy trả lời tự nhiên, rõ ràng, " +
+                                                "thân thiện và hữu ích. " +
+                                                "Ưu tiên tiếng Việt. " +
+                                                "Khi giải thích kiến thức, " +
+                                                "hãy trình bày dễ hiểu. " +
+                                                "Nếu người dùng yêu cầu code, " +
+                                                "hãy đưa code hoàn chỉnh. " +
+                                                "Không cần tự giới thiệu mình " +
+                                                "ở đầu mỗi câu trả lời."
+                                        }
+                                    ]
+                                },
 
-                                    contents:
-                                        safeContents,
+                                contents:contents,
 
-                                    generationConfig:{
+                                generationConfig:{
+                                    temperature:0.7,
+                                    maxOutputTokens:4096
+                                }
 
-                                        temperature:0.7,
-
-                                        maxOutputTokens:4096
-
-                                    }
-
-                                })
+                            })
 
                         }
                     );
 
-
-                /* =======================================
-                   RESPONSE
-                ======================================= */
+                /* -----------------------------------------
+                   READ RESPONSE
+                ----------------------------------------- */
 
                 const raw =
                     await geminiResponse.text();
-
 
                 let data;
 
@@ -2563,74 +2784,59 @@ export default {
                         JSON.parse(raw);
 
                 }
-                catch{
+                catch(error){
 
                     return json(
                         {
-
                             ok:false,
 
                             error:
-                                "Gemini trả về dữ liệu không hợp lệ."
-
+                                "Gemini trả về dữ liệu " +
+                                "không phải JSON."
                         },
                         502
                     );
 
                 }
 
-
-                /* =======================================
+                /* -----------------------------------------
                    GEMINI ERROR
-                ======================================= */
+                ----------------------------------------- */
 
-                if(!geminiResponse.ok){
-
-                    const apiError =
-                        data &&
-                        data.error;
-
+                if(
+                    !geminiResponse.ok
+                ){
 
                     let message =
                         "Gemini API lỗi HTTP " +
                         geminiResponse.status;
 
-
                     if(
-                        apiError &&
-                        apiError.message
+                        data &&
+                        data.error &&
+                        data.error.message
                     ){
 
                         message =
-                            apiError.message;
+                            data.error.message;
 
                     }
 
-
                     return json(
                         {
-
                             ok:false,
-
-                            error:
-                                message,
-
-                            status:
-                                geminiResponse.status
-
+                            error:message
                         },
                         geminiResponse.status
                     );
 
                 }
 
-
-                /* =======================================
+                /* -----------------------------------------
                    EXTRACT TEXT
-                ======================================= */
+                ----------------------------------------- */
 
                 let answer = "";
-
 
                 if(
                     data &&
@@ -2676,34 +2882,37 @@ export default {
 
                 }
 
+                answer =
+                    answer.trim();
 
-                if(!answer.trim()){
+                /* -----------------------------------------
+                   EMPTY
+                ----------------------------------------- */
+
+                if(!answer){
 
                     return json(
                         {
-
                             ok:false,
 
                             error:
-                                "Gemini không trả về câu trả lời."
-
+                                "Gemini không trả về " +
+                                "nội dung văn bản."
                         },
                         502
                     );
 
                 }
 
-
-                /* =======================================
+                /* -----------------------------------------
                    SUCCESS
-                ======================================= */
+                ----------------------------------------- */
 
                 return json({
 
                     ok:true,
 
-                    reply:
-                        answer.trim()
+                    reply:answer
 
                 });
 
@@ -2717,15 +2926,13 @@ export default {
 
                 return json(
                     {
-
                         ok:false,
 
                         error:
                             error &&
                             error.message
-                            ? error.message
-                            : "Worker gặp lỗi không xác định."
-
+                                ? error.message
+                                : "Worker gặp lỗi không xác định."
                     },
                     500
                 );
@@ -2734,19 +2941,15 @@ export default {
 
         }
 
-
-        /* ===============================================
+        /* -------------------------------------------------
            404
-        =============================================== */
+        ------------------------------------------------- */
 
         return json(
             {
-
                 ok:false,
-
                 error:
                     "Không tìm thấy đường dẫn."
-
             },
             404
         );
