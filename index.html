@@ -1396,17 +1396,24 @@ function addMessage(
     row.className =
         "message " + role;
 
-    const avatar =
-        document.createElement("div");
+const avatar =
+    document.createElement("div");
 
-    avatar.className =
-        "avatar";
+avatar.className =
+    "avatar";
 
-    avatar.textContent =
-        role === "ai"
-            ? "🐉"
-            : "U";
+const avatarImg =
+    document.createElement("img");
 
+avatarImg.src =
+    "https://dongphuchaianh.com/wp-content/uploads/2022/06/logo-hinh-con-rong-y-nghia.jpg";
+
+avatarImg.alt =
+    "ChatLuk Dragon";
+
+avatar.appendChild(
+    avatarImg
+);
     const bubble =
         document.createElement("div");
 
@@ -1439,14 +1446,24 @@ function showTyping(){
     row.id =
         "typingMessage";
 
-    const avatar =
-        document.createElement("div");
+const avatar =
+    document.createElement("div");
 
-    avatar.className =
-        "avatar";
+avatar.className =
+    "avatar";
 
-    avatar.textContent =
-        "🐉";
+const avatarImg =
+    document.createElement("img");
+
+avatarImg.src =
+    "https://dongphuchaianh.com/wp-content/uploads/2022/06/logo-hinh-con-rong-y-nghia.jpg";
+
+avatarImg.alt =
+    "ChatLuk Dragon";
+
+avatar.appendChild(
+    avatarImg
+);
 
     const bubble =
         document.createElement("div");
