@@ -24,6 +24,11 @@ const HTML = `<!DOCTYPE html>
     --red2:#c84a2e;
     --line:rgba(130,88,35,.20);
     --shadow:rgba(85,55,20,.13);
+
+    /* AVATAR */
+    --avatar-gold:#ffe39a;
+    --avatar-gold2:#fff3c7;
+    --avatar-border:#d6a64d;
 }
 
 body.dark{
@@ -38,6 +43,14 @@ body.dark{
     --red2:#ef7658;
     --line:rgba(235,190,100,.20);
     --shadow:rgba(0,0,0,.35);
+
+    --avatar-gold:#e5bd5d;
+    --avatar-gold2:#ffe29a;
+    --avatar-border:#f0ce7b;
+}
+
+body{
+    --dragon-avatar:url("https://tapl.edu.vn/upload/2025/05/anh-rong-chibi-24.webp");
 }
 
 html,body{
@@ -83,7 +96,9 @@ button{
 }
 
 
-/* ================= SIDEBAR ================= */
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 .sidebar{
     width:270px;
@@ -121,6 +136,11 @@ button{
         1px solid var(--line);
 }
 
+
+/* =====================================================
+   AVATAR / LOGO RỒNG
+===================================================== */
+
 .brand-dragon{
     width:48px;
     height:48px;
@@ -133,28 +153,45 @@ button{
     background:
         radial-gradient(
             circle,
-            #fff7dc,
-            #efd4a1
+            var(--avatar-gold2) 0%,
+            var(--avatar-gold) 55%,
+            #e9bf62 100%
         );
 
     border:
-        1px solid
-        rgba(170,110,35,.3);
+        2px solid
+        var(--avatar-border);
 
     box-shadow:
+        0 0 0 3px rgba(214,166,77,.12),
         0 5px 16px
-        rgba(150,90,20,.15);
-
-    font-size:30px;
+        rgba(150,90,20,.22);
 
     overflow:hidden;
+
+    position:relative;
 }
 
-.brand-dragon img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.brand-dragon::before{
+    content:"";
+
+    width:78%;
+    height:78%;
+
+    background-image:
+        var(--dragon-avatar);
+
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+
     display:block;
+
+    filter:
+        drop-shadow(
+            0 2px 3px
+            rgba(90,55,10,.25)
+        );
 }
 
 .brand-name{
@@ -269,31 +306,45 @@ button{
 }
 
 .history-dragon{
-    width:22px;
-    height:22px;
+    width:25px;
+    height:25px;
 
     flex-shrink:0;
 
-    border-radius:7px;
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff4c9,
+            #e8bd61
+        );
+
+    border:
+        1px solid
+        rgba(183,122,34,.45);
 
     overflow:hidden;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:
-        linear-gradient(
-            145deg,
-            #fff4b8,
-            #e8c35e
-        );
+    position:relative;
 }
 
-.history-dragon img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.history-dragon::before{
+    content:"";
+
+    width:85%;
+    height:85%;
+
+    background-image:
+        var(--dragon-avatar);
+
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+
     display:block;
 }
 
@@ -320,28 +371,46 @@ button{
 }
 
 .sidebar-bottom .dragon-small{
-    width:48px;
-    height:48px;
+    width:50px;
+    height:50px;
 
     margin:auto;
 
+    display:grid;
+    place-items:center;
+
     border-radius:50%;
 
-    overflow:hidden;
-
     background:
-        linear-gradient(
-            145deg,
-            #fff7c7,
-            #e4bb55
+        radial-gradient(
+            circle,
+            #fff5ca,
+            #e8bd61
         );
+
+    border:
+        2px solid
+        var(--avatar-border);
+
+    box-shadow:
+        0 0 15px
+        rgba(214,166,77,.25);
+
+    overflow:hidden;
 }
 
-.sidebar-bottom .dragon-small img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
+.sidebar-bottom .dragon-small::before{
+    content:"";
+
+    width:85%;
+    height:85%;
+
+    background-image:
+        var(--dragon-avatar);
+
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
 }
 
 .sidebar-bottom p{
@@ -352,7 +421,9 @@ button{
 }
 
 
-/* ================= MAIN ================= */
+/* =====================================================
+   MAIN
+===================================================== */
 
 .main{
     flex:1;
@@ -364,7 +435,9 @@ button{
 }
 
 
-/* ================= TOPBAR ================= */
+/* =====================================================
+   TOPBAR
+===================================================== */
 
 .topbar{
     height:68px;
@@ -411,34 +484,54 @@ body.dark .topbar{
     gap:9px;
 }
 
+
+/* TOPBAR AVATAR */
+
 .top-dragon{
-    width:38px;
-    height:38px;
+    width:40px;
+    height:40px;
 
-    border-radius:11px;
+    display:grid;
+    place-items:center;
 
-    overflow:hidden;
+    border-radius:50%;
 
     background:
-        linear-gradient(
-            145deg,
-            #fff7c7,
-            #e2b94f
+        radial-gradient(
+            circle,
+            #fff6ce,
+            #e7bd60
         );
 
     border:
-        1px solid
-        rgba(183,122,34,.35);
+        2px solid
+        var(--avatar-border);
 
     box-shadow:
-        0 3px 10px
-        rgba(150,90,20,.14);
+        0 0 0 3px rgba(214,166,77,.10),
+        0 4px 12px
+        rgba(120,75,20,.16);
+
+    overflow:hidden;
+
+    position:relative;
+
+    font-size:0;
 }
 
-.top-dragon img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.top-dragon::before{
+    content:"";
+
+    width:86%;
+    height:86%;
+
+    background-image:
+        var(--dragon-avatar);
+
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+
     display:block;
 }
 
@@ -482,7 +575,9 @@ body.dark .topbar{
 }
 
 
-/* ================= CHAT ================= */
+/* =====================================================
+   CHAT
+===================================================== */
 
 .chat-area{
     flex:1;
@@ -521,7 +616,9 @@ body.dark .topbar{
 }
 
 
-/* ================= WELCOME ================= */
+/* =====================================================
+   WELCOME
+===================================================== */
 
 .welcome{
     position:relative;
@@ -538,6 +635,9 @@ body.dark .topbar{
     text-align:center;
 }
 
+
+/* HERO AVATAR */
+
 .hero-dragon{
     width:115px;
     height:115px;
@@ -547,31 +647,57 @@ body.dark .topbar{
 
     border-radius:50%;
 
-    overflow:hidden;
-
     background:
         radial-gradient(
             circle,
-            #fff8e6,
-            #ead4aa
+            #fff9dd 0%,
+            #ffe9a9 55%,
+            #e5b952 100%
         );
 
     border:
-        1px solid
-        rgba(170,110,35,.3);
+        3px solid
+        var(--avatar-border);
 
     box-shadow:
+        0 0 0 6px
+        rgba(214,166,77,.10),
+
+        0 0 30px
+        rgba(214,166,77,.25),
+
         0 15px 40px
         var(--shadow);
+
+    overflow:hidden;
+
+    position:relative;
+
+    font-size:0;
 
     margin-bottom:18px;
 }
 
-.hero-dragon img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.hero-dragon::before{
+    content:"";
+
+    width:88%;
+    height:88%;
+
+    background-image:
+        var(--dragon-avatar);
+
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+
     display:block;
+
+    filter:
+        drop-shadow(
+            0 3px 5px
+            rgba(80,50,10,.25)
+        );
 }
 
 .welcome-label{
@@ -636,7 +762,9 @@ body.dark .topbar{
 }
 
 
-/* ================= PROFESSIONAL MESSAGES ================= */
+/* =====================================================
+   MESSAGES
+===================================================== */
 
 .messages{
     position:relative;
@@ -649,15 +777,12 @@ body.dark .topbar{
 
 .message{
     display:flex;
-    align-items:flex-end;
-    gap:11px;
+    gap:10px;
 
-    margin:20px 0;
-
-    position:relative;
+    margin:19px 0;
 
     animation:
-        appear .22s ease;
+        appear .2s ease;
 }
 
 .message.user{
@@ -669,115 +794,91 @@ body.dark .topbar{
 }
 
 
-/* ================= AVATAR ================= */
+/* =====================================================
+   AVATAR TRONG ĐOẠN CHAT
+===================================================== */
 
 .avatar{
-    width:44px;
-    height:44px;
+    width:42px;
+    height:42px;
 
-    flex:0 0 44px;
+    flex:0 0 42px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:14px;
-
-    overflow:hidden;
-
-    background:
-        linear-gradient(
-            145deg,
-            #fff8d8,
-            #f4d98b,
-            #dcae4f
-        );
+    display:grid;
+    place-items:center;
 
     border:
         2px solid
-        rgba(214,166,77,.65);
+        var(--avatar-border);
+
+    border-radius:13px;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff7d4 0%,
+            #ffe7a0 55%,
+            #e4b94e 100%
+        );
 
     box-shadow:
-        0 4px 10px
-        rgba(130,88,35,.15),
-
         0 0 0 3px
-        rgba(214,166,77,.08);
+        rgba(214,166,77,.10),
+
+        0 4px 12px
+        rgba(120,75,20,.18);
+
+    overflow:hidden;
 
     position:relative;
+
+    font-size:0;
 }
 
-.avatar img{
-    width:100%;
-    height:100%;
-
-    object-fit:cover;
-
-    display:block;
-}
-
-.avatar::after{
+.avatar::before{
     content:"";
 
-    position:absolute;
-    inset:0;
+    width:88%;
+    height:88%;
 
-    pointer-events:none;
+    background-image:
+        var(--dragon-avatar);
+
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    display:block;
+
+    filter:
+        drop-shadow(
+            0 2px 3px
+            rgba(70,45,10,.25)
+        );
+}
+
+
+/* =====================================================
+   KHUNG CHAT - VIỀN VÀNG KIM
+===================================================== */
+
+.bubble{
+    max-width:min(720px,82%);
+
+    padding:13px 16px;
+
+    border:
+        1.5px solid
+        rgba(214,166,77,.78);
+
+    border-radius:
+        8px 16px 16px 16px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,.45),
-            transparent 45%,
-            rgba(255,210,100,.18)
-        );
-}
-
-.message.user .avatar{
-    color:transparent;
-
-    background:
-        linear-gradient(
-            145deg,
-            #fff3b0,
-            #e8c35e,
-            #c99532
-        );
-
-    border:
-        2px solid
-        rgba(183,122,34,.55);
-
-    box-shadow:
-        0 5px 15px
-        rgba(150,90,20,.22),
-
-        0 0 0 3px
-        rgba(214,166,77,.10);
-}
-
-
-/* ================= CHAT BUBBLE ================= */
-
-.bubble{
-    position:relative;
-
-    max-width:min(720px,82%);
-
-    padding:14px 17px;
-
-    border-radius:
-        7px 17px 17px 17px;
-
-    border:
-        1px solid
-        rgba(183,122,34,.25);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,253,246,.97),
-            rgba(250,241,220,.94)
+            rgba(255,253,246,.96),
+            rgba(255,248,226,.91)
         );
 
     color:var(--text);
@@ -789,65 +890,70 @@ body.dark .topbar{
     word-break:break-word;
 
     box-shadow:
-        0 7px 22px
-        rgba(100,65,20,.12),
+        0 0 0 1px
+        rgba(255,224,137,.22),
 
-        0 1px 3px
-        rgba(100,65,20,.08);
+        0 5px 20px
+        var(--shadow),
+
+        0 0 18px
+        rgba(214,166,77,.08);
+
+    position:relative;
 
     transition:
-        transform .18s ease,
-        box-shadow .18s ease,
-        border-color .18s ease;
+        border-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
 }
 
-.message.ai .bubble::before{
-    content:"";
+.bubble:hover{
+    border-color:
+        rgba(214,166,77,.98);
 
-    position:absolute;
+    box-shadow:
+        0 0 0 1px
+        rgba(255,225,139,.35),
 
-    top:-1px;
-    left:18px;
+        0 7px 25px
+        var(--shadow),
 
-    width:42px;
-    height:3px;
+        0 0 22px
+        rgba(214,166,77,.14);
+}
 
-    border-radius:
-        0 0 5px 5px;
-
+body.dark .bubble{
     background:
         linear-gradient(
-            90deg,
-            var(--gold),
-            var(--gold2)
+            135deg,
+            rgba(58,47,38,.97),
+            rgba(48,39,32,.96)
         );
 
-    box-shadow:
-        0 2px 8px
-        rgba(183,122,34,.25);
-}
-
-.message.ai .bubble:hover{
-    transform:translateY(-1px);
-
     border-color:
-        rgba(183,122,34,.40);
+        rgba(224,182,92,.82);
 
     box-shadow:
-        0 10px 27px
-        rgba(100,65,20,.16);
+        0 0 0 1px
+        rgba(240,206,123,.12),
+
+        0 5px 20px
+        var(--shadow),
+
+        0 0 18px
+        rgba(224,182,92,.08);
 }
 
 
-/* ================= USER BUBBLE ================= */
+/* USER CHAT */
 
 .message.user .bubble{
     border:
-        1px solid
-        rgba(255,255,255,.15);
+        1.5px solid
+        rgba(255,221,126,.92);
 
     border-radius:
-        17px 7px 17px 17px;
+        16px 8px 16px 16px;
 
     color:#fff9ed;
 
@@ -859,76 +965,33 @@ body.dark .topbar{
         );
 
     box-shadow:
-        0 7px 22px
-        rgba(150,50,25,.20);
-}
+        0 0 0 1px
+        rgba(255,218,120,.20),
 
-.message.user .bubble::after{
-    content:"";
+        0 6px 20px
+        rgba(150,50,25,.20),
 
-    position:absolute;
-    inset:0;
-
-    border-radius:
-        inherit;
-
-    pointer-events:none;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
+        0 0 20px
+        rgba(214,166,77,.10);
 }
 
 
-/* ================= DARK MODE ================= */
-
-body.dark .bubble{
-    background:
-        linear-gradient(
-            145deg,
-            rgba(58,47,38,.98),
-            rgba(48,39,32,.96)
-        );
-
-    border-color:
-        rgba(224,182,92,.25);
-
-    box-shadow:
-        0 8px 25px
-        rgba(0,0,0,.25);
-}
-
-body.dark .message.ai .bubble:hover{
-    border-color:
-        rgba(224,182,92,.45);
-
-    box-shadow:
-        0 10px 30px
-        rgba(0,0,0,.32);
-}
-
-
-/* ================= TYPING ================= */
+/* =====================================================
+   TYPING
+===================================================== */
 
 .typing{
     display:flex;
-    align-items:center;
-    gap:5px;
-
-    min-height:15px;
+    gap:4px;
 }
 
 .typing i{
-    width:6px;
-    height:6px;
+    width:5px;
+    height:5px;
 
     border-radius:50%;
 
     background:var(--gold);
-
-    box-shadow:
-        0 0 5px
-        rgba(183,122,34,.35);
 
     animation:
         typing 1s infinite;
@@ -967,7 +1030,9 @@ body.dark .message.ai .bubble:hover{
 }
 
 
-/* ================= COMPOSER ================= */
+/* =====================================================
+   COMPOSER
+===================================================== */
 
 .composer-area{
     position:relative;
@@ -1076,7 +1141,9 @@ textarea::placeholder{
 }
 
 
-/* ================= MOBILE ================= */
+/* =====================================================
+   MOBILE
+===================================================== */
 
 .overlay{
     display:none;
@@ -1172,14 +1239,7 @@ textarea::placeholder{
     .suggestions{
         grid-template-columns:1fr;
     }
-
-    .avatar{
-        width:40px;
-        height:40px;
-        flex-basis:40px;
-    }
 }
-
 </style>
 </head>
 
@@ -1191,15 +1251,9 @@ textarea::placeholder{
 
     <div class="brand">
 
-        <div class="brand-dragon">
-            <img
-                src="https://tapl.edu.vn/upload/2025/05/anh-rong-chibi-24.webp"
-                alt="ChatLuk Dragon"
-            >
-        </div>
+        <div class="brand-dragon"></div>
 
         <div>
-
             <div class="brand-name">
                 Chat<span>Luk</span>
             </div>
@@ -1207,7 +1261,6 @@ textarea::placeholder{
             <div class="brand-sub">
                 VIETNAMESE DRAGON AI
             </div>
-
         </div>
 
     </div>
@@ -1239,12 +1292,7 @@ textarea::placeholder{
 
     <div class="sidebar-bottom">
 
-        <div class="dragon-small">
-            <img
-                src="https://tapl.edu.vn/upload/2025/05/anh-rong-chibi-24.webp"
-                alt="ChatLuk Dragon"
-            >
-        </div>
+        <div class="dragon-small"></div>
 
         <p>
             ChatLuk<br>
@@ -1254,7 +1302,6 @@ textarea::placeholder{
     </div>
 
 </aside>
-
 
 <main class="main">
 
@@ -1269,12 +1316,7 @@ textarea::placeholder{
 
     <div class="top-title">
 
-        <div class="top-dragon">
-            <img
-                src="https://tapl.edu.vn/upload/2025/05/anh-rong-chibi-24.webp"
-                alt="ChatLuk Dragon"
-            >
-        </div>
+        <div class="top-dragon"></div>
 
         <div>
 
@@ -1304,7 +1346,6 @@ textarea::placeholder{
 
 </header>
 
-
 <section
     class="chat-area"
     id="chatArea"
@@ -1315,14 +1356,7 @@ textarea::placeholder{
     id="welcome"
 >
 
-    <div class="hero-dragon">
-
-        <img
-            src="https://tapl.edu.vn/upload/2025/05/anh-rong-chibi-24.webp"
-            alt="ChatLuk Dragon"
-        >
-
-    </div>
+    <div class="hero-dragon"></div>
 
     <div class="welcome-label">
         CHÀO MỪNG ĐẾN VỚI
@@ -1359,14 +1393,12 @@ textarea::placeholder{
 
 </div>
 
-
 <div
     class="messages"
     id="messages"
 ></div>
 
 </section>
-
 
 <footer class="composer-area">
 
@@ -1410,12 +1442,10 @@ textarea::placeholder{
 
 </div>
 
-
 <div
     class="overlay"
     id="overlay"
 ></div>
-
 
 <script>
 "use strict";
@@ -1428,12 +1458,6 @@ textarea::placeholder{
 let chats = [];
 let activeChatId = null;
 let isSending = false;
-
-
-/* ================= AVATAR URL ================= */
-
-const AVATAR_URL =
-    "https://tapl.edu.vn/upload/2025/05/anh-rong-chibi-24.webp";
 
 
 /* ================= ELEMENTS ================= */
@@ -1467,36 +1491,6 @@ const overlay =
 
 const themeButton =
     document.getElementById("themeButton");
-
-
-/* ================= CREATE AVATAR ================= */
-
-function createAvatar(){
-
-    const avatar =
-        document.createElement("div");
-
-    avatar.className =
-        "avatar";
-
-    const image =
-        document.createElement("img");
-
-    image.src =
-        AVATAR_URL;
-
-    image.alt =
-        "ChatLuk Dragon";
-
-    image.loading =
-        "lazy";
-
-    avatar.appendChild(
-        image
-    );
-
-    return avatar;
-}
 
 
 /* ================= ID ================= */
@@ -1589,19 +1583,6 @@ function renderHistory(){
         dragon.className =
             "history-dragon";
 
-        const dragonImage =
-            document.createElement("img");
-
-        dragonImage.src =
-            AVATAR_URL;
-
-        dragonImage.alt =
-            "ChatLuk Dragon";
-
-        dragon.appendChild(
-            dragonImage
-        );
-
         const text =
             document.createElement("span");
 
@@ -1611,13 +1592,8 @@ function renderHistory(){
         text.textContent =
             chat.title;
 
-        button.appendChild(
-            dragon
-        );
-
-        button.appendChild(
-            text
-        );
+        button.appendChild(dragon);
+        button.appendChild(text);
 
         button.addEventListener(
             "click",
@@ -1633,9 +1609,7 @@ function renderHistory(){
             }
         );
 
-        historyBox.appendChild(
-            button
-        );
+        historyBox.appendChild(button);
     });
 }
 
@@ -1693,7 +1667,17 @@ function addMessage(
         "message " + role;
 
     const avatar =
-        createAvatar();
+        document.createElement("div");
+
+    avatar.className =
+        "avatar";
+
+    /*
+       KHÔNG CÒN U
+       KHÔNG CÒN 🐉
+       Avatar được tạo hoàn toàn bằng CSS
+       và ảnh rồng bên trên.
+    */
 
     const bubble =
         document.createElement("div");
@@ -1704,17 +1688,10 @@ function addMessage(
     bubble.textContent =
         text;
 
-    row.appendChild(
-        avatar
-    );
+    row.appendChild(avatar);
+    row.appendChild(bubble);
 
-    row.appendChild(
-        bubble
-    );
-
-    messagesBox.appendChild(
-        row
-    );
+    messagesBox.appendChild(row);
 
     if(scroll){
         scrollBottom();
@@ -1736,7 +1713,10 @@ function showTyping(){
         "typingMessage";
 
     const avatar =
-        createAvatar();
+        document.createElement("div");
+
+    avatar.className =
+        "avatar";
 
     const bubble =
         document.createElement("div");
@@ -1753,25 +1733,15 @@ function showTyping(){
     dots.innerHTML =
         "<i></i><i></i><i></i>";
 
-    bubble.appendChild(
-        dots
-    );
+    bubble.appendChild(dots);
 
-    row.appendChild(
-        avatar
-    );
+    row.appendChild(avatar);
+    row.appendChild(bubble);
 
-    row.appendChild(
-        bubble
-    );
-
-    messagesBox.appendChild(
-        row
-    );
+    messagesBox.appendChild(row);
 
     scrollBottom();
 }
-
 
 function hideTyping(){
 
@@ -1795,7 +1765,6 @@ function scrollBottom(){
 
             chatArea.scrollTop =
                 chatArea.scrollHeight;
-
         }
     );
 }
@@ -1811,11 +1780,9 @@ async function callAI(){
         getActiveChat();
 
     if(!chat){
-
         throw new Error(
             "Không tìm thấy cuộc trò chuyện."
         );
-
     }
 
     const response =
@@ -1844,17 +1811,13 @@ async function callAI(){
     let data = null;
 
     try{
-
         data =
             JSON.parse(raw);
-
     }
     catch{
-
         throw new Error(
             "Worker không trả về JSON hợp lệ."
         );
-
     }
 
     if(!response.ok){
@@ -1866,7 +1829,6 @@ async function callAI(){
                 : "API lỗi HTTP " +
                   response.status
         );
-
     }
 
     if(
@@ -1878,7 +1840,6 @@ async function callAI(){
         throw new Error(
             "Worker không trả về reply."
         );
-
     }
 
     return data.reply;
@@ -1902,7 +1863,6 @@ async function sendMessage(text){
     if(!activeChatId){
 
         createNewChat();
-
     }
 
     const chat =
@@ -1913,10 +1873,8 @@ async function sendMessage(text){
     }
 
     chat.messages.push({
-
         role:"user",
         text:text
-
     });
 
     if(
@@ -1927,19 +1885,15 @@ async function sendMessage(text){
             text.length > 38
                 ? text.slice(0,38) + "..."
                 : text;
-
     }
 
     input.value = "";
-
     resizeInput();
 
     renderHistory();
-
     renderMessages();
 
     isSending = true;
-
     send.disabled = true;
 
     showTyping();
@@ -1952,10 +1906,8 @@ async function sendMessage(text){
         hideTyping();
 
         chat.messages.push({
-
             role:"ai",
             text:reply
-
         });
 
         addMessage(
@@ -1975,15 +1927,13 @@ async function sendMessage(text){
                 : "Lỗi không xác định.";
 
         const errorText =
-            "ChatLuk không thể kết nối AI.\n\n" +
+            "ChatLuk không thể kết nối AI.\\n\\n" +
             "Chi tiết: " +
             message;
 
         chat.messages.push({
-
             role:"ai",
             text:errorText
-
         });
 
         addMessage(
@@ -2000,13 +1950,11 @@ async function sendMessage(text){
     finally{
 
         isSending = false;
-
         send.disabled = false;
 
         renderHistory();
 
         input.focus();
-
     }
 }
 
@@ -2022,7 +1970,6 @@ form.addEventListener(
         sendMessage(
             input.value
         );
-
     }
 );
 
@@ -2043,13 +1990,9 @@ input.addEventListener(
             if(
                 !isSending
             ){
-
                 form.requestSubmit();
-
             }
-
         }
-
     }
 );
 
@@ -2089,12 +2032,9 @@ document
                         button.textContent.trim();
 
                     resizeInput();
-
                     input.focus();
-
                 }
             );
-
         }
     );
 
@@ -2118,15 +2058,12 @@ document
         function(){
 
             chats = [];
-
             activeChatId = null;
 
             renderHistory();
-
             renderMessages();
 
             input.focus();
-
         }
     );
 
@@ -2146,10 +2083,8 @@ document
             overlay.classList.add(
                 "show"
             );
-
         }
     );
-
 
 function closeMobileMenu(){
 
@@ -2160,9 +2095,7 @@ function closeMobileMenu(){
     overlay.classList.remove(
         "show"
     );
-
 }
-
 
 overlay.addEventListener(
     "click",
@@ -2193,9 +2126,7 @@ function setTheme(dark){
 
     }
     catch{}
-
 }
-
 
 themeButton.addEventListener(
     "click",
@@ -2206,10 +2137,8 @@ themeButton.addEventListener(
                 "dark"
             )
         );
-
     }
 );
-
 
 try{
 
@@ -2219,32 +2148,23 @@ try{
         );
 
     if(savedTheme === "dark"){
-
         setTheme(true);
-
     }
     else{
-
         setTheme(false);
-
     }
 
 }
 catch{
-
     setTheme(false);
-
 }
 
 
 /* ================= START ================= */
 
 renderHistory();
-
 renderMessages();
-
 resizeInput();
-
 input.focus();
 
 </script>
@@ -2258,18 +2178,12 @@ input.focus();
 ===================================================== */
 
 const CORS = {
-
     "Access-Control-Allow-Origin":"*",
-
     "Access-Control-Allow-Methods":
         "GET, POST, OPTIONS",
-
     "Access-Control-Allow-Headers":
         "Content-Type",
-
-    "Access-Control-Max-Age":
-        "86400"
-
+    "Access-Control-Max-Age":"86400"
 };
 
 
@@ -2280,26 +2194,16 @@ const CORS = {
 function json(data, status = 200){
 
     return new Response(
-
         JSON.stringify(data),
-
         {
-
             status,
-
             headers:{
-
                 ...CORS,
-
                 "Content-Type":
                     "application/json; charset=utf-8"
-
             }
-
         }
-
     );
-
 }
 
 
@@ -2314,9 +2218,7 @@ function extractGeminiText(data){
         typeof data.text === "string" &&
         data.text.trim()
     ){
-
         return data.text.trim();
-
     }
 
     if(
@@ -2338,9 +2240,7 @@ function extractGeminiText(data){
                     candidate.content.parts
                 )
             ){
-
                 continue;
-
             }
 
             for(
@@ -2356,23 +2256,16 @@ function extractGeminiText(data){
 
                     result +=
                         part.text;
-
                 }
-
             }
-
         }
 
         if(result.trim()){
-
             return result.trim();
-
         }
-
     }
 
     return "";
-
 }
 
 
@@ -2383,30 +2276,20 @@ function extractGeminiText(data){
 function buildGeminiContents(messages){
 
     return messages
-
         .filter(
-
             message =>
-
                 message &&
-
                 (
                     message.role === "user" ||
                     message.role === "ai"
                 ) &&
-
                 typeof message.text === "string" &&
-
                 message.text.trim()
-
         )
-
         .map(
-
             message => {
 
                 return {
-
                     role:
                         message.role === "ai"
                             ? "model"
@@ -2418,13 +2301,9 @@ function buildGeminiContents(messages){
                                 message.text
                         }
                     ]
-
                 };
-
             }
-
         );
-
 }
 
 
@@ -2449,16 +2328,12 @@ export default {
         ){
 
             return new Response(
-
                 null,
-
                 {
                     status:204,
                     headers:CORS
                 }
-
             );
-
         }
 
 
@@ -2472,27 +2347,19 @@ export default {
         ){
 
             return new Response(
-
                 HTML,
-
                 {
-
                     status:200,
 
                     headers:{
-
                         "Content-Type":
                             "text/html; charset=UTF-8",
 
                         "Cache-Control":
                             "no-store"
-
                     }
-
                 }
-
             );
-
         }
 
 
@@ -2518,7 +2385,6 @@ export default {
                     )
 
             });
-
         }
 
 
@@ -2542,22 +2408,16 @@ export default {
                 ){
 
                     return json(
-
                         {
-
                             ok:false,
 
                             error:
                                 "Không tìm thấy GEMINI_API_KEY. " +
                                 "Hãy vào Cloudflare Worker → Settings → Variables and Secrets " +
                                 "và tạo Secret có tên chính xác là GEMINI_API_KEY."
-
                         },
-
                         500
-
                     );
-
                 }
 
 
@@ -2576,20 +2436,13 @@ export default {
                 catch{
 
                     return json(
-
                         {
-
                             ok:false,
-
                             error:
                                 "Dữ liệu JSON gửi lên không hợp lệ."
-
                         },
-
                         400
-
                     );
-
                 }
 
 
@@ -2618,35 +2471,23 @@ export default {
                 ){
 
                     messages = [
-
                         {
-
                             role:"user",
-
                             text:body.message
-
                         }
-
                     ];
 
                 }
                 else{
 
                     return json(
-
                         {
-
                             ok:false,
-
                             error:
                                 "Không tìm thấy tin nhắn."
-
                         },
-
                         400
-
                     );
-
                 }
 
 
@@ -2669,20 +2510,13 @@ export default {
                 ){
 
                     return json(
-
                         {
-
                             ok:false,
-
                             error:
                                 "Nội dung tin nhắn trống."
-
                         },
-
                         400
-
                     );
-
                 }
 
 
@@ -2702,32 +2536,25 @@ export default {
 
                 const geminiResponse =
                     await fetch(
-
                         endpoint,
-
                         {
 
                             method:"POST",
 
                             headers:{
-
                                 "Content-Type":
                                     "application/json",
 
                                 "x-goog-api-key":
                                     env.GEMINI_API_KEY
-
                             },
 
                             body:
                                 JSON.stringify({
 
                                     systemInstruction:{
-
                                         parts:[
-
                                             {
-
                                                 text:
                                                     "Bạn là ChatLuk, " +
                                                     "một trợ lý AI tiếng Việt. " +
@@ -2740,11 +2567,8 @@ export default {
                                                     "hãy đưa code hoàn chỉnh. " +
                                                     "Không tự nhận mình là con người. " +
                                                     "Có thể dùng emoji vừa phải."
-
                                             }
-
                                         ]
-
                                     },
 
                                     contents:
@@ -2752,17 +2576,13 @@ export default {
                                         contents,
 
                                     generationConfig:{
-
                                         temperature:0.7,
-
                                         maxOutputTokens:2048
-
                                     }
 
                                 })
 
                         }
-
                     );
 
 
@@ -2786,9 +2606,7 @@ export default {
                 catch{
 
                     return json(
-
                         {
-
                             ok:false,
 
                             error:
@@ -2796,13 +2614,9 @@ export default {
 
                             status:
                                 geminiResponse.status
-
                         },
-
                         502
-
                     );
-
                 }
 
 
@@ -2827,27 +2641,20 @@ export default {
 
                         message =
                             data.error.message;
-
                     }
 
 
                     return json(
-
                         {
-
                             ok:false,
 
                             error:message,
 
                             status:
                                 geminiResponse.status
-
                         },
-
                         geminiResponse.status
-
                     );
-
                 }
 
 
@@ -2866,20 +2673,14 @@ export default {
                 ){
 
                     return json(
-
                         {
-
                             ok:false,
 
                             error:
                                 "Gemini không trả về nội dung văn bản."
-
                         },
-
                         502
-
                     );
-
                 }
 
 
@@ -2905,9 +2706,7 @@ export default {
                 );
 
                 return json(
-
                     {
-
                         ok:false,
 
                         error:
@@ -2915,15 +2714,10 @@ export default {
                             error.message
                                 ? error.message
                                 : "Worker gặp lỗi không xác định."
-
                     },
-
                     500
-
                 );
-
             }
-
         }
 
 
@@ -2932,20 +2726,12 @@ export default {
         ============================================= */
 
         return json(
-
             {
-
                 ok:false,
-
                 error:
                     "Không tìm thấy đường dẫn."
-
             },
-
             404
-
         );
-
     }
-
 };
