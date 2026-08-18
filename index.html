@@ -143,7 +143,14 @@ button{
         0 5px 16px
         rgba(150,90,20,.15);
 
-    font-size:30px;
+    overflow:hidden;
+}
+
+.brand-dragon img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
 }
 
 .brand-name{
@@ -355,6 +362,19 @@ body.dark .topbar{
 
 .top-dragon{
     font-size:27px;
+    width:30px;
+    height:30px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    border-radius:50%;
+}
+
+.top-dragon img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
 }
 
 .top-name{
@@ -477,9 +497,16 @@ body.dark .topbar{
         0 15px 40px
         var(--shadow);
 
-    font-size:67px;
-
     margin-bottom:18px;
+
+    overflow:hidden;
+}
+
+.hero-dragon img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
 }
 
 .welcome-label{
@@ -913,7 +940,6 @@ textarea::placeholder{
     .hero-dragon{
         width:90px;
         height:90px;
-        font-size:52px;
     }
 
     .suggestions{
@@ -931,7 +957,12 @@ textarea::placeholder{
 
     <div class="brand">
 
-        <div class="brand-dragon">🐉</div>
+        <div class="brand-dragon">
+            <img
+                src="https://dongphuchaianh.com/wp-content/uploads/2022/06/logo-hinh-con-rong-y-nghia.jpg"
+                alt="ChatLuk Dragon"
+            >
+        </div>
 
         <div>
             <div class="brand-name">
@@ -996,7 +1027,12 @@ textarea::placeholder{
 
     <div class="top-title">
 
-        <div class="top-dragon">🐉</div>
+        <div class="top-dragon">
+            <img
+                src="https://dongphuchaianh.com/wp-content/uploads/2022/06/logo-hinh-con-rong-y-nghia.jpg"
+                alt="ChatLuk Dragon"
+            >
+        </div>
 
         <div>
 
@@ -1037,7 +1073,10 @@ textarea::placeholder{
 >
 
     <div class="hero-dragon">
-        🐉
+        <img
+            src="https://dongphuchaianh.com/wp-content/uploads/2022/06/logo-hinh-con-rong-y-nghia.jpg"
+            alt="ChatLuk Dragon"
+        >
     </div>
 
     <div class="welcome-label">
