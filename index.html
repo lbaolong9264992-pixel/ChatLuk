@@ -61,6 +61,7 @@ body{
 
     color:var(--text);
     overflow:hidden;
+
     transition:
         background .3s ease,
         color .3s ease;
@@ -80,6 +81,7 @@ button{
     height:100vh;
     display:flex;
 }
+
 
 /* ================= SIDEBAR ================= */
 
@@ -143,6 +145,8 @@ button{
         0 5px 16px
         rgba(150,90,20,.15);
 
+    font-size:30px;
+
     overflow:hidden;
 }
 
@@ -150,7 +154,7 @@ button{
     width:100%;
     height:100%;
     object-fit:cover;
-    border-radius:50%;
+    display:block;
 }
 
 .brand-name{
@@ -265,23 +269,32 @@ button{
 }
 
 .history-dragon{
-    width:25px;
-    height:25px;
+    width:22px;
+    height:22px;
 
     flex-shrink:0;
 
-    display:grid;
-    place-items:center;
+    border-radius:7px;
 
     overflow:hidden;
-    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fff4b8,
+            #e8c35e
+        );
 }
 
 .history-dragon img{
     width:100%;
     height:100%;
     object-fit:cover;
-    border-radius:50%;
+    display:block;
 }
 
 .history-text{
@@ -312,18 +325,23 @@ button{
 
     margin:auto;
 
-    display:grid;
-    place-items:center;
+    border-radius:50%;
 
     overflow:hidden;
-    border-radius:50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fff7c7,
+            #e4bb55
+        );
 }
 
 .sidebar-bottom .dragon-small img{
     width:100%;
     height:100%;
     object-fit:cover;
-    border-radius:50%;
+    display:block;
 }
 
 .sidebar-bottom p{
@@ -332,6 +350,7 @@ button{
     font-size:9px;
     line-height:1.5;
 }
+
 
 /* ================= MAIN ================= */
 
@@ -343,6 +362,7 @@ button{
     display:flex;
     flex-direction:column;
 }
+
 
 /* ================= TOPBAR ================= */
 
@@ -392,21 +412,34 @@ body.dark .topbar{
 }
 
 .top-dragon{
-    width:30px;
-    height:30px;
+    width:38px;
+    height:38px;
 
-    display:grid;
-    place-items:center;
+    border-radius:11px;
 
     overflow:hidden;
-    border-radius:50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fff7c7,
+            #e2b94f
+        );
+
+    border:
+        1px solid
+        rgba(183,122,34,.35);
+
+    box-shadow:
+        0 3px 10px
+        rgba(150,90,20,.14);
 }
 
 .top-dragon img{
     width:100%;
     height:100%;
     object-fit:cover;
-    border-radius:50%;
+    display:block;
 }
 
 .top-name{
@@ -448,6 +481,7 @@ body.dark .topbar{
     font-size:17px;
 }
 
+
 /* ================= CHAT ================= */
 
 .chat-area{
@@ -457,8 +491,6 @@ body.dark .topbar{
 
     position:relative;
 }
-
-/* nền tranh mờ */
 
 .chat-area::before{
     content:"";
@@ -488,6 +520,7 @@ body.dark .topbar{
         );
 }
 
+
 /* ================= WELCOME ================= */
 
 .welcome{
@@ -514,6 +547,8 @@ body.dark .topbar{
 
     border-radius:50%;
 
+    overflow:hidden;
+
     background:
         radial-gradient(
             circle,
@@ -529,18 +564,14 @@ body.dark .topbar{
         0 15px 40px
         var(--shadow);
 
-    overflow:hidden;
-
     margin-bottom:18px;
 }
 
 .hero-dragon img{
     width:100%;
     height:100%;
-
     object-fit:cover;
-
-    border-radius:50%;
+    display:block;
 }
 
 .welcome-label{
@@ -604,7 +635,8 @@ body.dark .topbar{
     border-color:var(--gold);
 }
 
-/* ================= MESSAGES ================= */
+
+/* ================= PROFESSIONAL MESSAGES ================= */
 
 .messages{
     position:relative;
@@ -617,12 +649,15 @@ body.dark .topbar{
 
 .message{
     display:flex;
-    gap:10px;
+    align-items:flex-end;
+    gap:11px;
 
-    margin:17px 0;
+    margin:20px 0;
+
+    position:relative;
 
     animation:
-        appear .2s ease;
+        appear .22s ease;
 }
 
 .message.user{
@@ -630,37 +665,46 @@ body.dark .topbar{
 }
 
 .message.user .avatar{
-    display:none;
+    order:2;
 }
 
+
+/* ================= AVATAR ================= */
+
 .avatar{
-    width:42px;
-    height:42px;
+    width:44px;
+    height:44px;
 
-    flex:0 0 42px;
+    flex:0 0 44px;
 
-    display:grid;
-    place-items:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    border:
-        1px solid
-        rgba(190,135,35,.5);
-
-    border-radius:13px;
-
-    background:
-        radial-gradient(
-            circle,
-            #fff9c9,
-            #f6d96b 55%,
-            #dcae38
-        );
-
-    box-shadow:
-        0 4px 14px
-        rgba(180,125,25,.32);
+    border-radius:14px;
 
     overflow:hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fff8d8,
+            #f4d98b,
+            #dcae4f
+        );
+
+    border:
+        2px solid
+        rgba(214,166,77,.65);
+
+    box-shadow:
+        0 4px 10px
+        rgba(130,88,35,.15),
+
+        0 0 0 3px
+        rgba(214,166,77,.08);
+
+    position:relative;
 }
 
 .avatar img{
@@ -669,23 +713,222 @@ body.dark .topbar{
 
     object-fit:cover;
 
-    border-radius:13px;
+    display:block;
 }
+
+.avatar::after{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    pointer-events:none;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.45),
+            transparent 45%,
+            rgba(255,210,100,.18)
+        );
+}
+
+.message.user .avatar{
+    color:transparent;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fff3b0,
+            #e8c35e,
+            #c99532
+        );
+
+    border:
+        2px solid
+        rgba(183,122,34,.55);
+
+    box-shadow:
+        0 5px 15px
+        rgba(150,90,20,.22),
+
+        0 0 0 3px
+        rgba(214,166,77,.10);
+}
+
+
+/* ================= CHAT BUBBLE ================= */
+
+.bubble{
+    position:relative;
+
+    max-width:min(720px,82%);
+
+    padding:14px 17px;
+
+    border-radius:
+        7px 17px 17px 17px;
+
+    border:
+        1px solid
+        rgba(183,122,34,.25);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,253,246,.97),
+            rgba(250,241,220,.94)
+        );
+
+    color:var(--text);
+
+    font-size:12px;
+    line-height:1.75;
+
+    white-space:pre-wrap;
+    word-break:break-word;
+
+    box-shadow:
+        0 7px 22px
+        rgba(100,65,20,.12),
+
+        0 1px 3px
+        rgba(100,65,20,.08);
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease;
+}
+
+.message.ai .bubble::before{
+    content:"";
+
+    position:absolute;
+
+    top:-1px;
+    left:18px;
+
+    width:42px;
+    height:3px;
+
+    border-radius:
+        0 0 5px 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--gold),
+            var(--gold2)
+        );
+
+    box-shadow:
+        0 2px 8px
+        rgba(183,122,34,.25);
+}
+
+.message.ai .bubble:hover{
+    transform:translateY(-1px);
+
+    border-color:
+        rgba(183,122,34,.40);
+
+    box-shadow:
+        0 10px 27px
+        rgba(100,65,20,.16);
+}
+
+
+/* ================= USER BUBBLE ================= */
+
+.message.user .bubble{
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:
+        17px 7px 17px 17px;
+
+    color:#fff9ed;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--red),
+            var(--red2)
+        );
+
+    box-shadow:
+        0 7px 22px
+        rgba(150,50,25,.20);
+}
+
+.message.user .bubble::after{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    border-radius:
+        inherit;
+
+    pointer-events:none;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+}
+
+
+/* ================= DARK MODE ================= */
+
+body.dark .bubble{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(58,47,38,.98),
+            rgba(48,39,32,.96)
+        );
+
+    border-color:
+        rgba(224,182,92,.25);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.25);
+}
+
+body.dark .message.ai .bubble:hover{
+    border-color:
+        rgba(224,182,92,.45);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.32);
+}
+
 
 /* ================= TYPING ================= */
 
 .typing{
     display:flex;
-    gap:4px;
+    align-items:center;
+    gap:5px;
+
+    min-height:15px;
 }
 
 .typing i{
-    width:5px;
-    height:5px;
+    width:6px;
+    height:6px;
 
     border-radius:50%;
 
     background:var(--gold);
+
+    box-shadow:
+        0 0 5px
+        rgba(183,122,34,.35);
 
     animation:
         typing 1s infinite;
@@ -722,6 +965,7 @@ body.dark .topbar{
         transform:translateY(0);
     }
 }
+
 
 /* ================= COMPOSER ================= */
 
@@ -831,6 +1075,7 @@ textarea::placeholder{
     font-size:8px;
 }
 
+
 /* ================= MOBILE ================= */
 
 .overlay{
@@ -927,7 +1172,14 @@ textarea::placeholder{
     .suggestions{
         grid-template-columns:1fr;
     }
+
+    .avatar{
+        width:40px;
+        height:40px;
+        flex-basis:40px;
+    }
 }
+
 </style>
 </head>
 
@@ -947,6 +1199,7 @@ textarea::placeholder{
         </div>
 
         <div>
+
             <div class="brand-name">
                 Chat<span>Luk</span>
             </div>
@@ -954,6 +1207,7 @@ textarea::placeholder{
             <div class="brand-sub">
                 VIETNAMESE DRAGON AI
             </div>
+
         </div>
 
     </div>
@@ -1000,6 +1254,7 @@ textarea::placeholder{
     </div>
 
 </aside>
+
 
 <main class="main">
 
@@ -1049,6 +1304,7 @@ textarea::placeholder{
 
 </header>
 
+
 <section
     class="chat-area"
     id="chatArea"
@@ -1060,10 +1316,12 @@ textarea::placeholder{
 >
 
     <div class="hero-dragon">
+
         <img
             src="https://tapl.edu.vn/upload/2025/05/anh-rong-chibi-24.webp"
             alt="ChatLuk Dragon"
         >
+
     </div>
 
     <div class="welcome-label">
@@ -1101,12 +1359,14 @@ textarea::placeholder{
 
 </div>
 
+
 <div
     class="messages"
     id="messages"
 ></div>
 
 </section>
+
 
 <footer class="composer-area">
 
@@ -1150,13 +1410,16 @@ textarea::placeholder{
 
 </div>
 
+
 <div
     class="overlay"
     id="overlay"
 ></div>
 
+
 <script>
 "use strict";
+
 
 /* =====================================================
    CHATLUK FRONTEND
@@ -1166,10 +1429,12 @@ let chats = [];
 let activeChatId = null;
 let isSending = false;
 
-/* ================= AVATAR ================= */
 
-const CHATLUK_AVATAR =
+/* ================= AVATAR URL ================= */
+
+const AVATAR_URL =
     "https://tapl.edu.vn/upload/2025/05/anh-rong-chibi-24.webp";
+
 
 /* ================= ELEMENTS ================= */
 
@@ -1203,6 +1468,37 @@ const overlay =
 const themeButton =
     document.getElementById("themeButton");
 
+
+/* ================= CREATE AVATAR ================= */
+
+function createAvatar(){
+
+    const avatar =
+        document.createElement("div");
+
+    avatar.className =
+        "avatar";
+
+    const image =
+        document.createElement("img");
+
+    image.src =
+        AVATAR_URL;
+
+    image.alt =
+        "ChatLuk Dragon";
+
+    image.loading =
+        "lazy";
+
+    avatar.appendChild(
+        image
+    );
+
+    return avatar;
+}
+
+
 /* ================= ID ================= */
 
 function createId(){
@@ -1213,6 +1509,7 @@ function createId(){
             .toString(36)
             .slice(2,8);
 }
+
 
 /* ================= NEW CHAT ================= */
 
@@ -1237,6 +1534,7 @@ function createNewChat(){
     input.focus();
 }
 
+
 /* ================= GET CHAT ================= */
 
 function getActiveChat(){
@@ -1246,6 +1544,7 @@ function getActiveChat(){
             chat.id === activeChatId
     );
 }
+
 
 /* ================= HISTORY ================= */
 
@@ -1290,17 +1589,17 @@ function renderHistory(){
         dragon.className =
             "history-dragon";
 
-        const dragonImg =
+        const dragonImage =
             document.createElement("img");
 
-        dragonImg.src =
-            CHATLUK_AVATAR;
+        dragonImage.src =
+            AVATAR_URL;
 
-        dragonImg.alt =
+        dragonImage.alt =
             "ChatLuk Dragon";
 
         dragon.appendChild(
-            dragonImg
+            dragonImage
         );
 
         const text =
@@ -1312,8 +1611,13 @@ function renderHistory(){
         text.textContent =
             chat.title;
 
-        button.appendChild(dragon);
-        button.appendChild(text);
+        button.appendChild(
+            dragon
+        );
+
+        button.appendChild(
+            text
+        );
 
         button.addEventListener(
             "click",
@@ -1329,9 +1633,12 @@ function renderHistory(){
             }
         );
 
-        historyBox.appendChild(button);
+        historyBox.appendChild(
+            button
+        );
     });
 }
+
 
 /* ================= RENDER ================= */
 
@@ -1370,6 +1677,7 @@ function renderMessages(){
     scrollBottom();
 }
 
+
 /* ================= MESSAGE ================= */
 
 function addMessage(
@@ -1384,36 +1692,8 @@ function addMessage(
     row.className =
         "message " + role;
 
-    /*
-       AI có avatar.
-       USER không có avatar.
-    */
-
-    if(role === "ai"){
-
-        const avatar =
-            document.createElement("div");
-
-        avatar.className =
-            "avatar";
-
-        const avatarImg =
-            document.createElement("img");
-
-        avatarImg.src =
-            CHATLUK_AVATAR;
-
-        avatarImg.alt =
-            "ChatLuk Dragon";
-
-        avatar.appendChild(
-            avatarImg
-        );
-
-        row.appendChild(
-            avatar
-        );
-    }
+    const avatar =
+        createAvatar();
 
     const bubble =
         document.createElement("div");
@@ -1423,6 +1703,10 @@ function addMessage(
 
     bubble.textContent =
         text;
+
+    row.appendChild(
+        avatar
+    );
 
     row.appendChild(
         bubble
@@ -1436,6 +1720,7 @@ function addMessage(
         scrollBottom();
     }
 }
+
 
 /* ================= TYPING ================= */
 
@@ -1451,23 +1736,7 @@ function showTyping(){
         "typingMessage";
 
     const avatar =
-        document.createElement("div");
-
-    avatar.className =
-        "avatar";
-
-    const avatarImg =
-        document.createElement("img");
-
-    avatarImg.src =
-        CHATLUK_AVATAR;
-
-    avatarImg.alt =
-        "ChatLuk Dragon";
-
-    avatar.appendChild(
-        avatarImg
-    );
+        createAvatar();
 
     const bubble =
         document.createElement("div");
@@ -1484,15 +1753,25 @@ function showTyping(){
     dots.innerHTML =
         "<i></i><i></i><i></i>";
 
-    bubble.appendChild(dots);
+    bubble.appendChild(
+        dots
+    );
 
-    row.appendChild(avatar);
-    row.appendChild(bubble);
+    row.appendChild(
+        avatar
+    );
 
-    messagesBox.appendChild(row);
+    row.appendChild(
+        bubble
+    );
+
+    messagesBox.appendChild(
+        row
+    );
 
     scrollBottom();
 }
+
 
 function hideTyping(){
 
@@ -1506,6 +1785,7 @@ function hideTyping(){
     }
 }
 
+
 /* ================= SCROLL ================= */
 
 function scrollBottom(){
@@ -1515,9 +1795,11 @@ function scrollBottom(){
 
             chatArea.scrollTop =
                 chatArea.scrollHeight;
+
         }
     );
 }
+
 
 /* =====================================================
    GEMINI API
@@ -1529,9 +1811,11 @@ async function callAI(){
         getActiveChat();
 
     if(!chat){
+
         throw new Error(
             "Không tìm thấy cuộc trò chuyện."
         );
+
     }
 
     const response =
@@ -1560,13 +1844,17 @@ async function callAI(){
     let data = null;
 
     try{
+
         data =
             JSON.parse(raw);
+
     }
     catch{
+
         throw new Error(
             "Worker không trả về JSON hợp lệ."
         );
+
     }
 
     if(!response.ok){
@@ -1578,6 +1866,7 @@ async function callAI(){
                 : "API lỗi HTTP " +
                   response.status
         );
+
     }
 
     if(
@@ -1589,10 +1878,12 @@ async function callAI(){
         throw new Error(
             "Worker không trả về reply."
         );
+
     }
 
     return data.reply;
 }
+
 
 /* ================= SEND ================= */
 
@@ -1611,6 +1902,7 @@ async function sendMessage(text){
     if(!activeChatId){
 
         createNewChat();
+
     }
 
     const chat =
@@ -1621,8 +1913,10 @@ async function sendMessage(text){
     }
 
     chat.messages.push({
+
         role:"user",
         text:text
+
     });
 
     if(
@@ -1633,15 +1927,19 @@ async function sendMessage(text){
             text.length > 38
                 ? text.slice(0,38) + "..."
                 : text;
+
     }
 
     input.value = "";
+
     resizeInput();
 
     renderHistory();
+
     renderMessages();
 
     isSending = true;
+
     send.disabled = true;
 
     showTyping();
@@ -1654,8 +1952,10 @@ async function sendMessage(text){
         hideTyping();
 
         chat.messages.push({
+
             role:"ai",
             text:reply
+
         });
 
         addMessage(
@@ -1675,13 +1975,15 @@ async function sendMessage(text){
                 : "Lỗi không xác định.";
 
         const errorText =
-            "ChatLuk không thể kết nối AI.\\n\\n" +
+            "ChatLuk không thể kết nối AI.\n\n" +
             "Chi tiết: " +
             message;
 
         chat.messages.push({
+
             role:"ai",
             text:errorText
+
         });
 
         addMessage(
@@ -1698,13 +2000,16 @@ async function sendMessage(text){
     finally{
 
         isSending = false;
+
         send.disabled = false;
 
         renderHistory();
 
         input.focus();
+
     }
 }
+
 
 /* ================= FORM ================= */
 
@@ -1717,8 +2022,10 @@ form.addEventListener(
         sendMessage(
             input.value
         );
+
     }
 );
+
 
 /* ================= ENTER ================= */
 
@@ -1736,11 +2043,16 @@ input.addEventListener(
             if(
                 !isSending
             ){
+
                 form.requestSubmit();
+
             }
+
         }
+
     }
 );
+
 
 /* ================= RESIZE ================= */
 
@@ -1761,6 +2073,7 @@ input.addEventListener(
     resizeInput
 );
 
+
 /* ================= SUGGESTIONS ================= */
 
 document
@@ -1776,11 +2089,15 @@ document
                         button.textContent.trim();
 
                     resizeInput();
+
                     input.focus();
+
                 }
             );
+
         }
     );
+
 
 /* ================= NEW CHAT ================= */
 
@@ -1791,6 +2108,7 @@ document
         createNewChat
     );
 
+
 /* ================= CLEAR ================= */
 
 document
@@ -1800,14 +2118,18 @@ document
         function(){
 
             chats = [];
+
             activeChatId = null;
 
             renderHistory();
+
             renderMessages();
 
             input.focus();
+
         }
     );
+
 
 /* ================= MOBILE ================= */
 
@@ -1824,8 +2146,10 @@ document
             overlay.classList.add(
                 "show"
             );
+
         }
     );
+
 
 function closeMobileMenu(){
 
@@ -1836,12 +2160,15 @@ function closeMobileMenu(){
     overlay.classList.remove(
         "show"
     );
+
 }
+
 
 overlay.addEventListener(
     "click",
     closeMobileMenu
 );
+
 
 /* ================= DARK MODE ================= */
 
@@ -1866,7 +2193,9 @@ function setTheme(dark){
 
     }
     catch{}
+
 }
+
 
 themeButton.addEventListener(
     "click",
@@ -1877,8 +2206,10 @@ themeButton.addEventListener(
                 "dark"
             )
         );
+
     }
 );
+
 
 try{
 
@@ -1888,22 +2219,32 @@ try{
         );
 
     if(savedTheme === "dark"){
+
         setTheme(true);
+
     }
     else{
+
         setTheme(false);
+
     }
 
 }
 catch{
+
     setTheme(false);
+
 }
+
 
 /* ================= START ================= */
 
 renderHistory();
+
 renderMessages();
+
 resizeInput();
+
 input.focus();
 
 </script>
@@ -1917,12 +2258,18 @@ input.focus();
 ===================================================== */
 
 const CORS = {
+
     "Access-Control-Allow-Origin":"*",
+
     "Access-Control-Allow-Methods":
         "GET, POST, OPTIONS",
+
     "Access-Control-Allow-Headers":
         "Content-Type",
-    "Access-Control-Max-Age":"86400"
+
+    "Access-Control-Max-Age":
+        "86400"
+
 };
 
 
@@ -1933,16 +2280,26 @@ const CORS = {
 function json(data, status = 200){
 
     return new Response(
+
         JSON.stringify(data),
+
         {
+
             status,
+
             headers:{
+
                 ...CORS,
+
                 "Content-Type":
                     "application/json; charset=utf-8"
+
             }
+
         }
+
     );
+
 }
 
 
@@ -1957,7 +2314,9 @@ function extractGeminiText(data){
         typeof data.text === "string" &&
         data.text.trim()
     ){
+
         return data.text.trim();
+
     }
 
     if(
@@ -1979,7 +2338,9 @@ function extractGeminiText(data){
                     candidate.content.parts
                 )
             ){
+
                 continue;
+
             }
 
             for(
@@ -1995,16 +2356,23 @@ function extractGeminiText(data){
 
                     result +=
                         part.text;
+
                 }
+
             }
+
         }
 
         if(result.trim()){
+
             return result.trim();
+
         }
+
     }
 
     return "";
+
 }
 
 
@@ -2015,20 +2383,30 @@ function extractGeminiText(data){
 function buildGeminiContents(messages){
 
     return messages
+
         .filter(
+
             message =>
+
                 message &&
+
                 (
                     message.role === "user" ||
                     message.role === "ai"
                 ) &&
+
                 typeof message.text === "string" &&
+
                 message.text.trim()
+
         )
+
         .map(
+
             message => {
 
                 return {
+
                     role:
                         message.role === "ai"
                             ? "model"
@@ -2040,9 +2418,13 @@ function buildGeminiContents(messages){
                                 message.text
                         }
                     ]
+
                 };
+
             }
+
         );
+
 }
 
 
@@ -2067,12 +2449,16 @@ export default {
         ){
 
             return new Response(
+
                 null,
+
                 {
                     status:204,
                     headers:CORS
                 }
+
             );
+
         }
 
 
@@ -2086,19 +2472,27 @@ export default {
         ){
 
             return new Response(
+
                 HTML,
+
                 {
+
                     status:200,
 
                     headers:{
+
                         "Content-Type":
                             "text/html; charset=UTF-8",
 
                         "Cache-Control":
                             "no-store"
+
                     }
+
                 }
+
             );
+
         }
 
 
@@ -2124,6 +2518,7 @@ export default {
                     )
 
             });
+
         }
 
 
@@ -2147,16 +2542,22 @@ export default {
                 ){
 
                     return json(
+
                         {
+
                             ok:false,
 
                             error:
                                 "Không tìm thấy GEMINI_API_KEY. " +
                                 "Hãy vào Cloudflare Worker → Settings → Variables and Secrets " +
                                 "và tạo Secret có tên chính xác là GEMINI_API_KEY."
+
                         },
+
                         500
+
                     );
+
                 }
 
 
@@ -2175,13 +2576,20 @@ export default {
                 catch{
 
                     return json(
+
                         {
+
                             ok:false,
+
                             error:
                                 "Dữ liệu JSON gửi lên không hợp lệ."
+
                         },
+
                         400
+
                     );
+
                 }
 
 
@@ -2210,23 +2618,35 @@ export default {
                 ){
 
                     messages = [
+
                         {
+
                             role:"user",
+
                             text:body.message
+
                         }
+
                     ];
 
                 }
                 else{
 
                     return json(
+
                         {
+
                             ok:false,
+
                             error:
                                 "Không tìm thấy tin nhắn."
+
                         },
+
                         400
+
                     );
+
                 }
 
 
@@ -2249,13 +2669,20 @@ export default {
                 ){
 
                     return json(
+
                         {
+
                             ok:false,
+
                             error:
                                 "Nội dung tin nhắn trống."
+
                         },
+
                         400
+
                     );
+
                 }
 
 
@@ -2275,25 +2702,32 @@ export default {
 
                 const geminiResponse =
                     await fetch(
+
                         endpoint,
+
                         {
 
                             method:"POST",
 
                             headers:{
+
                                 "Content-Type":
                                     "application/json",
 
                                 "x-goog-api-key":
                                     env.GEMINI_API_KEY
+
                             },
 
                             body:
                                 JSON.stringify({
 
                                     systemInstruction:{
+
                                         parts:[
+
                                             {
+
                                                 text:
                                                     "Bạn là ChatLuk, " +
                                                     "một trợ lý AI tiếng Việt. " +
@@ -2306,8 +2740,11 @@ export default {
                                                     "hãy đưa code hoàn chỉnh. " +
                                                     "Không tự nhận mình là con người. " +
                                                     "Có thể dùng emoji vừa phải."
+
                                             }
+
                                         ]
+
                                     },
 
                                     contents:
@@ -2315,13 +2752,17 @@ export default {
                                         contents,
 
                                     generationConfig:{
+
                                         temperature:0.7,
+
                                         maxOutputTokens:2048
+
                                     }
 
                                 })
 
                         }
+
                     );
 
 
@@ -2345,7 +2786,9 @@ export default {
                 catch{
 
                     return json(
+
                         {
+
                             ok:false,
 
                             error:
@@ -2353,9 +2796,13 @@ export default {
 
                             status:
                                 geminiResponse.status
+
                         },
+
                         502
+
                     );
+
                 }
 
 
@@ -2380,20 +2827,27 @@ export default {
 
                         message =
                             data.error.message;
+
                     }
 
 
                     return json(
+
                         {
+
                             ok:false,
 
                             error:message,
 
                             status:
                                 geminiResponse.status
+
                         },
+
                         geminiResponse.status
+
                     );
+
                 }
 
 
@@ -2412,14 +2866,20 @@ export default {
                 ){
 
                     return json(
+
                         {
+
                             ok:false,
 
                             error:
                                 "Gemini không trả về nội dung văn bản."
+
                         },
+
                         502
+
                     );
+
                 }
 
 
@@ -2445,7 +2905,9 @@ export default {
                 );
 
                 return json(
+
                     {
+
                         ok:false,
 
                         error:
@@ -2453,10 +2915,15 @@ export default {
                             error.message
                                 ? error.message
                                 : "Worker gặp lỗi không xác định."
+
                     },
+
                     500
+
                 );
+
             }
+
         }
 
 
@@ -2465,12 +2932,20 @@ export default {
         ============================================= */
 
         return json(
+
             {
+
                 ok:false,
+
                 error:
                     "Không tìm thấy đường dẫn."
+
             },
+
             404
+
         );
+
     }
+
 };
